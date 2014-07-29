@@ -1,0 +1,39 @@
+.container-fluid {
+    margin-top: 0px;
+}
+.admin .page-head {
+    margin-top: -30px;
+/*    margin-left: -15px;*/
+    margin-right: -30px;
+}
+.container-fluid .container {
+    margin-top: 20px;
+}
+.admin-navbar.navbar {
+    padding-right: 0px;
+    margin-bottom: 0px;
+}
+.admin-navbar ul.nav li a:hover {
+    background: none;
+    color: #000;
+}
+table.table td i {
+    font-size: inherit;
+    display: initial;
+}
+div.container-fluid.admin-pos {
+    margin-top: 0px;
+}
+.nav-tabs .nav-tabs-right {
+    float:right;
+    margin-left:10px;
+    margin-right:0;
+}
+.navbar-default .navbar-brand {
+    background: none;
+    width: auto !important;
+    padding-left: 0px;
+}
+#login-register {
+    opacity: 1;
+}

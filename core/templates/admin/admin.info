@@ -1,0 +1,5 @@
+name = Administration
+description = Theme for administration pages
+version = 2.5
+kernel = 2.x
+screenshot = screenshot.png
