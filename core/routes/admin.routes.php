@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * Handles initial routing the backend
+ */
 $get_url = splitURL();
 $csrf = Csrf::addCsrf();
 $token_id = $csrf->get_token_id();

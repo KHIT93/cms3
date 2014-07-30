@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * Handles backend-routing for settings and configuration
+ */
 include 'core/inc/admin.inc.php';
 $settings = new Settings();
 if(isset($get_url[2])) {

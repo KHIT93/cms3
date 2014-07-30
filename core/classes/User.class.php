@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * Handles functionality related to users
+ */
 class User {
     private $_db, $_data, $_sessionName, $_cookieName, $_isLoggedIn;
     

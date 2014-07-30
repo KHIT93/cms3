@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * Handles validation
+ */
 class Validation {
     private $_passed = false, $_errors = array(), $_db = null;
     

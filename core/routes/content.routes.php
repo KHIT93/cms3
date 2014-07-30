@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * Handles backend-routing related to content management
+ */
 if($get_url[1] == 'content') {
     if(isset($get_url[2])) {
         if(isset($get_url[3])) {

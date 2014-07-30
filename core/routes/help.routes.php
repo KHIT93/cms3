@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * Handles backend-routing related to help and documentation
+ */
 if($get_url[1] == 'help') {
     if(isset($get_url[2])) {
         

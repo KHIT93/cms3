@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * Handles the usage of inputs
+ */
 class Input {
     public static function exists($type = 'post') {
         switch ($type) {

@@ -19,7 +19,7 @@ if(version_compare(phpversion(), '5.4.0', '<')) {
                 'host' => '127.0.0.1',
                 'username' => 'root',
                 'password' => 'root',
-                'name' => 'new_cms'
+                'name' => 'cms3'
             ),
             'cookies' => array(
                 'cookie_name' => 'hash',

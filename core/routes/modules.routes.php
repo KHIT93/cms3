@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * Handles backend-routing for module management
+ */
 if($get_url[1] == 'modules') {
     if(isset($get_url[2])) {
         if(isset($get_url[3])) {

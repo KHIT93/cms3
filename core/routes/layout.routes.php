@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * Handles backend-routing for layout, menus, themes and widgets
+ */
 if($get_url[1] == 'layout') {
     if(isset($get_url[2])) {
         if($get_url[2] == 'menus') {

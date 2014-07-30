@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * Handles communication with the global configuration
+ */
 class Config {
     public static function get($path = NULL) {
         if($path) {

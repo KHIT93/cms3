@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * Handles path redirection
+ */
 class Redirect {
     public static function to($location = null) {
         if($location) {

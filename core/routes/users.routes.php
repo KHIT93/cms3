@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * Handles routing related to user management
+ */
 if($get_url[1] == 'users') {
     if(isset($get_url[2])) {
         if(isset($get_url[3])) {

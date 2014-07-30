@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * Handles routing for login and registration
+ */
 $get_url = splitURL();
 if(isset($get_url[1]) && $get_url[1] == 'register') {
     include 'core/inc/register.inc.php';

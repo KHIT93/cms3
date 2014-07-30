@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * Primary file handling all requests
+ */
 error_reporting(E_ALL);
 define('SITE_ROOT', getcwd());
 $init = array();
