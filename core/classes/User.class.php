@@ -90,4 +90,30 @@ class User {
     public function isLoggedIn() {
         return $this->_isLoggedIn;
     }
+    public static function MakeRandPass($upper = 3, $lower = 3, $numeric = 3, $other = 2) {
+        //we need these vars to create a password string
+        $passOrder = Array();
+        $passWord = '';
+        //generate the contents of the password
+        for ($i = 0; $i < $upper; $i++) {
+            $passOrder[] = chr(rand(65, 90));
+        }
+        for ($i = 0; $i < $lower; $i++) {
+            $passOrder[] = chr(rand(97, 122));
+        }
+        for ($i = 0; $i < $numeric; $i++) {
+            $passOrder[] = chr(rand(48, 57));
+        }
+        for ($i = 0; $i < $other; $i++) {
+            $passOrder[] = chr(rand(33, 47));
+        }
+        //randomize the order of characters
+        shuffle($passOrder);
+        //concatenate into a string
+        foreach ($passOrder as $char) {
+            $passWord .= $char;
+        }
+        //we're done
+        return $passWord;
+    }
 }

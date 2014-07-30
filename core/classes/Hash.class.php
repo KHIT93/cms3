@@ -7,6 +7,17 @@ class Hash {
     public static function make($string, $salt = '') {
         return hash('sha256', $string.$salt);
     }
+    public static function makePassHash($string) {
+        $hash = '';
+        if(CRYPT_SHA512 == 1) {
+            $salt = rand_str(rand(100,200));
+            $hash = crypt($password, '$6$$'.$salt.'$');
+        }
+        else {
+            $hash = crypt($_POST['password']);
+        }
+        return $hash;
+    }
     public static function salt($length) {
         return mcrypt_create_iv($length);
     }

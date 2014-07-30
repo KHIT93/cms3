@@ -3,6 +3,8 @@
  * @file
  * File that includes all files needed for initial functions
  */
+require_once '/core/includes/constants.inc.php';
+
 if(version_compare(phpversion(), '5.4.0', '<')) {
     session_start();
     if(!file_exists('core/config/config.php')) {
@@ -28,6 +30,19 @@ if(version_compare(phpversion(), '5.4.0', '<')) {
             'session' => array(
                 'session_name' => 'user',
                 'token_name' => 'token'
+            ),
+            'assets' => array(
+                'styles' => array(
+                    'screen' => array(
+                        'core/css/bootstrap.min.css',
+                        'core/css/core.css',
+                        'core/css/font-awesome.min.css'
+                    )
+                ),
+                'scripts' => array(
+                    'core/js/bootstrap.min.js',
+                    'core/js/modernizr-2.6.2-respond-1.1.0.min.js'
+                )
             )
         );
         spl_autoload_register(function($class){
@@ -50,5 +65,6 @@ if(version_compare(phpversion(), '5.4.0', '<')) {
     }
 }
 else {
-    die('Your server does not meet the requirements to run this system. Please make sure that your webhost is running PHP 5.4.0 or above');
+    Theme::errorPage('generic', '<p>Your server does not meet the requirements to run this system. Please make sure that your webhost is running PHP 5.4.0 or above<br/>Your current PHP version has been detected as '.phpversion().'</p>');
+    die();
 }

@@ -20,4 +20,7 @@ class Config {
             return false;
         }
     }
+    public static function set($path = NULL) {
+        //Set new items in the global config
+    }
 }

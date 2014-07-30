@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Handles path redirection
+ * Handles redirection
  */
 class Redirect {
     public static function to($location = null) {

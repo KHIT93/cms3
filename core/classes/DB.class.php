@@ -41,14 +41,15 @@ class DB {
         }
         return $this;
     }
-    public function action($action, $table, $where = array()) {
+    public function action($action, $table, $where = array(), $order = array()) {
         if(count($where) === 3) {
+            $orderBy = (is_array($order)) ? "ORDER BY {$order[0]} {$order[1]}" : NULL;
             $operators = array('=', '>', '<', '>=', '<=', '<>');
             $field = $where[0];
             $operator = $where[0];
             $value = $where[2];
             if(in_array($operator, $operators)) {
-                $sql = "{$action} FROM {$table} WHERE {$field} {$operator} ?";
+                $sql = "{$action} FROM {$table} WHERE {$field} {$operator} ? {$orderBy}";
                 if(!$this->query($sql, array($value))->error()) {
                     return $this;
                 }
@@ -56,21 +57,21 @@ class DB {
         }
         return false;
     }
-    public function get($table, $where) {
+    public function get($table, $where = array()) {
         return $this->action('SELECT *', $table, $where);
     }
-    public function delete($table, $where) {
+    public function delete($table, $where = array()) {
         return $this->action('DELETE', $table, $where);
     }
     public function insert($table, $fields = array()) {
         if(count($fields)) {
             $keys = array_keys($fields);
-            $values = NULL;
+            $values = '';
             $x = 1;
             foreach($fields as $field) {
                 $values .= '?';
                 if($x < count($fields)) {
-                    $values .= '. ';
+                    $values .= ', ';
                 }
                 $x++;
             }
@@ -84,11 +85,11 @@ class DB {
         }
         return false;
     }
-    public function update($table, $id, $fields = array()) {
+    public function update($table, $id = array(), $fields = array()) {
         $set = '';
         $x = 1;
         
-        foreach($fields as $name) {
+        foreach($fields as $name => $value) {
             $set .= "{$name} = ?";
             if($x < count($fields)) {
                 $set .= ', ';
@@ -96,10 +97,11 @@ class DB {
             $x++;
         }
         
-        $sql = "UPDATE {$table} SET {$set} WHERE `id` = {$id}";
+        $sql = "UPDATE {$table} SET {$set} WHERE {$id[0]} = {$id[1]}";
         if(!$this->query($sql, $fields)->error()) {
             return true;
         }
+        return false;
     }
     public function results() {
         return $this->_results;
@@ -112,5 +114,11 @@ class DB {
     }
     public function count() {
         return $this->_count;
+    }
+    public function getField($table, $item, $field, $input) {
+        return $this->action("SELECT {$item}", $table, array($field, '=', $input))->first();
+    }
+    public function countItems($table, $item, $field, $input) {
+        return $this->action("SELECT COUNT({$field})", $table, array($field, '=', $input))->count();
     }
 }
