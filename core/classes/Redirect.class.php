@@ -20,4 +20,7 @@ class Redirect {
             exit();
         }
     }
+    public static function splitURL() {
+        return explode('/', $_GET['q']);
+    }
 }

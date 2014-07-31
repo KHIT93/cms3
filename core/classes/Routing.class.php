@@ -68,4 +68,13 @@ class Routing {
             exit();
         }
     }
+    public static function moduleRoute($module) {
+       if(Module::moduleImplements($module, 'route')) {
+           //call_user_func($module.'_route', $path);
+           return true;
+       }
+       else {
+           return false;
+       }
+   }
 }

@@ -30,4 +30,13 @@ class Sanitize {
         }
         while($before != $uri);
     }
+    public static function checkURL($input) {
+        //Sanitize input from URL-inputs
+        return $output = check_plain(strip_dangerous_protocols($input));
+    }
+    public static function escapeAddr($addr) {
+        $check = preg_match('/(.*)<(.*)>/', $addr, $a);
+        if ($check) $addr = '=?UTF-8?B?'.base64_encode($a[1]).'?= <'.$a[2].'>';
+        return $addr;
+    }
 }

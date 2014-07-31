@@ -13,3 +13,10 @@ function getSaltedHash($password) {
 function MakeRandPass($upper = 3, $lower = 3, $numeric = 3, $other = 2) {
     return User::MakeRandPass($upper, $lower, $numeric, $other);
 }
+function logged_in() {
+    return (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == 1) ? true: false;
+}
+function not_active_logout() {
+    session_destroy();
+    addMessage('error', t('You have been logged out because your account is not activated'));
+}

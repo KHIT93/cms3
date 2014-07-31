@@ -68,4 +68,44 @@ class Theme {
             }
         }
     }
+    public static function render(&$element) {
+        if(is_array($element)) {
+            //Render the renderable array
+            return array_render($element);
+        }
+        else {
+            //Print the string
+            return $element;
+        }
+    }
+    public static function array_render($array) {
+        $output = '';
+        if(isset($array['#prefix']) && isset($array['#suffix'])) {
+            if(isset($array['elements'])) {
+                $output .= $array['#prefix'];
+                foreach ($array['elements'] as $value) {
+                    $output .= $value;
+                }
+                $output .= $array['#suffix'];
+            }
+            else if(isset($array['#content'])) {
+                $output .= $array['#prefix'];
+                $output .= $array['#content'];
+                $output .= $array['#suffix'];
+            }
+        }
+        else {
+            if(isset($array['elements'])) {
+                foreach ($array['elements'] as $value) {
+                    $output .= $value;
+                }
+            }
+            else {
+                foreach ($array as $value) {
+                    $output .= $value;
+                }
+            }
+        }
+        return $output;
+    }
 }

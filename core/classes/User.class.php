@@ -79,6 +79,47 @@ class User {
     public function exists() {
         return (!empty($this->_data)) ? true : false;
     }
+    public function active($username) {
+        $db = db_connect();
+        //Checks if a user is active
+        $query = $db->prepare("SELECT `active` FROM `users` WHERE `username`=:username");
+        $query->bindValue(':username', $username, PDO::PARAM_STR);
+        try {
+            $query->execute(); //Executes query
+            $active = $query->fetchColumn();
+        }
+        catch (Exception $e) {
+            addMessage('error', t('There was an error while querying the user'), $e);
+        }
+        $db = NULL;
+        return ($active == 1) ? true : false;
+    }
+    public function enable($user_id) {
+        $db = db_connect();
+        $query = $db->prepare("UPDATE `users` SET `active`=1 WHERE `uid`=:user_id");
+        $query->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+        try {
+            $query->execute();
+            addMessage('success', t('the user').' "<i>'.getFieldFromDB('users', 'user_name', 'uid', $user_id).'</i>" '.t('has been enabled'));
+        }
+        catch(Exception $e) {
+            addMessage('error', t('There was an error while enabling the user'), $e);
+        }
+        $db = NULL;
+    }
+    public function disableUser($user_id) {
+        $db = db_connect();
+        $query = $db->prepare("UPDATE `users` SET `active`=0 WHERE `uid`=:user_id");
+        $query->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+        try {
+            $query->execute();
+            addMessage('success', t('the user').' "<i>'.getFieldFromDB('users', 'user_name', 'uid', $user_id).'</i>" '.t('has been disabled'));
+        }
+        catch(Exception $e) {
+            addMessage('error', t('There was an error while disabling the user'), $e);
+        }
+        $db = NULL;
+    }
     public function logout() {
         $this->_db->delete('users_session', array('user_id', '=', $this->data()->id));
         Session::delete($this->_sessionName);
@@ -115,5 +156,39 @@ class User {
         }
         //we're done
         return $passWord;
+    }
+    public static function renderUserList($userlist) {
+        if($userlist['uid'] == 1) {
+            return '<tr>
+                    <td>'.$userlist['user_name'].'</td><td>'.$userlist['username'].'</td>'.
+                    ($userlist['user_role'] == 1) ? '<td>'.t('Admin').'</td>' : '<td>'.t('User').'</td>
+                    <td><a href="/new_cms/admin/users/'.$userlist['uid'].'/edit" class="btn btn-rad btn-default">'.t('Edit User').'</a>
+                    <a href="'.site_root().'/admin/users/'.$userlist['uid'].'/delete" class="btn btn-rad btn-danger disabled">'.t('Delete User').'</a>
+                    <a href="'.site_root().'/admin/users/'.$userlist['uid'].'/disable" class="btn btn-rad btn-warning disabled">'.t('Disable User').'</a></td>
+                </tr>';
+        }
+        else {
+            return '<tr>
+                    <td>'.$userlist['user_name'].'</td><td>'.$userlist['username'].'</td>'.
+                    ($userlist['user_role'] == 1) ? '<td>Admin</td>' : '<td>User</td>
+                    <td><a href="'.site_root().'/admin/users/'.$userlist['uid'].'/edit" class="btn btn-rad btn-default">'.t('Edit User').'</a>
+                    <a href="'.site_root().'/admin/users/'.$userlist['uid'].'/delete" class="btn btn-rad btn-danger">'.t('Delete User').'</a>
+                    <a href="'.site_root().'/admin/users/'.$userlist['uid'].'/disable" class="btn btn-rad btn-warning">'.t('Disable User').'</a></td>
+                </tr>';
+        }
+    }
+    public static function getUserList() {
+        $db = db_connect();
+        $query = $db->prepare("SELECT `uid`, `username`, `user_role`, `user_name`, `email`, `active` FROM `users`");
+        try {
+            $query->execute();
+            $users = $query->fetchAll(PDO::FETCH_ASSOC);
+        }
+        catch(Exception $e) {
+            addMessage('error', t('There was an error while querying the userdata'), $e);
+            //die($e->getMessage());
+        }
+        $db = NULL;
+        return $users;
     }
 }
