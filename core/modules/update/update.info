@@ -1,0 +1,7 @@
+name = Update
+description = Provides updates for modules and the CMS core.
+version = 1.0
+kernel = 2.x
+dependencies[] = core
+category = Maintenance
+config = admin/modules/update

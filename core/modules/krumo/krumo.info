@@ -1,0 +1,6 @@
+name = Krumo
+description = Graphical display of PHP arrays
+version = 0.2.1a
+kernel = 2.x
+cancontrol = 0
+category = Development

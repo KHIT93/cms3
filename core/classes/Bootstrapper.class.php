@@ -5,8 +5,8 @@
  */
 class Bootstrapper {
     public static function core_bootstrapper(&$init, $bootstrap_mode = EXEC_BOOTSTRAPPER_FULL) {
-        $init['site']['config'] = getSiteConfig();
-        $init['site']['advanced'] = getAdvSiteConfig();
+        //$init['site']['config'] = getSiteConfig();
+        //$init['site']['advanced'] = getAdvSiteConfig();
         if($bootstrap_mode == EXEC_BOOTSTRAPPER_FULL) {
         $url = explode('/', $_GET['q']);
             switch($url[0]) {

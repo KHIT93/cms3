@@ -20,7 +20,38 @@ class Config {
             return false;
         }
     }
-    public static function set($path = NULL) {
+    public static function set($path = NULL, $value) {
         //Set new items in the global config
+        if($path) {
+            $path = explode('/', $path);
+            if(isset($values)) {
+                foreach ($path as $key) {
+                    if(count($path) > 1) {
+                        unset($path[0]);
+                        $GLOBALS['config'][$key] = self::set(implode('/', $path), $value);
+                    }
+                    else {
+                        $GLOBALS['config'][$key] = $value;
+                    }
+                }
+            }
+        }
+        else {
+            return false;
+        }
+    }
+    public static function setSiteConfig() {
+        $query = DB::getInstance()->getAll('config');
+        $return = array();
+        if(!$query->error()) {
+            foreach($query->results() as $data) {
+                $return[$data->property] = $data->contents;
+            }
+            return $return;
+        }
+        return false;
+    }
+    public static function setDBConfig() {
+        return File::parse_info_file('core/config/config.info')['db'];
     }
 }
