@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * Functions for page preparation and rendering
+ */
 function get_breadcrumb() {
     $get_url = splitURL();
     $items = $get_url;

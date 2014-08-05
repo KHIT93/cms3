@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * Functions for users
+ */
 function rand_str($lenght, $charset='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789') {
     $str = '';
     $count = strlen($charset);

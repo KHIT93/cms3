@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * General functions for core
+ */
 function recursive_array_search($needle,$haystack) {
     foreach($haystack as $key=>$value) {
         $current_key=$key;

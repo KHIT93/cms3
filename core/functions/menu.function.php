@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * Functions for handling menus
+ */
 function traverse($array, $class = NULL, $toggle = false) {
     $get_url = splitURL();
     if(empty($get_url[1]) OR !isset($get_url[1])) {

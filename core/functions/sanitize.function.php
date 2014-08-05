@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * Functions for sanitizing input/output to/from the database and/or forms
+ */
 function strip_dangerous_protocols($uri) {
     return Sanitize::stripDangerousProtocols($uri);
 }

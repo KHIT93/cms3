@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * File that includes all files needed for initial functions
+ * File that includes all files needed for initialization
  */
 require_once SITE_ROOT.'/core/includes/constants.inc.php';
 
@@ -17,7 +17,6 @@ if(version_compare(phpversion(), '5.4.0', '>')) {
     }
     else {
         $GLOBALS['config'] = array(
-            //'db' => Config::setDBConfig(),
             'cookies' => array(
                 'cookie_name' => 'hash',
                 'cookie_expiry' => 604800
@@ -38,15 +37,14 @@ if(version_compare(phpversion(), '5.4.0', '>')) {
                     'core/js/bootstrap.min.js',
                     'core/js/modernizr-2.6.2-respond-1.1.0.min.js'
                 )
-            ),
-            //'site' => Config::setSiteConfig()
+            )
         );
         spl_autoload_register(function($class){
             require_once SITE_ROOT.'/core/classes/'.$class.'.class.php';
         });
         $GLOBALS['config']['db'] = Config::setDBConfig();
         $GLOBALS['config']['site'] = Config::setSiteConfig();
-        /*if(Cookie::exists(Config::get('remember/cookie_name')) && !Session::exists(Config::get('session/session_name'))) {
+        if(Cookie::exists(Config::get('cookies/cookie_name')) && !Session::exists(Config::get('cookies/session_name'))) {
             $hash = Cookie::get(Config::get('remember/cookie_name'));
             $hashCheck = DB::getInstance()->get('users_session', array('hash', '=', $hash));
             if($hashCheck->count()) {
@@ -55,11 +53,11 @@ if(version_compare(phpversion(), '5.4.0', '>')) {
             }
         }
 
-        if($_GET['q'] == 'logout') {
+        if(isset($_GET['q']) && $_GET['q'] == 'logout') {
             log_out();
             header('Location: '.site_root());
             exit();
-        }*/
+        }
     }
 }
 else {

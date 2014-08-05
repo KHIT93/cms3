@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * Functions for handling the theme engine
+ */
 function theme_add_css(&$styles, $media, $add) {
     $styles[$media][] = $add;
 }

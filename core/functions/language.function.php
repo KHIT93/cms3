@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * Functions for language handling
+ */
 function t($string, array $args = array()) {
     $db = db_connect();
     $lang = get_lang();
