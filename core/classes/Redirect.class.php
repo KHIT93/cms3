@@ -21,6 +21,6 @@ class Redirect {
         }
     }
     public static function splitURL() {
-        return explode('/', $_GET['q']);
+        return (isset($_GET['q'])) ? explode('/', $_GET['q']) : page_front();
     }
 }

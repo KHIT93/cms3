@@ -2,11 +2,11 @@
 class Theme {
     public static function getTheme() {
         //Get the active theme
-        return DB::getInstance()->getField('config', 'config_value', 'config_name', 'site_theme');
+        return DB::getInstance()->getField('config', 'contents', 'property', 'site_theme');
     }
     public static function path_to_theme() {
-        $url = Redirect::currentURL();
-        $theme = getTheme();
+        $url = Redirect::splitURL();
+        $theme = self::getTheme();
         //Gettting the path to active theme
         if($url[0] == 'admin' || $url[0] == 'login') {
             return 'core/templates/admin';
@@ -33,7 +33,7 @@ class Theme {
     }
     public static function themeDetails($themepath, $core = false) {
         $readin = ($core == true) ? 'core/templates/'.$themepath.'/'.$themepath.'.info' : 'templates/'.$themepath.'/'.$themepath.'.info';
-        $output = parse_info_file($readin);
+        $output = File::parse_info_file($readin);
         $output['machine_name'] = $themepath;
         return $output;
     }
@@ -53,12 +53,12 @@ class Theme {
         $db = NULL;
     }
     public static function errorPage($error_code, $message = '') {
-        if(file_exists(path_to_theme().'/'.$error_code.'.error.php')) {
-            include_once path_to_theme().'/'.$error_code.'.error.php';
+        if(file_exists(self::path_to_theme().'/'.$error_code.'.error.php')) {
+            include_once self::path_to_theme().'/'.$error_code.'.error.php';
         }
         else {
-            if(file_exists(path_to_theme().'/generic.error.php')) {
-                include_once path_to_theme().'/generic.error.php';
+            if(file_exists(self::path_to_theme().'/generic.error.php')) {
+                include_once self::path_to_theme().'/generic.error.php';
             }
             else if(file_exists(ERROR_FILE_PATH.'/'.$error_code.'.error.php')) {
                 include_once ERROR_FILE_PATH.'/'.$error_code.'.error.php';

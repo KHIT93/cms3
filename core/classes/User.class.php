@@ -4,6 +4,7 @@
  * Handles functionality related to users
  */
 class User {
+    private static $_instance;
     private $_db, $_data, $_sessionName, $_cookieName, $_isLoggedIn;
     
     public function __construct($user = null) {
@@ -13,7 +14,7 @@ class User {
         if(!$user) {
             if(Session::exists($this->_sessionName)) {
                 $user = Session::get($this->_sessionName);
-                if($htis->find($user)) {
+                if($this->find($user)) {
                     $this->_isLoggedIn = true;
                 }
                 else {
@@ -24,6 +25,12 @@ class User {
         else {
             $this->find($user);
         }
+    }
+    public static function getInstance() {
+        if(!isset(self::$_instance)) {
+            self::$_instance = new User();
+        }
+        return self::$_instance;
     }
     public function create($fields = array()) {
         if(!$this->_db->insert('users', $fields)) {
@@ -125,8 +132,23 @@ class User {
         Session::delete($this->_sessionName);
         Cookie::delete($this->_cookieName);
     }
-    public function data() {
-        return $this->_data;
+    public function username() {
+        return (isset($this->_data->username)) ? $this->_data->username: false;
+    }
+    public function role() {
+        return (isset($this->_data->role)) ? $this->_data->role: 0;
+    }
+    public function uid() {
+        return (isset($this->_data->uid)) ? $this->_data->uid: false;
+    }
+    public function name() {
+        return (isset($this->_data->name)) ? $this->_data->name: false;
+    }
+    public function email() {
+        return (isset($this->_data->email)) ? $this->_data->email: false;
+    }
+    public function language() {
+        return (isset($this->_data->language)) ? $this->_data->language: false;
     }
     public function isLoggedIn() {
         return $this->_isLoggedIn;

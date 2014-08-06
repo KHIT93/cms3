@@ -24,17 +24,20 @@ function theme_rm_js_custom(&$jscripts_custom, $key, $remove) {
     unset($jscripts_custom[$key]);
 }
 function theme_header_alter(&$header, $theme, $core = false) {
-    $theme = themeDetails($theme, $core);
+    $theme = Theme::themeDetails($theme, $core);
     $template_func = $theme['machine_name'].'_theme_header_alter';
-    foreach (Modules::activeModules() as $module) {
+    foreach (Module::activeModules() as $module) {
         $func_name = $module['module'].'_theme_header_alter';
-        if(Modules::moduleImplements($module['module'], 'theme_header_alter')) {
+        if(Module::moduleImplements($module['module'], 'theme_header_alter')) {
             $func_name();
         }
     }
     if(function_exists($template_func)) {
         $template_func($header);
     }
+}
+function themeDetails($themepath, $core = false) {
+    Theme::themeDetails($themepath, $core);
 }
 function render(&$element) {
     return Theme::render($element);

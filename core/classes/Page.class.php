@@ -1,33 +1,31 @@
 <?php
 class Page {
-    public function get($get_url) {
-        $id = (is_array($get_url)) ? (int)$get_url[1] : $get_url;
-        $db = db_connect();
+    private static $_instance;
+    public $data;
+    public function __construct($pid) {
+        //$id = (is_array($get_url)) ? (int)$get_url[1] : (int)$get_url;
         $page = array();
-        $query = $db->prepare("SELECT * FROM `pages` WHERE `page_id`=:page_id");
-        $query->bindValue(':page_id', $id, PDO::PARAM_INT);
-        try {
-            $query->execute(); //Executes query
-
-            $page = $query->fetchAll(PDO::FETCH_ASSOC);
+        $query = DB::getInstance()->get('pages', array('pid', '=', $pid), PDO::FETCH_ASSOC);
+        if(!$query->error()) {
+            $this->data = $query->results();
         }
-        catch (Exception $e) {
-            addMessage('error', t('There was an error while querying the database for the current page'), $e);
-            //die($e->getMessage());
-        }
-        $db = NULL;
-        return $page[0];
-
+        
     }
-    public function exists($get_url) {
+    public static function getInstance() {
+        if(!isset(self::$_instance)) {
+            self::$_instance = new Page(getPageId(splitURL()));
+        }
+        return self::$_instance;
+    }
+    public static function exists($get_url) {
         if(is_array($get_url)) {
             //$url = implode('/', $get_url);
-            addMessage('error', t('Expected String but got Array'));
+            addMessage('error', t('Expected string but got array'));
         }
         else {
             $url = $get_url;
         }
-        $page = getFieldFromDB('pages', 'page_id', 'page_id', $url);
+        $page = DB::getInstance()->getField('pages', 'pid', 'pid', $url);
         return (empty($page)) ? false : true;
 
     }
@@ -35,21 +33,27 @@ class Page {
         return explode(', ', $page['meta_robots']);
     }
     public function pageAccess($page_id, $uid = 0) {
-        $page_access = getFieldFromDB('pages', 'page_access', 'page_id', $page_id);
-        if($page_access == 1) {
-            return true;
-        }
-        else if($page_access == 2) {
-            if(logged_in()) {
+        $page_access = json_decode(DB::getInstance()->getField('pages', 'access', 'pid', $page_id)[0], true);
+        if(isset($page_access['any'])) {
+            if($page_access['any'] == true) {
                 return true;
-            }
-            else {
-                return false;
             }
         }
         else {
-            return false;
+            if(User::getInstance()->role() == DB::getInstance()->getField('roles', 'rid', 'name', 'Administrator')) {
+                return true;
+            }
+            else {
+                foreach (DB::getInstance()->getAll('roles', PDO::FETCH_ASSOC) as $rid => $name) {
+                    if(isset($page_access[$rid])) {
+                        if($page_access[$rid] == true) {
+                            return true;
+                        }
+                    }
+                }
+            }
         }
+        return false;
     }
     public function create($formdata) {
         $db = db_connect();

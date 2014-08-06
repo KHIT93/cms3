@@ -17,8 +17,9 @@ class DB {
         }
         return self::$_instance;
     }
-    public function query($sql, $params = array()) {
+    public function query($sql, $params = array(), $pdoFetch = PDO::FETCH_OBJ) {
         $this->_error = false;
+        krumo(debug_backtrace());
         if($this->_query = $this->_pdo->prepare($sql)) {
             if(count($params)) {
                 $x = 1;
@@ -37,7 +38,7 @@ class DB {
         }
         return $this;
     }
-    public function action($action, $table, $where = array()) {
+    public function action($action, $table, $where = array(), $pdoFetch = PDO::FETCH_OBJ) {
         if(count($where) === 3) {
             $operators = array('=', '>', '<', '>=', '<=', '<>');
             $field = $where[0];
@@ -45,18 +46,18 @@ class DB {
             $value = $where[2];
             if(in_array($operator, $operators)) {
                 $sql = "{$action} FROM {$table} WHERE {$field} {$operator} ?";
-                if(!$this->query($sql, array($value))->error()) {
+                if(!$this->query($sql, array($value), $pdoFetch)->error()) {
                     return $this;
                 }
             }
         }
         return false;
     }
-    public function get($table, $where) {
-        return $this->action("SELECT *", $table, $where);
+    public function get($table, $where, $pdoFetch = PDO::FETCH_OBJ) {
+        return $this->action("SELECT *", $table, $where, $pdoFetch);
     }
-    public function getAll($table) {
-        return $this->query("SELECT * FROM {$table}");
+    public function getAll($table, $pdoFetch = PDO::FETCH_OBJ) {
+        return $this->query("SELECT * FROM {$table}", $pdoFetch);
     }
     public function delete($table, $where) {
         return $this->action("DELETE", $table, $where);
@@ -96,10 +97,12 @@ class DB {
         }
         return false;
     }
-    public function getField($table, $item, $field, $input) {
-        return $this->action("SELECT {$item}", $table, array($field, '=', $input))->first();
+    public function getField($table, $item, $field, $input, $pdoFetch = PDO::FETCH_OBJ) {
+        print "SELECT {$item} FROM {$table} WHERE {$field} = {$input}"."<br/>";
+        $this->action("SELECT {$item}", $table, array($field, '=', $input));
+        return $this->results()[0]->{$item};
     }
-    public function countItems($table, $item, $field, $input) {
+    public function countItems($table, $item, $field, $input, $pdoFetch = PDO::FETCH_OBJ) {
         return $this->action("SELECT COUNT({$field})", $table, array($field, '=', $input))->count();
     }
     public function results() {

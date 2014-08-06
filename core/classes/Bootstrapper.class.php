@@ -27,16 +27,16 @@ class Bootstrapper {
     private static function exec_bootstrapper(&$init, $bootstrap_mode = EXEC_BOOTSTRAPPER_FULL) {
         switch ($bootstrap_mode) {
             case 0:
-                exec_bootstrapper_full($init);
+                self::exec_bootstrapper_full($init);
             break;
             case 1:
-                exec_bootstrapper_admin($init);
+                self::exec_bootstrapper_admin($init);
             break;
             case 2:
-                exec_bootstrapper_maintenance($init);
+                self::exec_bootstrapper_maintenance($init);
             break;
             case 3:
-                exec_bootstrapper_install($init);
+                self::exec_bootstrapper_install($init);
             break;
             default:
                 die('Bootstrapping failed. The might be corrupted files in the application core. Please consult your system administrator for troubleshooting.');
@@ -44,17 +44,17 @@ class Bootstrapper {
         }
     }
     private static function exec_bootstrapper_full(&$init) {
-        $init['modules'] = Modules::activeModules();
-        $init['template'] = (getTheme() == 'core') ? themeDetails(getTheme(), true): themeDetails(getTheme());
-        Modules::loadModules($init['modules']);
+        $init['modules'] = Module::activeModules();
+        $init['template'] = (Theme::getTheme() == 'core') ? Theme::themeDetails(Theme::getTheme(), true): Theme::themeDetails(Theme::getTheme());
+        Module::loadModules($init['modules']);
         foreach($init['modules'] as $item) {
-            if(Modules::moduleImplements($item, 'init')) {
-                if(function_exists($item['module'].'_init')) {
-                    call_user_func($item['module'].'_init');
+            if(Module::moduleImplements($item, 'init')) {
+                if(function_exists($item->module.'_init')) {
+                    call_user_func($item->module.'_init');
                 }
             }
         }
-        if(isset($_POST)){formBootstrapping($_POST);}
+        //if(isset($_POST)){formBootstrapping($_POST);}
         $output['page'] = self::prepare_page(getPageId(implode('/', $init['get_url'])));
         if(is_numeric($output['page'])) {
             throw_error($output['page']);
@@ -70,27 +70,27 @@ class Bootstrapper {
         $init['site']['header']['meta_robots'] = $output['page']['meta_robots'];
         $init['site']['header']['styles'] = (isset($init['template']['styles'])) ? $init['template']['styles'] : '';
         $init['site']['header']['scripts'] = (isset($init['template']['scripts'])) ? $init['template']['scripts'] : '';
-        theme_header_alter($init['site']['header'], $init['template']['machine_name'], ((getTheme() == 'core') ? true : false ));
+        theme_header_alter($init['site']['header'], $init['template']['machine_name'], ((Thene::getTheme() == 'core') ? true : false ));
         self::prepare_header($init['site']['header']);
         $output['header'] = $init['site']['header']['rendered'];
         $output['sections'] = self::prepare_sections($output['page']);
         $init['ready'] = $output;
     }
     private static function exec_bootstrapper_admin(&$init) {
-        $init['modules'] = Modules::activeModules();
-        $init['template'] = themeDetails('admin', true);
-        Modules::loadModules($init['modules']);
+        $init['modules'] = Module::activeModules();
+        $init['template'] = Theme::themeDetails('admin', true);
+        Module::loadModules($init['modules']);
         foreach($init['modules'] as $item) {
-            if(Modules::moduleImplements($item, 'init')) {
-                if(function_exists($item['module'].'_init')) {
-                    call_user_func($item['module'].'_init');
+            if(Module::moduleImplements($item, 'init')) {
+                if(function_exists($item->module.'_init')) {
+                    call_user_func($item->module.'_init');
                 }
             }
         }
-        if(file_exists(path_to_theme().'/template.php')) {
-            include_once path_to_theme().'/template.php';
+        if(file_exists(Theme::path_to_theme().'/template.php')) {
+            include_once Theme::path_to_theme().'/template.php';
         }
-        if(isset($_POST)){formBootstrapping($_POST);}
+        //if(isset($_POST)){formBootstrapping($_POST);}
         $init['site']['header']['page_title'] = t('Administration');
         $init['site']['header']['site_name'] = $init['site']['config']['site_name'];
         $init['site']['header']['meta_keywords'] = '';
@@ -129,7 +129,7 @@ class Bootstrapper {
         if(is_array($styles)) {
             foreach ($styles as $media => $data) {
                 for ($i=0; $i<count($data); $i++) {
-                    $rendered_styles .= '<link href="/'.path_to_theme().'/'.$data[$i].'" rel="stylesheet" type="text/css" media="'.$media.'">'."\n";
+                    $rendered_styles .= '<link href="/'.Theme::path_to_theme().'/'.$data[$i].'" rel="stylesheet" type="text/css" media="'.$media.'">'."\n";
                 }
             }
         }
@@ -155,7 +155,7 @@ class Bootstrapper {
         }
         if(is_array($jscripts)) {
             foreach ($jscripts as $data) {
-                $rendered_jscripts .= '<scripts src="/'.path_to_theme().'/'.$data.'"></scripts>'."\n";
+                $rendered_jscripts .= '<scripts src="/'.Theme::path_to_theme().'/'.$data.'"></scripts>'."\n";
             }
         }
         else {
@@ -172,15 +172,16 @@ class Bootstrapper {
         return $jscripts;
     }
     private static function prepare_page($url) {
-        $theme = themeDetails(path_to_theme());
-        $page = array();
+        $theme = Theme::themeDetails(Theme::path_to_theme());
         $template_func = $theme['machine_name'].'_theme_page_alter';
-        if(page_exists($url)) {
-            if(has_page_access($url, ((isset($_SESSION['uid'])) ? $_SESSION['uid'] : 0))) {
-                $page = getPage($url);
-                foreach (Modules::activeModules() as $module) {
-                    $func_name = $module['module'].'_theme_page_alter';
-                    if(Modules::moduleImplements($module['module'], 'theme_page_alter')) {
+        if(Page::exists($url)) {
+            //If the page exists establish a new page object
+            $page = new Page($url);
+            if($page->pageAccess($url, ((isset($_SESSION['uid'])) ? $_SESSION['uid'] : 0))) {
+                //$page = getPage($url);
+                foreach (Module::activeModules() as $module) {
+                    $func_name = $module->module.'_theme_page_alter';
+                    if(Module::moduleImplements($module->module, 'theme_page_alter')) {
                         $func_name();
                     }
                 }
@@ -199,7 +200,7 @@ class Bootstrapper {
         }
     }
     public static function prepare_sections($page) {
-        $sections = Widgets::getSections(getTheme());
+        $sections = Widget::getSections(getTheme());
         foreach ($sections as $section => $name) {
             $output[$section] = self::prepare_section($section, $page);
         }
