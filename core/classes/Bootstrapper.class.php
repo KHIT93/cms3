@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Handles  the entire bootstrapping for loading a new page
+ * Handles the entire bootstrapping for loading a new page
  */
 class Bootstrapper {
     public static function core_bootstrapper(&$init, $bootstrap_mode = EXEC_BOOTSTRAPPER_FULL) {
@@ -21,12 +21,14 @@ class Bootstrapper {
                 break;
             }
         }
-        $init['get_url'] = (isset($_GET['q']) || $_GET['q'] != '' || !empty($_GET['q'])) ? splitURL() : array(0 => page_front());
+        $init['get_url'] = (isset($_GET['q'])) ? splitURL() : array(0 => page_front());
         self::exec_bootstrapper($init, $bootstrap_mode);
     }
     private static function exec_bootstrapper(&$init, $bootstrap_mode = EXEC_BOOTSTRAPPER_FULL) {
+        //krumo($init);
         switch ($bootstrap_mode) {
             case 0:
+                //krumo($init);
                 self::exec_bootstrapper_full($init);
             break;
             case 1:
@@ -55,22 +57,22 @@ class Bootstrapper {
             }
         }
         //if(isset($_POST)){formBootstrapping($_POST);}
-        $output['page'] = self::prepare_page(getPageId(implode('/', $init['get_url'])));
+        $output['page'] = self::prepare_page(getPageId(implode('/', $init['get_url'])))->data;
         if(is_numeric($output['page'])) {
             throw_error($output['page']);
             $output = NULL;
             $init = NULL;
             exit();
         }
-        $init['site']['header']['page_title'] = $output['page']['page_title'];
-        $init['site']['header']['site_name'] = $init['site']['config']['site_name'];
-        $init['site']['header']['site_slogan'] = $init['site']['config']['site_slogan'];
-        $init['site']['header']['meta_keywords'] = $output['page']['meta_keywords'];
-        $init['site']['header']['meta_description'] = $output['page']['meta_description'];
-        $init['site']['header']['meta_robots'] = $output['page']['meta_robots'];
+        $init['site']['header']['page_title'] = $output['page']['title'];
+        $init['site']['header']['site_name'] = Config::get('site/site_name');
+        $init['site']['header']['site_slogan'] = Config::get('site/site_slogan');
+        $init['site']['header']['meta_keywords'] = $output['page']['keywords'];
+        $init['site']['header']['meta_description'] = $output['page']['description'];
+        $init['site']['header']['meta_robots'] = $output['page']['robots'];
         $init['site']['header']['styles'] = (isset($init['template']['styles'])) ? $init['template']['styles'] : '';
         $init['site']['header']['scripts'] = (isset($init['template']['scripts'])) ? $init['template']['scripts'] : '';
-        theme_header_alter($init['site']['header'], $init['template']['machine_name'], ((Thene::getTheme() == 'core') ? true : false ));
+        theme_header_alter($init['site']['header'], $init['template']['machine_name'], ((Theme::getTheme() == 'core') ? true : false ));
         self::prepare_header($init['site']['header']);
         $output['header'] = $init['site']['header']['rendered'];
         $output['sections'] = self::prepare_sections($output['page']);
@@ -177,7 +179,7 @@ class Bootstrapper {
         if(Page::exists($url)) {
             //If the page exists establish a new page object
             $page = new Page($url);
-            if($page->pageAccess($url, ((isset($_SESSION['uid'])) ? $_SESSION['uid'] : 0))) {
+            if($page->pageAccess(((isset($_SESSION['uid'])) ? $_SESSION['uid'] : 0))) {
                 //$page = getPage($url);
                 foreach (Module::activeModules() as $module) {
                     $func_name = $module->module.'_theme_page_alter';
@@ -200,23 +202,23 @@ class Bootstrapper {
         }
     }
     public static function prepare_sections($page) {
-        $sections = Widget::getSections(getTheme());
+        $sections = Widget::getSections(Theme::getTheme());
         foreach ($sections as $section => $name) {
             $output[$section] = self::prepare_section($section, $page);
         }
         return $output;
     }
     public static function prepare_section($section, $page) {
-        $widgets = Widgets::getWidgets($section);
+        $widgets = Widget::getWidgets($section);
         $output['#prefix'] = '<div id="section-'.$section.'">'."\n";
         foreach ($widgets as $widget) {
-            if($widget['widget_title'] == 'Primary content') {
+            if($widget->title == 'Primary content') {
                 $output['elements'][] = '<div class="widget" id="widget-primary-content">'."\n"
                                             . self::inject_page($page)."\n"
                                         . '</div>'."\n";
             }
             else {
-                $output['elements'][] = '<div class="widget" id="widget-'.$widget['widget_id'].'">'."\n"
+                $output['elements'][] = '<div class="widget" id="widget-'.$widget->wid.'">'."\n"
                                             . self::prepare_widget($widget)."\n"
                                         . '</div>'."\n";
             }
@@ -225,25 +227,25 @@ class Bootstrapper {
         return $output;
     }
     public static function inject_page($page) {
-        $output = $page['page_content'];
+        $output = $page['content'];
         return $output;
     }
     public static function prepare_widget($widget) {
-        if($widget['widget_type'] == 'dynamic') {
+        if($widget->type == 'dynamic') {
             //Call function for dynamic widget
-            $func_content = explode(';', $widget['widget_content']);
-            $function = $func_content[1];
-            $parameters = $func_content[2];
-            $output = (isset($func_content[2])) ? $function($parameters): $function();
+            $func_content = json_decode($widget->content, true);
+            $function = array_keys($func_content)[0];
+            $parameters = (isset($func_content[$function]) && $func_content[$function] == '' && !empty($func_content[$function])) ? $func_content[$function] : NULL;
+            $output = (isset($parameters)) ? $function($parameters): $function();
         }
-        else if($widget['widget_type'] == 'static') {
+        else if($widget->type == 'static') {
             //Render static widget content
-            $output = $widget['widget_content'];
+            $output = $widget->content;
         }
         return $output;
     }
     public static function finalize_page(&$init) {
-        if($GLOBALS['core_param']['mode'] == 'admin' || $GLOBALS['core_param']['mode'] == 'login') {
+        if(Config::get('param/mode') == 'admin' || Config::get('param/mode') == 'login') {
             Theme::render_header($init['ready']['header']);
             Routing::backend($init['get_url']);
         }

@@ -18,21 +18,29 @@ class DB {
         return self::$_instance;
     }
     public function query($sql, $params = array(), $pdoFetch = PDO::FETCH_OBJ) {
+        //print date("H:i:s").' ';
+        //krumo(debug_backtrace());
         $this->_error = false;
-        krumo(debug_backtrace());
         if($this->_query = $this->_pdo->prepare($sql)) {
             if(count($params)) {
                 $x = 1;
                 foreach($params as $param) {
+                    if(is_array($param)) {
+                        krumo(debug_backtrace());
+                        krumo($param);
+                    }
                     $this->_query->bindValue($x, $param);
                     $x++;
                 }
             }
-            if($this->_query->execute()) {
-                $this->_results = $this->_query->fetchAll(PDO::FETCH_OBJ);
+            try {
+                $this->_query->execute();
+                $this->_results = $this->_query->fetchAll($pdoFetch);
                 $this->_count = $this->_query->rowCount();
             }
-            else {
+            catch (Exception $e) {
+                System::addMessage('error', $e->getMessage(), $e);
+                //print 'error: '.$e->getMessage();
                 $this->_error = true;
             }
         }
@@ -98,9 +106,8 @@ class DB {
         return false;
     }
     public function getField($table, $item, $field, $input, $pdoFetch = PDO::FETCH_OBJ) {
-        print "SELECT {$item} FROM {$table} WHERE {$field} = {$input}"."<br/>";
-        $this->action("SELECT {$item}", $table, array($field, '=', $input));
-        return $this->results()[0]->{$item};
+        //$this->action("SELECT {$item}", $table, array($field, '=', $input));
+        return (is_object($this->action("SELECT {$item}", $table, array($field, '=', $input)))) ? $this->results()[0]->{$item} : NULL;
     }
     public function countItems($table, $item, $field, $input, $pdoFetch = PDO::FETCH_OBJ) {
         return $this->action("SELECT COUNT({$field})", $table, array($field, '=', $input))->count();

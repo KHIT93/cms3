@@ -43,3 +43,6 @@ function sidebar_traverse($array, $class = NULL) {
     $str .= '</ul>';
     return $str;
 }
+function generateMenu($mid) {
+    return Menu::getInstance($mid)->generateMenu();
+}

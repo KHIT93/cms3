@@ -2,7 +2,7 @@
 class Theme {
     public static function getTheme() {
         //Get the active theme
-        return DB::getInstance()->getField('config', 'contents', 'property', 'site_theme');
+        return Config::get('site/site_theme');
     }
     public static function path_to_theme() {
         $url = Redirect::splitURL();
@@ -107,5 +107,23 @@ class Theme {
             }
         }
         return $output;
+    }
+    public static function render_header($header) {
+        $head = $header['charset'].$header['ua'].$header['viewport'].$header['generator'];
+        $header_title = $header['title'];
+        $seo_tags = $header['description'].$header['keywords'].$header['robots'];
+        $styles = $header['styles'];
+        $jscripts = $header['jscripts'];
+        $header = NULL;
+        include_once (file_exists(SITE_ROOT.'/'.self::path_to_theme().'/head.tpl.php')) ? SITE_ROOT.'/'.self::path_to_theme().'/head.tpl.php': SITE_ROOT.'/core/templates/core/head.tpl.php';
+        $head = NULL;
+        $header_title = NULL;
+        $seo_tags = NULL;
+        $styles = NULL;
+        $jscripts = NULL;
+    }
+    public static function render_page($page) {
+        include_once (file_exists(SITE_ROOT.'/'.self::path_to_theme().'/page.tpl.php')) ? SITE_ROOT.'/'.self::path_to_theme().'/page.tpl.php': SITE_ROOT.'/core/templates/core/page.tpl.php';
+        unset($page);
     }
 }

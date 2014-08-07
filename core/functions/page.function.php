@@ -92,13 +92,15 @@ function currentPageIsFront() {
     return (!isset($_GET['q']) || $_GET['q'] == page_front()) ? true : false;
 }
 function getPageId($alias) {
-    $alias_convert = (strpos($alias, 'pages/') != false) ? $alias : DB::getInstance()->getField('url_alias', 'source', 'alias', $alias);
+    $convert = explode('/', $alias);
+    //$alias_convert = (strpos($alias, 'pages/') == false) ? DB::getInstance()->getField('url_alias', 'source', 'alias', $alias) : $alias;
+    $alias_convert = ($convert[0] == 'pages') ? $alias : DB::getInstance()->getField('url_alias', 'source', 'alias', $alias);
     $page_id = explode('/', $alias_convert)[1];
     //$page_id = DB::getInstance()->getField('pages', 'pid', 'page_url', $alias_convert);
     return $page_id;
 }
 function page_front() {
-    return DB::getInstance()->getField('config', 'contents', 'property', 'site_home');
+    return Config::get('site/site_home');
 }
 function getPage() {
     return Page::getInstance();

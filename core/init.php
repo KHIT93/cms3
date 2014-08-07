@@ -28,21 +28,46 @@ if(version_compare(phpversion(), '5.4.0', '>')) {
             'assets' => array(
                 'styles' => array(
                     'screen' => array(
-                        'core/css/bootstrap.min.css',
-                        'core/css/core.css',
-                        'core/css/font-awesome.min.css'
+                        CORE_CSS_PATH.'/bootstrap.min.css',
+                        CORE_CSS_PATH.'/core.css',
+                        CORE_CSS_PATH.'/font-awesome.min.css'
                     )
                 ),
                 'scripts' => array(
-                    'core/js/bootstrap.min.js',
-                    'core/js/modernizr-2.6.2-respond-1.1.0.min.js'
+                    CORE_JS_PATH.'/bootstrap.min.js',
+                    CORE_JS_PATH.'/modernizr-2.6.2-respond-1.1.0.min.js'
                 )
             )
         );
+        //Include classes using autoload
         spl_autoload_register(function($class){
-            require_once SITE_ROOT.'/core/classes/'.$class.'.class.php';
+            if(file_exists(CORE_CLASSES_PATH.'/'.$class.'.class.php')) {
+                require_once CORE_CLASSES_PATH.'/'.$class.'.class.php';
+            }
         });
-        //Include functions from functions folder
+        /*require_once CORE_CLASSES_PATH.'/Config.class.php';
+        require_once CORE_CLASSES_PATH.'/DB.class.php';
+        require_once CORE_CLASSES_PATH.'/Cookie.class.php';
+        require_once CORE_CLASSES_PATH.'/File.class.php';
+        require_once CORE_CLASSES_PATH.'/Form.class.php';
+        require_once CORE_CLASSES_PATH.'/Hash.class.php';
+        require_once CORE_CLASSES_PATH.'/Input.class.php';
+        require_once CORE_CLASSES_PATH.'/Menu.class.php';
+        require_once CORE_CLASSES_PATH.'/Module.class.php';
+        require_once CORE_CLASSES_PATH.'/Page.class.php';
+        require_once CORE_CLASSES_PATH.'/Permission.class.php';
+        require_once CORE_CLASSES_PATH.'/Redirect.class.php';
+        require_once CORE_CLASSES_PATH.'/Routing.class.php';
+        require_once CORE_CLASSES_PATH.'/Sanitize.class.php';
+        require_once CORE_CLASSES_PATH.'/Session.class.php';
+        require_once CORE_CLASSES_PATH.'/System.class.php';
+        require_once CORE_CLASSES_PATH.'/Theme.class.php';
+        require_once CORE_CLASSES_PATH.'/Token.class.php';
+        require_once CORE_CLASSES_PATH.'/User.class.php';
+        require_once CORE_CLASSES_PATH.'/Validate.class.php';
+        require_once CORE_CLASSES_PATH.'/Widget.class.php';
+        require_once CORE_CLASSES_PATH.'/Bootstrapper.class.php';*/
+        //Include functions
         require_once CORE_FUNCTIONS_PATH.'/bootstrapper.function.php';
         require_once CORE_FUNCTIONS_PATH.'/language.function.php';
         require_once CORE_FUNCTIONS_PATH.'/legacy.function.php';
@@ -56,6 +81,8 @@ if(version_compare(phpversion(), '5.4.0', '>')) {
         //Set DB and Site configuration
         $GLOBALS['config']['db'] = Config::setDBConfig();
         $GLOBALS['config']['site'] = Config::setSiteConfig();
+        //Include core parameters
+        $GLOBALS['config']['param']['mode'] = (splitURL()[0] == 'admin' || splitURL()[0] == 'login') ? splitURL()[0] : 'page';
         if(Cookie::exists(Config::get('cookies/cookie_name')) && !Session::exists(Config::get('cookies/session_name'))) {
             $hash = Cookie::get(Config::get('remember/cookie_name'));
             $hashCheck = DB::getInstance()->get('users_session', array('hash', '=', $hash));

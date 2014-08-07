@@ -1,13 +1,15 @@
 <?php
 class Page {
     private static $_instance;
+    private $_db;
     public $data;
     public function __construct($pid) {
+        $this->_db = DB::getInstance();
         //$id = (is_array($get_url)) ? (int)$get_url[1] : (int)$get_url;
         $page = array();
-        $query = DB::getInstance()->get('pages', array('pid', '=', $pid), PDO::FETCH_ASSOC);
+        $query = $this->_db->get('pages', array('pid', '=', $pid), PDO::FETCH_ASSOC);
         if(!$query->error()) {
-            $this->data = $query->results();
+            $this->data = $query->results()[0];
         }
         
     }
@@ -32,8 +34,8 @@ class Page {
     public function getMetaRobots($page) {
         return explode(', ', $page['meta_robots']);
     }
-    public function pageAccess($page_id, $uid = 0) {
-        $page_access = json_decode(DB::getInstance()->getField('pages', 'access', 'pid', $page_id)[0], true);
+    public function pageAccess($uid = 0) {
+        $page_access = json_decode($this->_db->getField('pages', 'access', 'pid', 1), true);
         if(isset($page_access['any'])) {
             if($page_access['any'] == true) {
                 return true;
@@ -44,7 +46,7 @@ class Page {
                 return true;
             }
             else {
-                foreach (DB::getInstance()->getAll('roles', PDO::FETCH_ASSOC) as $rid => $name) {
+                foreach ($this->_db->getAll('roles', PDO::FETCH_ASSOC) as $rid => $name) {
                     if(isset($page_access[$rid])) {
                         if($page_access[$rid] == true) {
                             return true;

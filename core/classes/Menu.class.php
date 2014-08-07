@@ -1,10 +1,24 @@
 <?php
 class Menu {
-    public function generateMenu($menu_id) {
-        $db = db_connect();
+    private static $_instance;
+    private $_db, $_data;
+    public function __construct($mid) {
+        $this->_db = DB::getInstance();
+        $query = $this->_db->get('menus', array('mid', '=', $mid), PDO::FETCH_ASSOC);
+        if(!$query->error()) {
+            $this->_data = $query->results()[0];
+        }
+    }
+    public static function getInstance($mid) {
+        if(!isset(self::$_instance)) {
+            self::$_instance = new Menu($mid);
+        }
+        return self::$_instance;
+    }
+    public function generateMenu($menu) {
         $menuitems = array();
         $query = $db->prepare("SELECT `item_id` AS `id`, `item_title` AS `title`, `item_parent` AS `parent`, `item_link` AS `link` FROM `menu_items` WHERE `menu_id`=:menu_id ORDER BY `item_position`");
-        $query->bindValue(':menu_id', $menu_id, PDO::PARAM_INT);
+        $query->bindValue(':menu_id', $mid, PDO::PARAM_INT);
         try {
             $query->execute();
             while($row = $query->fetch(PDO::FETCH_ASSOC)) {

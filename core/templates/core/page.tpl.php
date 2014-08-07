@@ -12,7 +12,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a href="<?php print site_root().'/'.page_front(); ?>" class="navbar-brand">Menu</a>
+                    <a href="<?php print '/'.page_front(); ?>" class="navbar-brand">Menu</a>
                 </div>
                 <div class="collapse navbar-collapse">
                     <?php print generateMenu(1); ?>
