@@ -12,10 +12,13 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a href="<?php print '/'.page_front(); ?>" class="navbar-brand">Menu</a>
+                    <a href="<?php print '/'.page_front(); ?>" class="navbar-brand"><?php print Config::get('site/site_name'); ?></a>
                 </div>
                 <div class="collapse navbar-collapse">
-                    <?php print generateMenu(1); ?>
+                    <?php
+                        //print generateMenu(1);
+                        print render($page['header']);
+                    ?>
                 </div><!--/.nav-collapse -->
             </div>
     </div>

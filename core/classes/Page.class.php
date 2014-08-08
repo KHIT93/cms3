@@ -3,7 +3,7 @@ class Page {
     private static $_instance;
     private $_db;
     public $data;
-    public function __construct($pid) {
+    private function __construct($pid) {
         $this->_db = DB::getInstance();
         //$id = (is_array($get_url)) ? (int)$get_url[1] : (int)$get_url;
         $page = array();
@@ -13,9 +13,9 @@ class Page {
         }
         
     }
-    public static function getInstance() {
+    public static function getInstance($pid) {
         if(!isset(self::$_instance)) {
-            self::$_instance = new Page(getPageId(splitURL()));
+            self::$_instance = new Page($pid);
         }
         return self::$_instance;
     }

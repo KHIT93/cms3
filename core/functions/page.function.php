@@ -93,6 +93,7 @@ function currentPageIsFront() {
 }
 function getPageId($alias) {
     $convert = explode('/', $alias);
+    //krumo(debug_backtrace());
     //$alias_convert = (strpos($alias, 'pages/') == false) ? DB::getInstance()->getField('url_alias', 'source', 'alias', $alias) : $alias;
     $alias_convert = ($convert[0] == 'pages') ? $alias : DB::getInstance()->getField('url_alias', 'source', 'alias', $alias);
     $page_id = explode('/', $alias_convert)[1];

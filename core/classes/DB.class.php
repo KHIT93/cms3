@@ -18,8 +18,6 @@ class DB {
         return self::$_instance;
     }
     public function query($sql, $params = array(), $pdoFetch = PDO::FETCH_OBJ) {
-        //print date("H:i:s").' ';
-        //krumo(debug_backtrace());
         $this->_error = false;
         if($this->_query = $this->_pdo->prepare($sql)) {
             if(count($params)) {

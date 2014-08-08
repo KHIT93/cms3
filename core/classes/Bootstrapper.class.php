@@ -178,7 +178,8 @@ class Bootstrapper {
         $template_func = $theme['machine_name'].'_theme_page_alter';
         if(Page::exists($url)) {
             //If the page exists establish a new page object
-            $page = new Page($url);
+            //$page = new Page($url);
+            $page = Page::getInstance($url);
             if($page->pageAccess(((isset($_SESSION['uid'])) ? $_SESSION['uid'] : 0))) {
                 //$page = getPage($url);
                 foreach (Module::activeModules() as $module) {
@@ -212,7 +213,7 @@ class Bootstrapper {
         $widgets = Widget::getWidgets($section);
         $output['#prefix'] = '<div id="section-'.$section.'">'."\n";
         foreach ($widgets as $widget) {
-            if($widget->title == 'Primary content') {
+            if($widget->title == 'Primary content' || $widget->title == 'Primary Content') {
                 $output['elements'][] = '<div class="widget" id="widget-primary-content">'."\n"
                                             . self::inject_page($page)."\n"
                                         . '</div>'."\n";
@@ -233,10 +234,10 @@ class Bootstrapper {
     public static function prepare_widget($widget) {
         if($widget->type == 'dynamic') {
             //Call function for dynamic widget
-            $func_content = json_decode($widget->content, true);
-            $function = array_keys($func_content)[0];
-            $parameters = (isset($func_content[$function]) && $func_content[$function] == '' && !empty($func_content[$function])) ? $func_content[$function] : NULL;
-            $output = (isset($parameters)) ? $function($parameters): $function();
+            $func_content = json_decode($widget->content);
+            $function = $func_content->func;
+            $parameters = (isset($func_content->param)) ? $func_content->param : NULL;
+            $output = (!is_null($parameters)) ? $function($parameters): $function();
         }
         else if($widget->type == 'static') {
             //Render static widget content

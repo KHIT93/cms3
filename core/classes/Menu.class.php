@@ -2,31 +2,26 @@
 class Menu {
     private static $_instance;
     private $_db, $_data;
-    public function __construct($mid) {
+    private function __construct($mid) {
         $this->_db = DB::getInstance();
-        $query = $this->_db->get('menus', array('mid', '=', $mid), PDO::FETCH_ASSOC);
+        $query = $this->_db->get('menu_links', array('mid', '=', $mid), PDO::FETCH_ASSOC);
         if(!$query->error()) {
-            $this->_data = $query->results()[0];
+            $this->_data = $query->results();
+        }
+        else {
+            $this->_data = array(0 => 'Unexpected error');
         }
     }
-    public static function getInstance($mid) {
-        if(!isset(self::$_instance)) {
-            self::$_instance = new Menu($mid);
+    public static function getInstance($mid = 1) {
+        if(!isset(self::$_instance[$mid])) {
+            self::$_instance[$mid] = new Menu($mid);
         }
-        return self::$_instance;
+        return self::$_instance[$mid];
     }
-    public function generateMenu($menu) {
+    public function generateMenu() {
         $menuitems = array();
-        $query = $db->prepare("SELECT `item_id` AS `id`, `item_title` AS `title`, `item_parent` AS `parent`, `item_link` AS `link` FROM `menu_items` WHERE `menu_id`=:menu_id ORDER BY `item_position`");
-        $query->bindValue(':menu_id', $mid, PDO::PARAM_INT);
-        try {
-            $query->execute();
-            while($row = $query->fetch(PDO::FETCH_ASSOC)) {
-                $menuitems[] = array('id' => $row['id'], 'title' => $row['title'], 'parent' => $row['parent'], 'link' => $row['link']);
-            }
-        }
-        catch (Exception $e) {
-            addMessage('error', t('There was an error while querying the database for the menu with ID:').' '.$menu_id.t('Please contact your administrator if the error persists'), $e);
+        foreach($this->_data as $link) {
+            $menuitems[] = array('id' => $link['mlid'], 'title' => $link['title'], 'parent' => $link['parent'], 'link' => $link['link']);
         }
         $tmp = array(0 => array('title' => 'root', 'children'=>array()));
         foreach($menuitems as $item) {
