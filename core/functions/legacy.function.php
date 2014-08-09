@@ -4,7 +4,7 @@
  * Contains functions which purpose is to provide legacy functions to components and modules until they have been converted
  */
 function splitURL() {
-    return explode('/', $_GET['q']);
+    return (isset($_GET['q'])) ? explode('/', $_GET['q']) : array(0 => page_front());
 }
 function throw_error($error_code) {
     http_response_code($error_code);

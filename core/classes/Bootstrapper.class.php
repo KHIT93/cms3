@@ -8,7 +8,7 @@ class Bootstrapper {
         //$init['site']['config'] = getSiteConfig();
         //$init['site']['advanced'] = getAdvSiteConfig();
         if($bootstrap_mode == EXEC_BOOTSTRAPPER_FULL) {
-        $url = explode('/', $_GET['q']);
+        $url = splitURL();
             switch($url[0]) {
                 case 'admin':
                     $bootstrap_mode = EXEC_BOOTSTRAPPER_ADMIN;

@@ -20,7 +20,7 @@ class DB {
     public function query($sql, $params = array(), $pdoFetch = PDO::FETCH_OBJ) {
         $this->_error = false;
         if($this->_query = $this->_pdo->prepare($sql)) {
-            if(count($params)) {
+            if(count($params) > 0) {
                 $x = 1;
                 foreach($params as $param) {
                     if(is_array($param)) {
@@ -63,7 +63,7 @@ class DB {
         return $this->action("SELECT *", $table, $where, $pdoFetch);
     }
     public function getAll($table, $pdoFetch = PDO::FETCH_OBJ) {
-        return $this->query("SELECT * FROM {$table}", $pdoFetch);
+        return $this->query("SELECT * FROM {$table}", NULL, $pdoFetch);
     }
     public function delete($table, $where) {
         return $this->action("DELETE", $table, $where);
