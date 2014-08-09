@@ -214,14 +214,6 @@ class System {
                     fclose($handle); 
                }
             }
-            /*else {
-                $handle = openFile('logs/error_log', 'a');
-                if($handle != FALSE) {
-                    $string = date("Y-m-d H:i:s").'An error occured: '.$error->getCode().' - '.$error->getFile().' Line '.$error->getLine().' - '.$error->getMessage()."\n".'Trace: '.$error->getTraceAsString()."\n";
-                    fwrite($handle, $string);
-                    fclose($handle); 
-               }
-            }*/
         }
     }
     public static function mail($to, $subject='', $message='', $from='', $cc='', $bcc='') {

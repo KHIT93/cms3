@@ -16,14 +16,10 @@
                 </div>
                 <div class="collapse navbar-collapse">
                     <?php
-                        //print generateMenu(1);
                         print render($page['header']);
                     ?>
                 </div><!--/.nav-collapse -->
             </div>
-    </div>
-    <div class="container">
-        <?php print render($page['header']); ?>
     </div>
     <div class="container" id="main-content">
         <div class="row">

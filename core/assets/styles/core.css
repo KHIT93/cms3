@@ -1,0 +1,102 @@
+/*Importing Google webfonts*/
+/*@import url('http://fonts.googleapis.com/css?family=Ubuntu|Open+Sans|Raleway+Dots');*/
+/*
+* font-family: 'Ubuntu', sans-serif;
+* font-family: 'Open Sans', sans-serif;
+* font-family: 'Raleway Dots', cursive;
+*/
+@import url('http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,400italic,700,800');
+@import url('http://fonts.googleapis.com/css?family=Raleway:100');
+@import url('http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700');
+.navbar a {
+    transition: color, 300ms ease-in-out;
+    -webkit-transition: color, 300ms ease-in-out;
+    -moz-transition: color, 300ms ease-in-out;
+    -o-transition: color, 300ms ease-in-out;
+}
+.admin .navbar-header .navbar-brand {
+    font-size: 14px;
+}
+.form300 {
+    width: 300px;
+}
+.form600 {
+    width: 600px;
+}
+.form-actions {
+    padding: 19px 20px 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: right;
+    background-color: #f5f5f5;
+    border-top: 1px solid #e5e5e5;
+}
+.form-hide {
+    display: none;
+    visibility: hidden;
+}
+.form-show {
+    display: initial;
+    visibility: initial;
+}
+.themelist {
+    width: 700px;
+    border-bottom: #e6e6e6 1px solid;
+    margin-bottom: 15px;
+}
+.themelist .themelist-info {
+    vertical-align: top;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.themelist .themelist-img {
+    width: 300px;
+}
+.themelist .themelist-img img {
+    max-width: 300px;
+}
+body.install {
+    padding-top: 0px !important;
+}
+body.install h1, body.install h2, body.install h3 {
+    font-family: 'Raleway Dots', cursive;
+    font-weight: 400;
+}
+body.install h2 {
+    font-weight: bold;
+}
+body.install .page-header h1 small {
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: 400;
+}
+body.install .panel-title {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-weight: 500;
+}
+body {
+  padding-top: 50px;
+}
+body.admin {
+  padding-top: 80px;
+  opacity: 1;
+}
+.fade {
+  opacity: 0;
+  -webkit-transition: opacity 0.3s linear;
+  transition: opacity 0.3s linear;
+}
+@media (max-width: 767px) {
+  body.admin {
+      padding-top: 0;
+  }
+  .navbar > .container .navbar-brand, .navbar > .container-fluid .navbar-brand {
+      margin-left: 25px;
+      font-size: 25px;
+  }
+  div.alert {
+      margin-top: 20px;
+  }
+  div.container footer {
+      text-align: center;
+  }
+}

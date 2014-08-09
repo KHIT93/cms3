@@ -94,7 +94,7 @@ class Bootstrapper {
         }
         //if(isset($_POST)){formBootstrapping($_POST);}
         $init['site']['header']['page_title'] = t('Administration');
-        $init['site']['header']['site_name'] = $init['site']['config']['site_name'];
+        $init['site']['header']['site_name'] = Config::get('site/site_name');
         $init['site']['header']['meta_keywords'] = '';
         $init['site']['header']['meta_description'] = '';
         $init['site']['header']['meta_robots'] ='';
