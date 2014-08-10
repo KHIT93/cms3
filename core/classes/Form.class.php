@@ -3,7 +3,14 @@ class Form {
     public function __construct($form = array()) {
         
     }
-    public static function form_delete($title, $name, $value, $item, $return_url) {
+    public function render() {
+        //Prepares the form for rendering as HTML on a page
+    }
+    public static function submit($formdata) {
+        //Handles form submission
+        
+    }
+    public static function formDelete($title, $name, $value, $item, $return_url) {
         $form = array(
             '#name' => $name,
             '#method' => 'POST',
