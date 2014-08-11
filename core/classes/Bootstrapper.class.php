@@ -56,7 +56,7 @@ class Bootstrapper {
                 }
             }
         }
-        //if(isset($_POST)){formBootstrapping($_POST);}
+        Form::submit();
         $output['prep_page'] = self::prepare_page(getPageId(implode('/', $init['get_url'])));
         $output['page'] = (is_object($output['prep_page'])) ? $output['prep_page']->data : $output['prep_page'];
         if(is_numeric($output['page'])) {
@@ -93,7 +93,7 @@ class Bootstrapper {
         if(file_exists(Theme::path_to_theme().'/template.php')) {
             include_once Theme::path_to_theme().'/template.php';
         }
-        //if(isset($_POST)){formBootstrapping($_POST);}
+        Form::submit();
         $init['site']['header']['page_title'] = t('Administration');
         $init['site']['header']['site_name'] = Config::get('site/site_name');
         $init['site']['header']['meta_keywords'] = '';

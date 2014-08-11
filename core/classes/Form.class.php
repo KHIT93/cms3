@@ -6,11 +6,22 @@ class Form {
     public function render() {
         //Prepares the form for rendering as HTML on a page
     }
-    public static function submit($formdata) {
+    public static function submit() {
         //Handles form submission
-        
+        if(Input::exists('post')) {
+            //Validate form
+            $form_validate = Input::get('form_id').'_validate';
+            $form_submit = Input::get('form_id').'_submit';
+            if(function_exists($form_validate)) {
+                if($form_validate()) {
+                    if(function_exists($form_submit)) {
+                        $form_submit();
+                    }
+                }
+            }
+        }
     }
-    public static function formDelete($title, $name, $value, $item, $return_url) {
+    public static function formDelete($title, $name, $value, $item, $return_url, $form_id = NULL) {
         $form = array(
             '#name' => $name,
             '#method' => 'POST',

@@ -77,6 +77,7 @@ if(version_compare(phpversion(), '5.4.0', '>')) {
         require_once CORE_FUNCTIONS_PATH.'/system.function.php';
         require_once CORE_FUNCTIONS_PATH.'/theme.function.php';
         require_once CORE_FUNCTIONS_PATH.'/user.function.php';
+        require_once CORE_FUNCTIONS_PATH.'/validate.function.php';
         
         //Set DB and Site configuration
         $GLOBALS['config']['db'] = Config::setDBConfig();
