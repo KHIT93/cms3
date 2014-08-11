@@ -57,7 +57,8 @@ class Bootstrapper {
             }
         }
         //if(isset($_POST)){formBootstrapping($_POST);}
-        $output['page'] = self::prepare_page(getPageId(implode('/', $init['get_url'])))->data;
+        $output['prep_page'] = self::prepare_page(getPageId(implode('/', $init['get_url'])));
+        $output['page'] = (is_object($output['prep_page'])) ? $output['prep_page']->data : $output['prep_page'];
         if(is_numeric($output['page'])) {
             throw_error($output['page']);
             $output = NULL;

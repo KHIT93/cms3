@@ -12,21 +12,21 @@
                         <h3 class="text-center"><!-- <img class="logo-img" src="http://198.57.247.231/~condorth/cleanzone/images/logo.png" alt="logo"> --><?php print t('Please sign in'); ?></h3>
                     </div>
                     <div>
-                        <form class="form-signin" method="POST" action="">
+                        <form class="form-signin" method="POST" action="" name="userLogIn">
                             <div class="content">
                                 <?php
                                 if(logged_in() === true) { 
                                     if(is_admin($_SESSION['uid']) === true) {
                                 ?>
                                 <div class="alert alert-success alert-box">
-                                    <?php print t('You have been successfully logged in'); ?>. <?php print t('Please proceed to'); ?> <a href="<?php print site_root(); ?>/admin"><?php print t('the administrative interface'); ?></a>.
+                                    <?php print t('You have been successfully logged in'); ?>. <?php print t('Please proceed to'); ?> <a href="/admin"><?php print t('the administrative interface'); ?></a>.
                                 </div>
                                 <?php
                                     }
                                     else {
                                         ?>
                                 <div class="alert alert-success alert-box">
-                                    <?php print t('You have been successfully logged in'); ?>. <?php print t('Please proceed to'); ?> <a href="<?php print site_root();?>/"><?php print t('the frontpage'); ?></a>.
+                                    <?php print t('You have been successfully logged in'); ?>. <?php print t('Please proceed to'); ?> <a href="/<?php print page_front();?>"><?php print t('the frontpage'); ?></a>.
                                 </div>
 
                                 <?php    }
@@ -60,7 +60,7 @@
                                 </div>
                             </div>
                             <div class="foot">
-                                <button class="btn btn-rad btn-primary" type="submit" name="log_in"><?php print t('Sign in'); ?> <span class="glyphicon glyphicon-share"></span></button>
+                                <button class="btn btn-rad btn-primary" type="submit" name="userLogIn"><?php print t('Sign in'); ?> <span class="glyphicon glyphicon-share"></span></button>
                             </div>
                         </form>
                     </div>
@@ -69,8 +69,8 @@
         <?php } ?>
                 <div class="text-center">
                     <footer style="color: #C9D4F6;">
-                        <p><a href="<?php print site_root().'/'.page_front();?>"><span class="glyphicon glyphicon-circle-arrow-left"></span> <?php print t('Go Back'); ?></a>
-                            &nbsp;&copy; <?php print date('Y').' '.$GLOBALS['site']->site_name;?></p>
+                        <p><a href="<?php print '/'.page_front();?>"><span class="glyphicon glyphicon-circle-arrow-left"></span> <?php print t('Go Back'); ?></a>
+                            &nbsp;&copy; <?php print date('Y').' '.Config::get('site/site_name');?></p>
                     </footer>
                 </div>
             </div>
