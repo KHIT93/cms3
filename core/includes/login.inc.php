@@ -32,14 +32,14 @@
                                 <?php    }
                                 }
                                 else {
-                                    print print_messages_simple();
+                                    print System::print_messages_simple();
                                 ?>
                                 <h4 class="title">Enter user credentials</h4>
                                 <div class="form-group">
                                     <div class="col-sm-12">
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                                            <input type="text" name="username" class="form-control" placeholder="<?php print t('Email address'); ?>" autofocus>
+                                            <input type="text" name="username" class="form-control" placeholder="<?php print t('Email address'); ?>" autofocus autocomplete="off">
                                         </div>
                                     </div>
                                 </div>
@@ -47,19 +47,21 @@
                                     <div class="col-sm-12">
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                                            <input type="password" name="password" class="form-control" placeholder="<?php print t('Password'); ?>">
+                                            <input type="password" name="password" class="form-control" placeholder="<?php print t('Password'); ?>" autocomplete="off">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="col-sm-12">
                                         <label class="checkbox">
-                                            <input type="checkbox" class="icheck" value="remember-me"> <?php print t('Remember me'); ?>
+                                            <input type="checkbox" class="icheck" name="remember-me" value="yes"> <?php print t('Remember me'); ?>
                                         </label>
                                     </div>
                                 </div>
                             </div>
                             <div class="foot">
+                                <input type="hidden" name="form_id" value="user_login">
+                                <input type="hidden" name="<?php print Config::get('session/token_name'); ?>" value="<?php print Token::generate(); ?>">
                                 <button class="btn btn-rad btn-primary" type="submit" name="userLogIn"><?php print t('Sign in'); ?> <span class="glyphicon glyphicon-share"></span></button>
                             </div>
                         </form>

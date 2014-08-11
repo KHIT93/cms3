@@ -18,6 +18,9 @@ class Hash {
         }
         return $hash;
     }
+    public static function validateHash($string, $match) {
+        return (crypt($string, $match) == $match) ? true : false;
+    }
     public static function salt($length) {
         return mcrypt_create_iv($length);
     }

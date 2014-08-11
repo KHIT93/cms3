@@ -23,7 +23,7 @@ if(version_compare(phpversion(), '5.4.0', '>')) {
             ),
             'session' => array(
                 'session_name' => 'user',
-                'token_name' => 'token'
+                'token_name' => 'form_token'
             ),
             'assets' => array(
                 'styles' => array(
@@ -91,6 +91,9 @@ if(version_compare(phpversion(), '5.4.0', '>')) {
                 $user = new User($hashCheck->first()->user_id);
                 $user->login();
             }
+        }
+        else if(Session::exists(Config::get('session/session_name'))) {
+            $user = new User(Session::get(Config::get('session/session_name')));
         }
 
         if(isset($_GET['q']) && $_GET['q'] == 'logout') {

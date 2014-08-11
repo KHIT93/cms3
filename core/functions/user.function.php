@@ -24,3 +24,21 @@ function not_active_logout() {
     session_destroy();
     addMessage('error', t('You have been logged out because your account is not activated'));
 }
+function user_login_validate() {
+    return form_validate(array(
+        'username' => array('required' => true),
+        'password' => array('required' => true)
+        ));
+}
+function user_login_submit($formdata) {
+    $user = new User();
+    if($user->login(Input::get('username'), Input::get('password'), Input::get('remember-me'))) {
+        System::addMessage('info', 'Login success');
+        Redirect::to('/admin');
+    }
+    else {
+        System::addMessage('info', 'Login failed');
+    }
+    
+    
+}

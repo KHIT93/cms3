@@ -9,15 +9,20 @@ class Form {
     public static function submit() {
         //Handles form submission
         if(Input::exists('post')) {
-            //Validate form
-            $form_validate = Input::get('form_id').'_validate';
-            $form_submit = Input::get('form_id').'_submit';
-            if(function_exists($form_validate)) {
-                if($form_validate()) {
-                    if(function_exists($form_submit)) {
-                        $form_submit();
+            if(Token::check(Input::get(Config::get('session/token_name')))) {
+                //Validate form
+                $form_validate = Input::get('form_id').'_validate';
+                $form_submit = Input::get('form_id').'_submit';
+                if(function_exists($form_validate)) {
+                    if($form_validate()) {
+                        if(function_exists($form_submit)) {
+                            $form_submit($_POST);
+                        }
                     }
                 }
+            }
+            else {
+                System::addMessage('error', t('Sorry, the form you have submitted is invalid'));
             }
         }
     }
