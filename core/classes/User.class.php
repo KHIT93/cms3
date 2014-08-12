@@ -86,21 +86,7 @@ class User {
     public function exists() {
         return (!empty($this->_data)) ? true : false;
     }
-    public function active($username) {
-        $db = db_connect();
-        //Checks if a user is active
-        $query = $db->prepare("SELECT `active` FROM `users` WHERE `username`=:username");
-        $query->bindValue(':username', $username, PDO::PARAM_STR);
-        try {
-            $query->execute(); //Executes query
-            $active = $query->fetchColumn();
-        }
-        catch (Exception $e) {
-            addMessage('error', t('There was an error while querying the user'), $e);
-        }
-        $db = NULL;
-        return ($active == 1) ? true : false;
-    }
+    
     public function enable($user_id) {
         $db = db_connect();
         $query = $db->prepare("UPDATE `users` SET `active`=1 WHERE `uid`=:user_id");
@@ -153,6 +139,9 @@ class User {
     public function language() {
         return (isset($this->_data->language)) ? $this->_data->language: false;
     }
+    public function active() {
+        return $this->_data->active;
+    }
     public function isLoggedIn() {
         return $this->_isLoggedIn;
     }
@@ -203,17 +192,15 @@ class User {
         }
     }
     public static function getUserList() {
-        $db = db_connect();
-        $query = $db->prepare("SELECT `uid`, `username`, `user_role`, `user_name`, `email`, `active` FROM `users`");
-        try {
-            $query->execute();
-            $users = $query->fetchAll(PDO::FETCH_ASSOC);
+        $db = DB::getInstance();
+        $query = $db->getAll('users');
+        $users = array();
+        if(!$query->error()) {
+            foreach($query->results() as $entity) {
+                $users[] = new User($entity->uid);
+            }
+            return $users;
         }
-        catch(Exception $e) {
-            addMessage('error', t('There was an error while querying the userdata'), $e);
-            //die($e->getMessage());
-        }
-        $db = NULL;
-        return $users;
+        return false;
     }
 }

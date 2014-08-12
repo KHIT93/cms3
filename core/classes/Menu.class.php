@@ -1,12 +1,16 @@
 <?php
 class Menu {
     private static $_instance;
-    private $_db, $_data;
+    private $_db, $_data, $_menu;
     private function __construct($mid) {
         $this->_db = DB::getInstance();
-        $query = $this->_db->get('menu_links', array('mid', '=', $mid), PDO::FETCH_ASSOC);
+        $query = $this->_db->get('menus', array('mid', '=', $mid), PDO::FETCH_ASSOC);
         if(!$query->error()) {
             $this->_data = $query->results();
+        }
+        $query = $this->_db->get('menu_links', array('mid', '=', $mid), PDO::FETCH_ASSOC);
+        if(!$query->error()) {
+            $this->_menu = $query->results();
         }
         else {
             $this->_data = array(0 => 'Unexpected error');
@@ -18,9 +22,12 @@ class Menu {
         }
         return self::$_instance[$mid];
     }
+    public function menuItems() {
+        return $this->_menu;
+    }
     public function generateMenu() {
         $menuitems = array();
-        foreach($this->_data as $link) {
+        foreach($this->_menu as $link) {
             $menuitems[] = array('id' => $link['mlid'], 'title' => $link['title'], 'parent' => $link['parent'], 'link' => $link['link']);
         }
         $tmp = array(0 => array('title' => 'root', 'children'=>array()));
@@ -48,21 +55,9 @@ class Menu {
             return false;
         }
     }
-    public function getMenuLinkData($item_id) {
-        $db = db_connect();
-        $query = $db->prepare("SELECT `item_id`, `item_title`, `item_link` FROM `menu_items` WHERE `item_id`=:item_id");
-        $query->bindValue(':item_id', (int)$item_id, PDO::PARAM_INT);
-        try {
-            $query->execute();
-            $menu_item = $query->fetchAll(PDO::FETCH_ASSOC);
-            $db = NULL;
-            return $menu_item[0];
-        }
-        catch (Exception $e) {
-            addMessage('error', t('There was an error while processing the request'), $e);
-            $db = NULL;
-            return false;
-        }
+    public static function getMenuLinkData($item_id) {
+        $data = DB::getInstance()->get('menu_items', array('mlid', '=', $item_id));
+        return (!$data->error()) ? $data->first() : false;
     }
     public function delete($menu_id) {
         $db = db_connect();
@@ -197,18 +192,7 @@ class Menu {
         $db = NULL;
     }
     public static function getMenus() {
-        $db = db_connect();
-        $query = $db->prepare("SELECT `menu_id`, `menu_name` FROM `menus`");
-        try {
-            $query->execute(); //Executes query
-
-            $menus = $query->fetchAll(PDO::FETCH_ASSOC);
-        }
-        catch (Exception $e) {
-            addMessage('error', t('There was an error while querying the menudata'), $e);
-            //die($e->getMessage());
-        }
-        $db = NULL;
-        return $menus;
+        $data = DB::getInstance()->getAll('menus');
+        return (!$data->error()) ? $data->results() : false;
     }
 }

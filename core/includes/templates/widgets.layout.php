@@ -6,15 +6,15 @@
     <?php print print_messages(); ?>
 <div class="col-md-12">
 <?php
-if(has_permission('access_admin_layout_widgets', $_SESSION['uid']) === true) {
-$items = widgets::getAllWidgets();
-$sections = widgets::getSections($site_data['site_theme']);
+    if(has_permission('access_admin_layout_widgets', Session::exists(Config::get('session/session_name'))) === true) {
+        $items = Widget::getAllWidgets();
+        $sections = Widget::getSections(Config::get('site/site_theme'));
 ?>
 
 <hr/>
 <p>
-    <?php if(has_permission('access_admin_layout_widgets_add', $_SESSION['uid']) === true) : ?>
-    <a href="<?php print site_root(); ?>/admin/layout/widgets/add">
+    <?php if(has_permission('access_admin_layout_widgets_add', Session::exists(Config::get('session/session_name'))) === true) : ?>
+    <a href="/admin/layout/widgets/add">
         <span class="glyphicon glyphicon-plus"></span> <?php print t('Create new widget'); ?>
     </a>
     <?php endif; ?>
@@ -35,7 +35,7 @@ $sections = widgets::getSections($site_data['site_theme']);
                             . '<td><b>'.$value.'</b></td>'
                             . '<td class="hidden-xs"></td><td class="hidden-xs"></td>'
                         . '</tr>';
-                    print widgets::renderWidgetList($section, $site_data['site_theme'], $items);
+                    print Widget::renderWidgetList($section, Config::get('site/site_theme'), $items);
                 }
                 print '<tr style="background-color: #f9f9f9;">'
                         . '<td><b>'.t('Inactive').'</b></td>'
@@ -44,8 +44,8 @@ $sections = widgets::getSections($site_data['site_theme']);
                 if(count($items) != 0) {
                     foreach ($items as $item) {
                         print '<tr>'
-                                . '<td style="padding-left: 2em;">'.$item['widget_title'].'</td>'
-                                . '<td class="hidden-xs">'.t('Inactive').' - '.Forms::renderAsFormElement(widgets::getSections($site_data['site_theme']), 'select', 'widget_'.$item['widget_id']).'</td>'
+                                . '<td style="padding-left: 2em;">'.$item->title.'</td>'
+                                . '<td class="hidden-xs">'./*t('Inactive').' - '.Form::renderAsFormElement(widgets::getSections(Config::get('site/site_theme')), 'select', 'widget_'.$item->wid).*/'</td>'
                                 . '<td class="hidden-xs"></td>'
                             . '</tr>';
                     }
@@ -56,8 +56,8 @@ $sections = widgets::getSections($site_data['site_theme']);
                         . '</tr>';
                 }
             ?>
-            <input type="hidden" name="form-token" value="<?php print $csrf->get_token($token_id); ?>">
-            <?php if(has_permission('access_admin_layout_widgets_move', $_SESSION['uid']) === true) : ?>
+        <input type="hidden" name="form-token" value="<?php print Token::generate(); ?>">
+            <?php if(has_permission('access_admin_layout_widgets_move', Session::exists(Config::get('session/session_name'))) === true) : ?>
             <tr>
                 <td class="hidden-xs" colspan="3"><button type="submit" class="btn btn-rad btn-primary" name="editSections"><?php print t('Save changes'); ?></button></td>
             </tr>

@@ -19,15 +19,15 @@ if(isset($get_url[2])) {
     <?php print print_messages(); ?>
 <div class="col-md-12">
 <p><?php print t('Please select the item you want to manage below.'); ?></p>
-<a href="<?php print site_root(); ?>/admin/layout/menus" class="list-group-item">
+<a href="/admin/layout/menus" class="list-group-item">
     <h4 class="list-group-item-heading"><?php print t('Menus'); ?></h4>
     <p class="list-group-item-text"><?php print t('Manage menus and menu items'); ?></p>
 </a>
-<a href="<?php print site_root(); ?>/admin/layout/themes" class="list-group-item">
+<a href="/admin/layout/themes" class="list-group-item">
     <h4 class="list-group-item-heading"><?php print t('Themes'); ?></h4>
     <p class="list-group-item-text"><?php print t('Install new themes and change your active theme'); ?></p>
 </a>
-<a href="<?php print site_root(); ?>/admin/layout/widgets" class="list-group-item">
+<a href="/admin/layout/widgets" class="list-group-item">
     <h4 class="list-group-item-heading"><?php print t('Widgets'); ?></h4>
     <p class="list-group-item-text"><?php print t('Manage your widgets'); ?></p>
 </a>
@@ -45,15 +45,15 @@ else {
     <?php print print_messages(); ?>
 <div class="col-md-12">
 <p><?php print t('Please select the item you want to manage below.'); ?></p>
-<a href="<?php print site_root(); ?>/admin/layout/menus" class="list-group-item">
+<a href="/admin/layout/menus" class="list-group-item">
     <h4 class="list-group-item-heading"><?php print t('Menus'); ?></h4>
     <p class="list-group-item-text"><?php print t('Manage menus and menu items'); ?></p>
 </a>
-<a href="<?php print site_root(); ?>/admin/layout/themes" class="list-group-item">
+<a href="/admin/layout/themes" class="list-group-item">
     <h4 class="list-group-item-heading"><?php print t('Themes'); ?></h4>
     <p class="list-group-item-text"><?php print t('Install new themes and change your active theme'); ?></p>
 </a>
-<a href="<?php print site_root(); ?>/admin/layout/widgets" class="list-group-item">
+<a href="/admin/layout/widgets" class="list-group-item">
     <h4 class="list-group-item-heading"><?php print t('Widgets'); ?></h4>
     <p class="list-group-item-text"><?php print t('Manage your widgets'); ?></p>
 </a>

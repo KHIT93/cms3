@@ -33,18 +33,19 @@ function get_breadcrumb() {
     return $breadcrumb;
 }
 function pagination($limit, $table, $fields = '*', $parameter = NULL, $parameter_value = NULL) {
-    $db = db_connect();
+    $db = DB::getInstance();
     $get_url = splitURL();
-    $lang = get_lang();
+    $lang = Config::get('site/site_language');
     $sql = '';
     if($parameter != NULL || $parameter != '') {
-        $sql = "SELECT COUNT({$fields}) FROM `{$table}` WHERE `{$parameter}`={$parameter_value}";
+        $sql = "SELECT COUNT({$fields}) FROM `{$table}` WHERE `{$parameter}`= ?";
+        $params = array($parameter_value);
     }
     else {
         $sql = "SELECT COUNT({$fields}) FROM `{$table}`";
     }
-    $query = $db->query($sql);
-    $count = $query->fetchColumn();
+    $query = ($parameter) ? $db->query($sql, $params, PDO::FETCH_ASSOC) : $db->query($sql, NULL, PDO::FETCH_ASSOC);
+    $count = $query->count();
     $pages = ceil($count / $limit);
     if($pages < 1) {
         $pages = 1;
@@ -58,34 +59,34 @@ function pagination($limit, $table, $fields = '*', $parameter = NULL, $parameter
     }
     $page = ($pagenum -1) * $limit;
     if($parameter != NULL || $parameter != '') {
-        $sql = "SELECT {$fields} FROM `{$table}` WHERE `{$parameter}`={$parameter_value} LIMIT {$page}, {$limit}";
+        $sql = "SELECT {$fields} FROM `{$table}` WHERE `{$parameter}`= ? LIMIT {$page}, {$limit}";
+        $params = array($parameter_value);
     }
     else {
         $sql = "SELECT {$fields} FROM `{$table}` LIMIT {$page}, {$limit}";
     }
-    $query = $db->query($sql);
-    $data = $query->fetchAll(PDO::FETCH_ASSOC);
+    $query = ($parameter) ? $db->query($sql, $params, PDO::FETCH_ASSOC) : $db->query($sql, NULL, PDO::FETCH_ASSOC);
+    $data = $query->results();
     $controls = '<ul class="pagination">';
     $url = $get_url[0].'/'.$get_url[1].'/'.$get_url[2].'/'.$get_url[3];
     $previous = $pagenum - 1;
-    $controls .= ($previous < 1) ? '<li class="disabled"><a href="#">&laquo; '.t('Previous').'</a></li>' : '<li><a href="'.site_root().'/'.$url.'/'.$previous.'">&laquo; '.t('Previous').'</a></li>';
+    $controls .= ($previous < 1) ? '<li class="disabled"><a href="#">&laquo; '.t('Previous').'</a></li>' : '<li><a href="/'.$url.'/'.$previous.'">&laquo; '.t('Previous').'</a></li>';
     for($i = 1; $i <= $pages; $i++) {
         if($i == $pagenum) {
-            $controls .= '<li class="active"><a href="'.site_root().'/'.$url.'/'.$i.'">'.$i.'</a></li>';
+            $controls .= '<li class="active"><a href="/'.$url.'/'.$i.'">'.$i.'</a></li>';
         }
         else {
-            $controls .= '<li><a href="'.site_root().'/'.$url.'/'.$i.'">'.$i.'</a></li>';
+            $controls .= '<li><a href="/'.$url.'/'.$i.'">'.$i.'</a></li>';
         }
     }
     $next = $pagenum + 1;
-    $controls .= ($next > $pages) ? '<li class="disabled"><a href="#">'.t('Next').' &raquo;</a></li>' : '<li><a href="'.site_root().'/'.$url.'/'.$next.'">'.t('Next').' &raquo;</a></li>';
+    $controls .= ($next > $pages) ? '<li class="disabled"><a href="#">'.t('Next').' &raquo;</a></li>' : '<li><a href="/'.$url.'/'.$next.'">'.t('Next').' &raquo;</a></li>';
     $controls .= '</ul>';
 
     $paginated = array(
         'data' => $data,
         'controls' => $controls
     );
-    $db = NULL;
     return $paginated;
 }
 function currentPageIsFront() {

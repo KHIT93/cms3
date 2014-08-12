@@ -2,7 +2,7 @@
 class Widget {
     static function getAllWidgets() {
         $db = DB::getInstance();
-        if(!$db->action("SELECT *", "widgets", array(), array('widget_position', 'ASC'))->error()) {
+        if(!$db->query("SELECT * FROM `widgets` ORDER BY `position` ASC")->error()) {
             return $db->results();
         }
         else {
@@ -37,21 +37,14 @@ class Widget {
     static function getSections($theme) {
         $output = array();
         if($theme == 'core') {
-            //Use default sections
-            $output['top'] = 'Top';
-            $output['header'] = 'Header';
-            $output['content'] = 'Content';
-            $output['footer'] = 'Footer';
+            $output = Theme::themeDetails($theme, true)['sections'];
         }
         else {
             //get sections from custom theme
             $themedetails = Theme::themeDetails($theme);
             if(!isset($themedetails['sections']) || empty($themedetails['sections']) || $themedetails['sections'] == '') {
                 //Use default sections
-                $output['top'] = 'Top';
-                $output['header'] = 'Header';
-                $output['content'] = 'Content';
-                $output['footer'] = 'Footer';
+                $output = Theme::themeDetails('core', true)['sections'];
             }
             else {
                 //Use sections from custom theme
@@ -63,19 +56,21 @@ class Widget {
     static function renderWidgetList($section, $theme, &$all_widgets) {
         $output = '';
         $items = self::getAllWidgets();
-        $count = DB::getInstance()->countItems('widgets', '*', 'widget_section', $section);
+        
+        $count = DB::getInstance()->countItems('widgets', '*', 'section', $section);
         if($count > 0) {
             for ($i = 0; $i < count($items) + 1; $i++) {
-                if($items[$i]['widget_section'] == $section) {
+                if($items[$i]->section == $section) {
                     $output .= '<tr>'
-                                . '<td style="padding-left: 2em;">'.$items[$i]['widget_title'].'</td>'
-                                . '<td class="hidden-xs">'.Form::renderAsFormElement(self::getSections($theme), 'select', 'widget_'.$items[$i]['widget_id'], $items[$i]['widget_section']).'</td>';
-                    $output .= ($items[$i]['widget_type'] == 'dynamic') ? '<td class="hidden-xs">'.((has_permission('access_admin_layout_widgets_edit', $_SESSION['uid']) === true) ? '<a href="/admin/layout/widgets/'.$items[$i]['widget_id'].'/edit" class="btn btn-rad btn-sm btn-default">'.t('Edit').'</a>' : '').'</td>'
+                                . '<td style="padding-left: 2em;">'.$items[$i]->title.'</td>'
+                                . '<td class="hidden-xs">'/*.Form::renderAsFormElement(self::getSections($theme), 'select', 'widget_'.$items[$i]['widget_id'], $items[$i]['widget_section'])*/.'</td>';
+                    $output .= ($items[$i]->type == 'dynamic') ? '<td class="hidden-xs">'.((has_permission('access_admin_layout_widgets_edit', Session::exists(Config::get('session/session_name'))) === true) ? '<a href="/admin/layout/widgets/'.$items[$i]->wid.'/edit" class="btn btn-rad btn-sm btn-default">'.t('Edit').'</a>' : '').'</td>'
                             : '<td class="hidden-xs">'
-                            . ((has_permission('access_admin_layout_widgets_edit', $_SESSION['uid']) === true) ? '<a href="/admin/layout/widgets/'.$items[$i]['widget_id'].'/edit" class="btn btn-rad btn-sm btn-default">'.t('Edit').'</a>' : '')
-                            . ((has_permission('access_admin_layout_widgets_delete', $_SESSION['uid']) === true) ? '<a href="/admin/layout/widgets/'.$items[$i]['widget_id'].'/delete" class="btn btn-rad btn-sm btn-danger">'.t('Delete').'</a>' : '')
+                            . ((has_permission('access_admin_layout_widgets_edit', Session::exists(Config::get('session/session_name'))) === true) ? '<a href="/admin/layout/widgets/'.$items[$i]->wid.'/edit" class="btn btn-rad btn-sm btn-default">'.t('Edit').'</a>' : '')
+                            . ((has_permission('access_admin_layout_widgets_delete', Session::exists(Config::get('session/session_name'))) === true) ? '<a href="/admin/layout/widgets/'.$items[$i]->wid.'/delete" class="btn btn-rad btn-sm btn-danger">'.t('Delete').'</a>' : '')
                             . '</td>';
                     $output .= '</tr>';
+                    
                     unset($all_widgets[$i]);
                 }
             }

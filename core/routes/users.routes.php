@@ -7,26 +7,26 @@ if($get_url[1] == 'users') {
     if(isset($get_url[2])) {
         if(isset($get_url[3])) {
             if($get_url[3] == 'edit') {
-                include 'core/inc/admin.inc.php';
-                include 'core/inc/admin/edit.admin.php';
+                include INCLUDES_PATH.'/admin.inc.php';
+                include INCLUDES_PATH.'/admin/edit.admin.php';
             }
             else if($get_url[3] == 'delete') {
-                include 'core/inc/admin.inc.php';
-                include 'core/inc/admin/delete.admin.php';
+                include INCLUDES_PATH.'/admin.inc.php';
+                include INCLUDES_PATH.'/admin/delete.admin.php';
             }
             else if($get_url[3] == 'enable') {
-                include 'core/inc/admin.inc.php';
-                include 'core/inc/admin/confirm.admin.php';
+                include INCLUDES_PATH.'/admin.inc.php';
+                include INCLUDES_PATH.'/admin/confirm.admin.php';
             }
             else if($get_url[3] == 'disable') {
-                include 'core/inc/admin.inc.php';
-                include 'core/inc/admin/confirm.admin.php';
+                include INCLUDES_PATH.'/admin.inc.php';
+                include INCLUDES_PATH.'/admin/confirm.admin.php';
             }
         }
     }
     else {
-        include 'core/inc/admin.inc.php';
-        include 'core/inc/templates/users.admin.php';
+        include INCLUDES_PATH.'/admin.inc.php';
+        include INCLUDES_PATH.'/templates/users.admin.php';
     }
 }
 else {

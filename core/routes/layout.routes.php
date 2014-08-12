@@ -28,27 +28,30 @@ if($get_url[1] == 'layout') {
             }
         }
         else if($get_url[2] == 'widgets') {
-            if($get_url[3] == 'add') {
-                include INCLUDES_PATH.'/admin.inc.php';
-                print Widgets::createWidgetForm();
-            }
-            else if(is_numeric($get_url[3])) {
-                if($get_url[4] == 'edit') {
+            if(isset($get_url[3])) {
+                if($get_url[3] == 'add') {
                     include INCLUDES_PATH.'/admin.inc.php';
-                    print Widgets::updateWidgetForm($get_url[3]);
+                    print Widgets::createWidgetForm();
                 }
-                else if($get_url[4] == 'delete') {
-                    include INCLUDES_PATH.'/admin.inc.php';
-                    print Forms::form_delete(t('Delete widget'), 'deleteWidget', $get_url[3], getFieldFromDB('widgets', 'widget_title', 'widget_id', $get_url[3]), site_root().'/admin/layout/widgets');
+                else if(is_numeric($get_url[3])) {
+                    if($get_url[4] == 'edit') {
+                        include INCLUDES_PATH.'/admin.inc.php';
+                        print Widgets::updateWidgetForm($get_url[3]);
+                    }
+                    else if($get_url[4] == 'delete') {
+                        include INCLUDES_PATH.'/admin.inc.php';
+                        print Forms::form_delete(t('Delete widget'), 'deleteWidget', $get_url[3], getFieldFromDB('widgets', 'widget_title', 'widget_id', $get_url[3]), site_root().'/admin/layout/widgets');
+                    }
                 }
             }
             else {
                 include INCLUDES_PATH.'/admin.inc.php';
                 include INCLUDES_PATH.'/templates/widgets.layout.php';
             }
+            
         }
         else if($get_url[2] == 'themes') {
-            if($get_url[2] == 'themes' && $get_url[4] == 'apply') {
+            if(isset($get_url[4]) && $get_url[4] == 'apply') {
                 include INCLUDES_PATH.'/admin.inc.php';
                 include INCLUDES_PATH.'/admin/confirm.admin.php';
             }

@@ -1,9 +1,9 @@
 <body>
     <!--[if lt IE 7]>
-        <p class="chromeframe"><?php print t('You are using an <strong>outdated</strong> browser');?>. <?php t('Please <a href="http://browsehappy.com/"> upgrade your browser</a> or'); ?> <a href="http://www.google.com/chromeframe/?redirect=true"><?php print t('activate Google Chrome Frame'); ?></a> <?php print t('to improve your experience'); ?>.</p>
+        <p class="chromeframe"><?php print t('You are using an <strong>outdated</strong> browser Please <a href="@browserhappy"> upgrade your browser</a> or <a href="@chrome_frame_link">activate Google Chrome Frame</a> to improve your experience', array('@browserhappy' => 'http://browsehappy.com/', '@chrome_frame_link' => 'http://www.google.com/chromeframe/?redirect=true')); ?>.</p>
     <![endif]-->
 
-    <!-- <?php print t('This code is taken from'); ?> http://twitter.github.com/bootstrap/examples/hero.html -->
+    <!-- <?php print t('This code is taken from @bootstrap_link', array('@bootstrap_link' => 'http://twitter.github.com/bootstrap/examples/hero.html')); ?>  -->
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
                 <div class="navbar-header">

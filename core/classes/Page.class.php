@@ -32,7 +32,7 @@ class Page {
 
     }
     public function getMetaRobots($page) {
-        return explode(', ', $page['meta_robots']);
+        return explode(', ', $page['robots']);
     }
     public function pageAccess($uid = 0) {
         $page_access = json_decode($this->_db->getField('pages', 'access', 'pid', 1), true);
@@ -234,23 +234,9 @@ class Page {
         }
         $db = NULL;
     }
-    public static function getPageData($get_url) {
-        $id = (int)$get_url[2];
-        $db = db_connect();
-        $page = array();
-        $query = $db->prepare("SELECT `page_id`, `page_title`, `page_content`, `page_access`, `page_url`, `page_alias`, `meta_keywords`, `meta_description`, `meta_robots`, `is_front` FROM `pages` WHERE `page_id`=:page_id");
-        $query->bindValue(':page_id', $id, PDO::PARAM_INT);
-        try {
-            $query->execute(); //Executes query
-
-            $page = $query->fetchAll(PDO::FETCH_ASSOC);
-        }
-        catch (Exception $e) {
-            addMessage('error', t('There was an error while processing the request'), $e);
-            //die($e->getMessage());
-        }
-        $db = NULL;
-        return $page[0];
+    public static function getPageData($pid) {
+        $page = new Page($pid);
+        return $page->data;
     }
     public static function getPageList() {
         $pages = array();

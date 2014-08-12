@@ -1,4 +1,3 @@
-<?php $modules = new Modules() ?>
 <div class="page-head">
     <h2><?php print t('Modules'); ?></h2>
     <?php print get_breadcrumb(); ?>
@@ -9,18 +8,6 @@
 <?php
 print '<p>'.t('Download additional modules from other developers in order to extend the functionality of the system').'</p>'
     . '<p>'.t('Review and install updates for enabled modules').'</p>';
-/*print '<ul>';
-foreach ($modules->getModules() as $value) {
-    print '<li>'.$value['name'].'<ul>'
-            . '<li>'.$value['machine_name'].'</li>'
-            . '<li>'.$value['description'].'</li>'
-            . '<li>'.$value['version'].'</li>'
-            . '<li>'.$value['kernel'].'</li>'
-            . '<li>'.$value['category'].'</li>'
-            . '<li>'.(int)$value['cancontrol'].'</li>'
-            . '</ul></li>';
-}
-print '</ul>';*/
 $output = '<form name="modules" method="POST" action="" role="form">'
         . '<table class="table">'
         . '<thead style="background-color: #CCC;">'
@@ -33,51 +20,51 @@ $output = '<form name="modules" method="POST" action="" role="form">'
         . '</tr>'
         . '</thead>'
         . '<tbody class="no-border-y">';
-foreach ($modules->modules as $module) {
+foreach (Module::allModules() as $module) {
     $link = array();
     $attr = '';
     $output .= '<tr>';
     if($module['enabled'] === true) {
         $attr = 'checked';
         //$link['conf']['link'] = ($module['core_module'] == 1) ? 'config/core' : 'config';
-        $link['conf']['link'] = (isset($module['config'])) ? $module['config'] : 'admin/modules/'.$module['machine_name'].'/config';
+        $link['conf']['link'] = (isset($module['config'])) ? $module['config'] : 'admin/modules/'.$module['module'].'/config';
         $link['conf']['text'] = t('Configure');
         $link['conf']['classes'] = 'btn btn-rad btn-sm btn-primary';
-        $link['action']['link'] = ($module['core_module'] == 1) ? 'uninstall/core' : 'uninstall';
+        $link['action']['link'] = ($module['core'] == 1) ? 'uninstall/core' : 'uninstall';
         $link['action']['text'] = t('Uninstall');
         $link['action']['classes'] = 'btn btn-rad btn-sm btn-danger';
-        if(isset($module['cancontrol']) && $module['cancontrol'] == 0) {
+        /*if(isset($module['cancontrol']) && $module['cancontrol'] == 0) {
             $attr .= ' ';
             $attr .= 'disabled';
-        }
+        }*/
     }
     else {
         if($module['installed'] === true) {
-            $link['conf']['link'] = ($module['core_module'] == 1) ? 'admin/modules/'.$module['machine_name'].'/enable/core' : 'admin/modules/'.$module['machine_name'].'/enable';
+            $link['conf']['link'] = ($module['core'] == 1) ? 'admin/modules/'.$module['module'].'/enable/core' : 'admin/modules/'.$module['module'].'/enable';
             $link['conf']['text'] = t('Enable');
             $link['conf']['classes'] = 'btn btn-rad btn-sm btn-default';
-            $link['action']['link'] = ($module['core_module'] == 1) ? 'uninstall/core' : 'uninstall';
+            $link['action']['link'] = ($module['core'] == 1) ? 'uninstall/core' : 'uninstall';
             $link['action']['text'] = t('Uninstall');
             $link['action']['classes'] = 'btn btn-rad btn-sm btn-danger';
-            if(isset($module['cancontrol']) && $module['cancontrol'] == 0) {
+            /*if(isset($module['cancontrol']) && $module['cancontrol'] == 0) {
                 $attr .= 'disabled';
-            }
+            }*/
         }
         else {
-            $link['action']['link'] = ($module['core_module'] == 1) ? 'install/core' : 'install';
+            $link['action']['link'] = ($module['core'] == 1) ? 'install/core' : 'install';
             $link['action']['text'] = t('Install');
             $link['action']['classes'] = 'btn btn-rad btn-sm btn-success';
-            if(isset($module['cancontrol']) && $module['cancontrol'] == 0) {
+            /*if(isset($module['cancontrol']) && $module['cancontrol'] == 0) {
                 $attr .= 'disabled';
-            }
+            }*/
         }
     }
-    $actions = (isset($link['conf'])) ?'<a href="'.site_root().'/'.$link['conf']['link'].'" class="'.$link['conf']['classes'].'">'.$link['conf']['text'].'</a>'
-            . '<a href="'.site_root().'/admin/modules/'.$module['machine_name'].'/'.$link['action']['link'].'" class="'.$link['action']['classes'].'">'.$link['action']['text'].'</a>'
-            : '<a href="'.site_root().'/admin/modules/'.$module['machine_name'].'/'.$link['action']['link'].'" class="'.$link['action']['classes'].'">'.$link['action']['text'].'</a>' ;
-    $output .= '<td><input type="checkbox" class="icheck" name="module-'.$module['machine_name'].'" '.$attr.'></td>'
-            . '<input type="hidden" name="moduleType" value="'.$module['core_module'].'">';
-    $output .= '<td><label for="module-'.$module['machine_name'].'"><strong>'.$module['name'].'</strong></label></td>'
+    $actions = (isset($link['conf'])) ?'<a href="'.'/'.$link['conf']['link'].'" class="'.$link['conf']['classes'].'">'.$link['conf']['text'].'</a>'
+            . '<a href="/admin/modules/'.$module['module'].'/'.$link['action']['link'].'" class="'.$link['action']['classes'].'">'.$link['action']['text'].'</a>'
+            : '<a href="/admin/modules/'.$module['module'].'/'.$link['action']['link'].'" class="'.$link['action']['classes'].'">'.$link['action']['text'].'</a>' ;
+    $output .= '<td><input type="checkbox" class="icheck" name="module-'.$module['module'].'" '.$attr.'></td>'
+            . '<input type="hidden" name="moduleType" value="'.$module['core'].'">';
+    $output .= '<td><label for="module-'.$module['module'].'"><strong>'.$module['name'].'</strong></label></td>'
             . '<td>'.$module['version'].'</td>'
             . '<td>'.$module['description'].'</td>';
     $output .= '<td>'

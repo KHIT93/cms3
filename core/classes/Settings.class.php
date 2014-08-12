@@ -52,7 +52,7 @@ class Settings {
         }
         $db = NULL;
     }
-    function settingList() {
+    public static function settingList() {
         //Get a list of all settings
         $settings = array(
             'system' => array(),
@@ -61,11 +61,11 @@ class Settings {
             'search' => array(),
             'language' => array()
         );
-        if(has_permission('access_admin_settings_system', $_SESSION['uid']) === true) {
+        if(has_permission('access_admin_settings_system', Session::exists(Config::get('session/session_name'))) === true) {
             $settings['system'][] = array(
                 'title' => t('Site configuration'),
                 'description' => t('Use this setting to configure generic site settings such as sitename and site slogan.'),
-                'link' => site_root().'/admin/settings/system'
+                'link' => '/admin/settings/system'
             );
         }
         /*$settings['system'][] = array(
@@ -73,85 +73,85 @@ class Settings {
             'description' => t('Use this setting to configure performance settings and caching.'),
             'link' => site_root().'/admin/settings/system/perf'
         );*/
-        if(has_permission('access_admin_settings_system_users', $_SESSION['uid']) === true) {
+        if(has_permission('access_admin_settings_system_users', Session::exists(Config::get('session/session_name'))) === true) {
             $settings['system'][] = array(
                 'title' => t('Users'),
                 'description' => t('Configure global settings for users and select how new users can be created.'),
-                'link' => site_root().'/admin/settings/system/users'
+                'link' => '/admin/settings/system/users'
             );
         }
-        if(has_permission('access_admin_settings_system_systemcheck', $_SESSION['uid']) === true) {
+        if(has_permission('access_admin_settings_system_systemcheck', Session::exists(Config::get('session/session_name'))) === true) {
             $settings['system'][] = array(
                 'title' => t('System check'),
                 'description' => t('Check if all files and folders exist and if they have the correct permissions.'),
-                'link' => site_root().'/admin/settings/system/systemcheck'
+                'link' => '/admin/settings/system/systemcheck'
             );
         }
-        if(has_permission('access_admin_settings_content_wysiwyg', $_SESSION['uid']) === true) {
+        if(has_permission('access_admin_settings_content_wysiwyg', Session::exists(Config::get('session/session_name'))) === true) {
             $settings['content'][] = array(
                 'title' => t('WYSIWYG settings'),
                 'description' => t('Configure the built-in CKEditor.'),
-                'link' => site_root().'/admin/settings/content/wysiwyg'
+                'link' => '/admin/settings/content/wysiwyg'
             );
         }
-        if(has_permission('access_admin_settings_development', $_SESSION['uid']) === true) {
+        if(has_permission('access_admin_settings_development', Session::exists(Config::get('session/session_name'))) === true) {
             $settings['development'][] = array(
                 'title' => t('Development Mode'),
                 'description' => t('Enable or disable Development Mode.'),
-                'link' => site_root().'/admin/settings/development'
+                'link' => '/admin/settings/development'
             );
         }
-        if(has_permission('access_admin_settings_development_maintenance', $_SESSION['uid']) === true) {
+        if(has_permission('access_admin_settings_development_maintenance', Session::exists(Config::get('session/session_name'))) === true) {
             $settings['development'][] = array(
                 'title' => t('Maintenance'),
                 'description' => t('Configure maintenance mode for the website and enable/disable maintenance mode.'),
-                'link' => site_root().'/admin/settings/development/maintenance'
+                'link' => '/admin/settings/development/maintenance'
             );
         }
-        if(has_permission('access_admin_settings_cron', $_SESSION['uid']) === true) {
+        if(has_permission('access_admin_settings_cron', Session::exists(Config::get('session/session_name'))) === true) {
             $settings['development'][] = array(
                 'title' => t('Cron'),
                 'description' => t('Manage automatic site maintenance tasks.'),
-                'link' => site_root().'/admin/settings/cron'
+                'link' => '/admin/settings/cron'
             );
         }
-        if(has_permission('access_admin_settings_search_redirect', $_SESSION['uid']) === true) {
+        if(has_permission('access_admin_settings_search_redirect', Session::exists(Config::get('session/session_name'))) === true) {
             $settings['search'][] = array(
                 'title' => t('URL Redirect'),
                 'description' => t('Configure URL Redirect of different types'),
-                'link' => site_root().'/admin/settings/search/redirect'
+                'link' => '/admin/settings/search/redirect'
             );
         }
-        if(has_permission('access_admin_settings_search_metadata', $_SESSION['uid']) === true) {
+        if(has_permission('access_admin_settings_search_metadata', Session::exists(Config::get('session/session_name'))) === true) {
             $settings['search'][] = array(
                 'title' => t('Meta-tags'),
                 'description' => t('Configure metadata for the entire site. Change settings for search robots.'),
-                'link' => site_root().'/admin/settings/search/metadata'
+                'link' => '/admin/settings/search/metadata'
             );
         }
-        if(has_permission('access_admin_settings_search_errorpages', $_SESSION['uid']) === true) {
+        if(has_permission('access_admin_settings_search_errorpages', Session::exists(Config::get('session/session_name'))) === true) {
             $settings['search'][] = array(
                 'title' => t('Error pages'),
                 'description' => t('Configure custom pages for HTTP errors such as 404, 403 and 500'),
-                'link' => site_root().'/admin/settings/search/error-pages'
+                'link' => '/admin/settings/search/error-pages'
             );
         }
-        if(has_permission('access_admin_settings_language', $_SESSION['uid']) === true) {
+        if(has_permission('access_admin_settings_language', Session::exists(Config::get('session/session_name'))) === true) {
             $settings['language'][] = array(
                 'title' => t('Language'),
                 'description' => t('Configure website language.'),
-                'link' => site_root().'/admin/settings/language'
+                'link' => '/admin/settings/language'
             );
         }
-        if(has_permission('access_admin_settings_language_translate', $_SESSION['uid']) === true) {
+        if(has_permission('access_admin_settings_language_translate', Session::exists(Config::get('session/session_name'))) === true) {
             $settings['language'][] = array(
                 'title' => t('Translation'),
                 'description' => t('Use the translation console to translate strings from modules and themes into active site language.'),
-                'link' => site_root().'/admin/settings/language/translate'
+                'link' => '/admin/settings/language/translate'
             );
         }
-        foreach (Modules::activeModules() as $module) {
-            if(Modules::moduleImplements($module, 'settings_alter')) {
+        foreach (Module::activeModules() as $module) {
+            if(Module::moduleImplements($module, 'settings_alter')) {
                 //call_user_func($module['module'].'_settings_alter', $settings);
                 //call_user_func_array($module['module'].'_settings_alter', $settings);
                 $function = $module['module'].'_settings_alter';
@@ -190,22 +190,15 @@ class Settings {
         
         return $data;
     }
-    function system() {
-        $db = db_connect();
-        $csrf = Csrf::addCsrf();
-        $token_id = $csrf->get_token_id();
-        global $site_data;
-        $editSite = $site_data;
+    public static function system() {
+        $editSite = Config::get('site');
         $get_url = splitURL();
         if(isset($get_url[3])) {
-            if($get_url[3] == 'perf') {
-                $output = $this->systemPerformance();
-            }
-            else if($get_url[3] == 'users') {
-                $output = $this->systemUsers();
+            if($get_url[3] == 'users') {
+                $output = self::systemUsers();
             }
             else if($get_url[3] == 'systemcheck') {
-                $output = $this->systemCheck();
+                $output = self::systemCheck();
             }
             else {
                 $output = 'System settings 404';
@@ -214,7 +207,7 @@ class Settings {
         else {
             
             $output = '<div class="page-head">'
-                    . '<h2>'.t('Site configuration').'</h2>'
+                    . '<h2>'.t('Site configuration for @site_name', array('@site_name' => Config::get('site/site_name'))).'</h2>'
                     . get_breadcrumb()
                     . '</div>'
                     . '<div class="cl-mcont">'
@@ -234,38 +227,21 @@ class Settings {
                     . '</div>'
                     . '<div id="siteFrontpage" class="form-group form-inline">'
                     . '<label for="inputFrontpage">'.t('Site frontpage').'</label>'
-                    . '<p>http://'.$_SERVER['HTTP_HOST'].site_root().'/<input type="text" class="form-control form300" name="frontpage" value="'.$editSite['site_front'].'"></p>'
+                    . '<p>http://'.$_SERVER['HTTP_HOST'].'/<input type="text" class="form-control form300" name="frontpage" value="'.$editSite['site_front'].'"></p>'
                     . '<p class="help-block">'.t('Enter the relative path for the page that you want to use').'</p>'
                     . '</div>'
-                    . '<input type="hidden" name="form-token" value="'.$csrf->get_token($token_id).'">'
+                    . '<input type="hidden" name="form-token" value="'.Token::generate().'">'
+                    . '<input type="hidden" name="form_id" value="editSite">'
                     . '<div class="form-actions">'
-                    . '<button type="submit" name="editPage" class="btn btn-rad btn-sm btn-primary"><span class="glyphicon glyphicon-floppy-saved"></span> '.t('Save changes').'</button>'
+                    . '<button type="submit" name="editSite" class="btn btn-rad btn-sm btn-primary"><span class="glyphicon glyphicon-floppy-saved"></span> '.t('Save changes').'</button>'
                     . '</div>'
                     . '</form>'
                     . '</div>';
         }
-        $db = NULL;
         return $output;
     }
-    function systemPerformance() {
-        $db = db_connect();
-        $output = '<div class="page-head">'
-                . '<h2>'.t('Performance').'</h2>'
-                . get_breadcrumb()
-                . '</div>'
-                . '<div class="cl-mcont">'
-                    . print_messages()
-                . '<div class="col-md-12">'.
-                t('Under development')
-                . '</div>';
-        $db = NULL;
-        return $output;
-    }
-    function systemUsers() {
-        $db = db_connect();
-        $csrf = Csrf::addCsrf();
-        $token_id = $csrf->get_token_id();
-        global $site_data;
+    public static function systemUsers() {
+        $site_data = Config::get('site');
         $output = '<div class="page-head">'
                 . '<h2>'.t('Users').'</h2>'
                 . get_breadcrumb()
@@ -293,7 +269,8 @@ class Settings {
         $output .= t('Users can create an account without approval from admin')
                 . '</label>'
                 . '</div>'
-                . '<input type="hidden" name="form-token" value="'.$csrf->get_token($token_id).'">';
+                . '<input type="hidden" name="form-token" value="'.Token::generate().'">'
+                . '<input type="hidden" name="form_id" value="globalUser">';
         $output .= '<div class="form-group">'
                 . '<button type="submit" name="globalUser" class="btn btn-rad btn-sm btn-primary">'.t('Save').'</button>'
                 . '</div>'
@@ -302,7 +279,7 @@ class Settings {
         $db = NULL;
         return $output;
     }
-    function systemCheck() {
+    public static function systemCheck() {
         $db = db_connect();
         $output = '<div class="page-head">'
                 . '<h2>'.t('Systemcheck').'</h2>'
@@ -315,10 +292,7 @@ class Settings {
                 . '</div>';
         $db = NULL;
     }
-    function contentWysiwyg() {
-        $db = db_connect();
-        $csrf = Csrf::addCsrf();
-        $token_id = $csrf->get_token_id();
+    public static function contentWysiwyg() {
         //Show settings for content management
         $output = '<div class="page-head">'
                     . '<h2>'.t('WYSIWYG settings').'</h2>'
@@ -327,8 +301,7 @@ class Settings {
                     . '<div class="cl-mcont">'
                     . print_messages()
                     . '<div class="col-md-12">';
-        $query = $db->query("SELECT `config_value` FROM `config` WHERE `config_name`='enable_wysiwyg'");
-        $wysiwyg = $query->fetchColumn();
+        $wysiwyg = Config::get('site/wysiwyg');
         $output .= t('Here you can either enable or disable the built-in CKEditor. CKEditor is a Graphical editor for textareas which makes you create content like in any other texteditor.');
         $output .= '<form name="enableWysiwyg" action="" method="POST" role="form">'
                 . '<div class="checkbox">'
@@ -337,7 +310,8 @@ class Settings {
         $output .= ($wysiwyg == 1) ? '<input type="checkbox" name="inputWysiwyg" class="switch" value="1" checked>' : '<input type="checkbox" name="inputWysiwyg" class="switch" value="1">';
         $output .= '</label>'
                 . '</div>'
-                . '<input type="hidden" name="form-token" value="'.$csrf->get_token($token_id).'">'
+                . '<input type="hidden" name="form-token" value="'.Token::generate().'">'
+                . '<input type="hidden" name"form_id" value="enableWysiwyg">'
                 . '<div class="form-group">'
                 . '<button type="submit" name="editPage" class="btn btn-rad btn-sm btn-primary">'
                 . '<span class="glyphicon glyphicon-floppy-saved"></span> '.t('Save changes')
@@ -347,15 +321,12 @@ class Settings {
         $db = NULL;
         return $output;
     }
-    function development() {
-        $db = db_connect();
-        $csrf = Csrf::addCsrf();
-        $token_id = $csrf->get_token_id();
+    public static function development() {
         $get_url = splitURL();
-        $site_data = getSiteConfig();
+        $site_data = Config::get('site');
         if(isset($get_url[3])) {
             if($get_url[3] == 'maintenance') {
-                $output = $this->maintenance();
+                $output = self::maintenance();
             }
             else {
                 $mode = $site_data['dev_mode'];
@@ -370,7 +341,8 @@ class Settings {
                 $output .='<form method="POST" name="setDevMode" action="" role="form">'
                         . '<label class="checkbox">'.t('Enable Development Mode').'</label>';
                 $output .= ($mode == 1) ? '<input type="checkbox" class="switch" name="inputDevMode" value="1" checked>': '<input type="checkbox" class="switch" name="inputDevMode" value="1">';
-                $output .= '<input type="hidden" name="form-token" value="'.$csrf->get_token($token_id).'">'
+                $output .= '<input type="hidden" name="form-token" value="'.Token::generate().'">'
+                        . '<input type="hidden" name="form_id" value="setDevMode">'
                         . '<br/><br/><button type="submit" name="setDevMode" class="btn btn-rad btn-sm btn-primary"><span class="glyphicon glyphicon-floppy-saved"></span> '.  t('Save changes').'</button>'
                           .'</form>'
                         . '</div>';
@@ -389,7 +361,8 @@ class Settings {
             $output .= '<form method="POST" name="setDevMode" action="" role="form">'
                     . '<label class="checkbox">'.t('Enable Development Mode').'</label>';
             $output .= ($mode == 1) ? '<input type="checkbox" class="switch" name="inputDevMode" value="1" checked>': '<input type="checkbox" class="switch" name="inputDevMode" value="1">';
-            $output .= '<input type="hidden" name="form-token" value="'.$csrf->get_token($token_id).'">'
+            $output .= '<input type="hidden" name="form-token" value="'.Token::generate().'">'
+                    . '<input type="hidden" name="form_id" value="setDevMode">'
                     . '<br/><br/><button type="submit" name="setDevMode" class="btn btn-rad btn-sm btn-primary"><span class="glyphicon glyphicon-floppy-saved"></span> '.  t('Save changes').'</button>'
                       .'</form>'
                     . '</div>';
@@ -397,14 +370,11 @@ class Settings {
         $db = NULL;
         return $output;
     }
-    function developmentMaintenance() {
-        $csrf = Csrf::addCsrf();
-        $token_id = $csrf->get_token_id();
-        global $site_data;
-        global $adv_data;
+    public static function developmentMaintenance() {
+        $site_data = Config::get('site');
         $mode = $site_data['maintenance'];
-        $output = ($mode == '1') ? '<div class="alert alert-info alert-box"><p>'.t('Maintenance mode is enabled').'</p></div>' : '';
-        $message = getFieldFromDB('adv_config', 'adv_value', 'config_name', 'maintenance');
+        $output = ($mode == 1) ? '<div class="alert alert-info alert-box"><p>'.t('Maintenance mode is enabled').'</p></div>' : '';
+        $message = $site_data['maintenance_message'];
         $output .= '<div class="page-head">'
                 . '<h2>'.t('Maintenance Mode').'</h2>'
                 . get_breadcrumb()
@@ -416,15 +386,16 @@ class Settings {
                 .'<form method="POST" name="setMaintenance" action="" role="form">'
                 . '<label class="checkbox">'.t('Enable Maintenance Mode').'</label>';
         $output .= ($mode == '1') ? '<input type="checkbox" class="switch" name="inputMaintenance" value="1" checked>': '<input type="checkbox" class="switch" name="inputMaintenance" value="1">';
-        $adv_data['maintenance'] = (isset($adv_data['maintenance'])) ? $adv_data['maintenance'] : '';
-        $output .= '<div class="form-group"><label for="inputMessage">'.t('Maintenance message').':</label><br><textarea class="form-control" name="message">'.$adv_data['maintenance'].'</textarea></div>';
-        $output .= '<input type="hidden" name="form-token" value="'.$csrf->get_token($token_id).'">'
+        //$adv_data['maintenance'] = (isset($adv_data['maintenance'])) ? $adv_data['maintenance'] : '';
+        $output .= '<div class="form-group"><label for="inputMessage">'.t('Maintenance message').':</label><br><textarea class="form-control" name="message">'.'</textarea></div>';
+        $output .= '<input type="hidden" name="form-token" value="'.Token::generate().'">'
+                . '<input type="hidden" name="form_id" value="setMaintenace">'
                 . '<button type="submit" name="setMaintenance" class="btn btn-rad btn-sm btn-primary"><span class="glyphicon glyphicon-floppy-saved"></span> '.  t('Save changes').'</button>'
                   .'</form>'
                 . '</div>';
         return $output;
     }
-    function search_meta() {
+    public static function search_meta() {
         //Show settings for search engines and metadata
         $output = '<div class="page-head">'
                 . '<h2>'.t('Search & Metadata').'</h2>'
@@ -437,21 +408,21 @@ class Settings {
                 . '</div>';
         return $output;
     }
-    function search_metaData() {
+    public static function search_metaData() {
         
     }
-    function search_metaRedirect() {
+    public static function search_metaRedirect() {
         
     }
-    function search_errorPages() {
+    public static function search_errorPages() {
         
     }
-    function language() {
+    public static function language() {
         $get_url = splitURL();
         $output = '';
         if($get_url[3] == 'translate') {
             if(isset($get_url[4]) && isset($get_url[5]) && is_numeric($get_url[5])) {
-                $output = $this->translate();
+                $output = self::translate();
             }
             else {
                 //Show regional settings
@@ -465,12 +436,12 @@ class Settings {
                         . print_messages()
                         . '<div class="col-md-12">';
                 $output .= '<div class="hidden-xs">';
-                $data = pagination(20, 'translation', '*');
+                $data = pagination(25, 'translation', '*');
                 $translations = $data['data'];
                 $output .= '<table class="table table-striped table-hover">'
                         . '<thead style="background-color: #CCC;">'
                              .'<tr>'
-                                 .'<th><strong>'.t('String').'</strong></th>'
+                                 .'<th><strong>'.t('Original string').'</strong></th>'
                                  .'<th><strong>'.t('Translation').'</strong></th>'
                                  .'<th></th>'
                              .'</tr>'
@@ -478,10 +449,10 @@ class Settings {
                         . '<tbody>';
                 foreach($translations as $translation) {
                     $output .= '<tr>'
-                                  .'<td>'.check_plain($translation['t_string']).'</td>'
-                                  .'<td>'.check_plain($translation['t_translation']).'</td>'
+                                  .'<td>'.Sanitize::checkPlain($translation['string']).'</td>'
+                                  .'<td>'.Sanitize::checkPlain($translation['translation']).'</td>'
                                   .'<td>'
-                                      .'<a href="'.site_root().'/admin/settings/language/translate/'.$translation['t_locale'].'/'.$translation['t_id'].'/edit" class="btn btn-rad btn-sm btn-default">'.t('Translate').'</a>'
+                                      .'<a href="/admin/settings/language/translate/'.$translation['language'].'/'.$translation['tid'].'/edit" class="btn btn-rad btn-sm btn-default">'.t('Translate').'</a>'
                                   .'</td>';
                 }
                 $output .= '</tbody></table>';
@@ -504,25 +475,11 @@ class Settings {
         }
         return $output;
     }
-    function translate() {
+    public static function translate() {
+        $db = DB::getInstance();
         $get_url = splitURL();
-        $db = db_connect();
-        $csrf = Csrf::addCsrf();
-        $token_id = $csrf->get_token_id();
-        $translation = array();
-        $query = $db->prepare("SELECT * FROM `translation` WHERE `t_locale`=:locale AND `t_id`=:field");
-        $query->bindValue(':locale', check_plain($get_url[4]), PDO::PARAM_STR);
-        $query->bindValue(':field', (int)$get_url[5], PDO::PARAM_INT);
-        try {
-        $query->execute(); //Executes query
-
-        $translation = $query->fetchAll(PDO::FETCH_ASSOC);
-        }
-        catch (Exception $e) {
-            addMessage('error', t('There was an error while processing the request'), $e);
-            die($e->getMessage());
-        }
-        $translation['t_translation'] = ((isset($translation['t_translation']) && !empty($translation['t_translation'])) OR (isset($translation['t_translation']) && $translation['t_translation'] != '')) ? $translation['t_translation'] : 'empty';
+        $translation = $db->query("SELECT * FROM `translation` WHERE `language`=? AND `tid`=?", array($get_url[4], $get_url[5]), PDO::FETCH_ASSOC)->first();
+        $translation['translation'] = ((isset($translation['translation']) && !empty($translation['translation'])) OR (isset($translation['translation']) && $translation['translation'] != '')) ? $translation['translation'] : NULL;
         //$output = krumo($translation);
         $output = '<div class="page-head">'
                 . '<h2>'.t('Translation').'</h2>'
@@ -533,26 +490,25 @@ class Settings {
                 . '<form method="POST" name="editTranslation" action="" role="form">'
                        .'<div class="form-group">'
                            .'<label for="inputString">'.  t('Original string').':</label>'
-                           .'<p class="form-control-static">'.$translation[0]['t_string'].'</p>'
+                           .'<p class="form-control-static">'.$translation['string'].'</p>'
                        .'</div>'
                        .'<div class="form-group">'
                            .'<label for="inputTranslation">'.  t('Translated string').':</label><br/>'
-                           .'<textarea class="form-control" name="translation">'.$translation[0]['t_translation'].'</textarea>'
+                           .'<textarea class="form-control" name="translation">'.$translation['translation'].'</textarea>'
                        .'</div>'
                        .'<input type="hidden" name="t_id" value="'.$get_url[5].'">'
                        .'<input type="hidden" name="t_locale" value="'.$get_url[4].'">'
-                       .'<input type="hidden" name="form-token" value="'.$csrf->get_token($token_id).'">'
+                       .'<input type="hidden" name="form-token" value="'.Token::generate().'">'
+                       . '<input type="hidden" name="form_id" value="editTranslation">'
                        .'<div class="form-actions">'
                            .'<button type="submit" name="editTranslation" class="btn btn-rad btn-sm btn-primary">'.t('Save changes').'</button>'
                        .'</div>'
                  .'</form>'
                 . '</div>';
-        $db = NULL;
         return $output;
     }
     function developmentCron() {
-        $csrf = Csrf::addCsrf();
-        $token_id = $csrf->get_token_id();
+        $token = Token::generate();
         $intervals = array(
             0 => t('never'),
             1 => '1 '.t('hour'),
@@ -562,7 +518,7 @@ class Settings {
             24 => '1 '.t('day')
         );
         $options = '';
-        $current = getFieldFromDB('config', 'config_value', 'config_name', 'cron');
+        $current = Config::get('site/cron');
         foreach ($intervals as $key => $value) {
             if($key == $current) {
                 $options .= '<option value="'.$key.'" selected >'.$value.'</option>';
@@ -580,7 +536,8 @@ class Settings {
                 . '<div class="col-md-12">'
                 . '<p>'.t('Cron takes care of running periodic tasks like checking for updates and indexing content for search.').'</p>'
                 . '<form name="runCron" method="POST" action="" role="form">'
-                    .'<input type="hidden" name="form-token" value="'.$csrf->get_token($token_id).'">'
+                    .'<input type="hidden" name="form-token" value="'.$token.'">'
+                    . '<input type="hidden" name="form_id" value="runCron">'
                     . '<button type="submit" name="runCron" class="btn btn-rad btn-default">'.t('Run cron').'</button>'
                 . '</form>'
                 . '<form method="POST" name="editCron" action="" role="form">'
@@ -590,7 +547,8 @@ class Settings {
                               .$options
                            .'</select>'
                        .'</div>'
-                       .'<input type="hidden" name="form-token" value="'.$csrf->get_token($token_id).'">'
+                       .'<input type="hidden" name="form-token" value="'.$token.'">'
+                       .'<input type="hidden" name="form_id" value="editCron">'
                        .'<div class="form-actions">'
                            .'<button type="submit" name="editCron" class="btn btn-rad btn-sm btn-primary">'.t('Save changes').'</button>'
                        .'</div>'

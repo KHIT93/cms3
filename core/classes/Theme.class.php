@@ -22,7 +22,7 @@ class Theme {
         $dir = scandir('templates/', SCANDIR_SORT_ASCENDING);
         unset ($dir[0]);
         unset ($dir[1]);
-        if($dir[2] == '.DS_Store') {
+        if(isset($dir[2]) && $dir[2] == '.DS_Store') {
             unset ($dir[2]);
         }
         $output = array();

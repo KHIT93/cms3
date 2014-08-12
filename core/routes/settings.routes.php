@@ -3,7 +3,7 @@
  * @file
  * Handles backend-routing for settings and configuration
  */
-include 'core/inc/admin.inc.php';
+include INCLUDES_PATH.'/admin.inc.php';
 $settings = new Settings();
 if(isset($get_url[2])) {
     //Find correct settings page
@@ -12,10 +12,10 @@ if(isset($get_url[2])) {
             if(isset($get_url[3])) {
                 switch($get_url[3]) {
                     case 'users':
-                        print $settings->systemUsers();
+                        print Settings::systemUsers();
                     break;
                     case 'systemcheck':
-                        print $settings->systemCheck();
+                        print Settings::systemCheck();
                     break;
                     default :
                         http_response_code(404);
@@ -24,14 +24,14 @@ if(isset($get_url[2])) {
                 }
             }
             else {
-                print $settings->system();
+                print Settings::system();
             }
         break;
         case 'content':
             if(isset($get_url[3])) {
                 switch($get_url[3]) {
                     case 'wysiwyg':
-                        print $settings->contentWysiwyg();
+                        print Settings::contentWysiwyg();
                     break;
                     default :
                         http_response_code(404);
@@ -48,7 +48,7 @@ if(isset($get_url[2])) {
             if(isset($get_url[3])) {
                 switch($get_url[3]) {
                     case 'maintenance':
-                        print $settings->developmentMaintenance();
+                        print Settings::developmentMaintenance();
                     break;
                     default :
                         http_response_code(404);
@@ -57,7 +57,7 @@ if(isset($get_url[2])) {
                 }
             }
             else {
-                print $settings->development();
+                print Settings::development();
             }
             
         break;
@@ -65,13 +65,13 @@ if(isset($get_url[2])) {
             if(isset($get_url[3])) {
                 switch($get_url[3]) {
                     case 'redirect':
-                        print $settings->search_metaRedirect();
+                        print Settings::search_metaRedirect();
                     break;
                     case 'metadata':
-                        print $settings->search_metaData();
+                        print Settings::search_metaData();
                     break;
                     case 'error-pages':
-                        print $settings->search_errorPages();
+                        print Settings::search_errorPages();
                     break;
                     default :
                         http_response_code(404);
@@ -85,10 +85,10 @@ if(isset($get_url[2])) {
             }
         break;
         case 'language':
-            print $settings->language();
+            print Settings::language();
         break;
         case 'cron':
-            print $settings->developmentCron();
+            print Settings::developmentCron();
         break;
         default :
             http_response_code(404);
@@ -97,6 +97,6 @@ if(isset($get_url[2])) {
     }
 }
 else {
-    print '<div class="page-head">'.get_breadcrumb().'</div><div class="cl-mcont">'.implode('', $settings->settingList());
-    //krumo($settings->settingList());
+    print '<div class="page-head">'.get_breadcrumb().'</div><div class="cl-mcont">'.implode('', Settings::settingList());
+    //krumo(Settings::settingList());
 }

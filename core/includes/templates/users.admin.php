@@ -25,38 +25,38 @@
                 </thead>
                 <tbody>
                 <?php
-                    $users = getUserList();
+                    $users = User::getUserList();
                     if(!empty($users)) {
                         foreach($users as $user) {
-                            if($user['uid'] == 1) {
+                            if($user->uid() == 1) {
                                 print '<tr>
-                                        <td>'.$user['user_name'].'</td><td class="hidden-xs" >'.$user['username'].'</td><td class="hidden-xs" >'.$user['email'].'</td>'
-                                        .'<td>'.ucfirst(t(getFieldFromDB('roles', 'name', 'rid', $user['user_role']))).'</td>'
+                                        <td>'.$user->name().'</td><td class="hidden-xs" >'.$user->username().'</td><td class="hidden-xs" >'.$user->email().'</td>'
+                                        .'<td>'.ucfirst(t(DB::getInstance()->getField('roles', 'name', 'rid', $user->role()))).'</td>'
                                         .'<td class="hidden-xs" style="text-align: right;">
-                                            <a href="'.site_root().'/admin/users/'.$user['uid'].'/edit" class="btn btn-rad btn-sm btn-default"><span class="glyphicon glyphicon-edit"></span> '.t('Edit User').'</a>
-                                            <a href="'.site_root().'/admin/users/'.$user['uid'].'/delete" class="btn btn-rad btn-sm btn-danger disabled"><span class="glyphicon glyphicon-floppy-remove"></span> '.t('Delete User').'</a>
-                                            <a href="'.site_root().'/admin/users/'.$user['uid'].'/disable" class="btn btn-rad btn-sm btn-warning disabled">'.t('Disable User').'</a>
+                                            <a href="/admin/users/'.$user->uid().'/edit" class="btn btn-rad btn-sm btn-default"><span class="glyphicon glyphicon-edit"></span> '.t('Edit User').'</a>
+                                            <a href="/admin/users/'.$user->uid().'/delete" class="btn btn-rad btn-sm btn-danger disabled"><span class="glyphicon glyphicon-floppy-remove"></span> '.t('Delete User').'</a>
+                                            <a href="/admin/users/'.$user->uid().'/disable" class="btn btn-rad btn-sm btn-warning disabled">'.t('Disable User').'</a>
                                         </td>
                                     </tr>';
                             }
                             else {
-                                if($user['active'] == 1) {
+                                if($user->active() == 1) {
                                     print '<tr>
-                                            <td>'.$user['user_name'].'</td><td class="hidden-xs" >'.$user['username'].'</td><td class="hidden-xs" >'.$user['email'].'</td>'
-                                            .'<td>'.ucfirst(t(getFieldFromDB('roles', 'name', 'rid', $user['user_role']))).'</td>'
+                                            <td>'.$user->name().'</td><td class="hidden-xs" >'.$user->username().'</td><td class="hidden-xs" >'.$user->email().'</td>'
+                                            .'<td>'.ucfirst(t(DB::getInstance()->getField('roles', 'name', 'rid', $user->role()))).'</td>'
                                             .'<td class="hidden-xs" style="text-align: right;">
-                                                <a href="'.site_root().'/admin/users/'.$user['uid'].'/edit" class="btn btn-rad btn-sm btn-default"><span class="glyphicon glyphicon-edit"></span> '.t('Edit User').'</a>
-                                                <a href="'.site_root().'/admin/users/'.$user['uid'].'/delete" class="btn btn-rad btn-sm btn-danger"><span class="glyphicon glyphicon-floppy-remove"></span> '.t('Delete User').'</a>
-                                                <a href="'.site_root().'/admin/users/'.$user['uid'].'/disable" class="btn btn-rad btn-sm btn-warning">'.t('Disable User').'</a>
+                                                <a href="/admin/users/'.$user->uid().'/edit" class="btn btn-rad btn-sm btn-default"><span class="glyphicon glyphicon-edit"></span> '.t('Edit User').'</a>
+                                                <a href="/admin/users/'.$user->uid().'/delete" class="btn btn-rad btn-sm btn-danger"><span class="glyphicon glyphicon-floppy-remove"></span> '.t('Delete User').'</a>
+                                                <a href="/admin/users/'.$user->uid().'/disable" class="btn btn-rad btn-sm btn-warning">'.t('Disable User').'</a>
                                             </td>
                                         </tr>';
                                 }
                                 else {
                                     print '<tr>
-                                            <td>'.$user['user_name'].'</td><td class="hidden-xs" >'.$user['username'].'</td><td class="hidden-xs" >'.$user['email'].'</td>'
-                                            .'<td>'.ucfirst(t(getFieldFromDB('roles', 'name', 'rid', $user['user_role']))).'</td>'
+                                            <td>'.$user->name().'</td><td class="hidden-xs" >'.$user->username().'</td><td class="hidden-xs" >'.$user->email().'</td>'
+                                            .'<td>'.ucfirst(t(DB::getInstance()->getField('roles', 'name', 'rid', $user->role()))).'</td>'
                                             .'<td class="hidden-xs" style="text-align: right;">
-                                                <a href="'.site_root().'/admin/users/'.$user['uid'].'/enable" class="btn btn-rad btn-sm btn-info"><i class="fa fa-unlock"></i> '.t('Enable User').'</a>
+                                                <a href="/admin/users/'.$user->uid().'/enable" class="btn btn-rad btn-sm btn-info"><i class="fa fa-unlock"></i> '.t('Enable User').'</a>
                                             </td>
                                         </tr>';
                                 }
@@ -87,7 +87,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h4 class="modal-title"><?php print t('Create new User Account'); ?></h4>
+                            <h4 class="modal-title"><?php print t('Create new useraccount'); ?></h4>
                         </div>
                         <form method="POST" name="addUser" action="" role="form">
                             <div class="modal-body row">
@@ -109,11 +109,11 @@
                                 </div>
                                 <div class="form-group col-md-8">
                                     <?php
-                                    foreach (Permissions::get_roles() as $role) {
+                                    foreach (Permission::get_roles() as $role) {
                                         print '<div class="radio">'
                                                 . '<label>'
-                                                    . '<input type="radio" name="user_group" id="optionsUsergroup'.$role['rid'].'" value="'.$role['rid'].'">'
-                                                    . ' '.ucfirst(t($role['name']))
+                                                    . '<input type="radio" name="user_group" id="optionsUsergroup'.$role->rid.'" value="'.$role->rid.'">'
+                                                    . ' '.ucfirst(t($role->name))
                                                 . '</label>'
                                             . '</div>';
                                     }
@@ -121,7 +121,8 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <input type="hidden" name="form-token" value="<?php print $csrf->get_token($token_id); ?>">
+                                <input type="hidden" name="form-token" value="<?php print Token::generate(); ?>">
+                                <input type="hidden" name="form_id" value="addUser">
                                 <button type="button" class="btn btn-rad btn-default" data-dismiss="modal"><?php print t('Close'); ?></button>
                                 <button type="submit" name="addUser" class="btn btn-rad btn-primary"><span class="glyphicon glyphicon-ok"></span><?php print t('Create new account'); ?></button>
                             </div>
@@ -132,12 +133,12 @@
         </div>
         <div class="tab-pane fade" id="permissions">
             <?php
-            print Permissions::generatePermissionList();
+            print Permission::generatePermissionList();
             ?>
         </div>
         <div class="tab-pane fade" id="roles">
             <?php
-            print Permissions::generateRoleList();
+            print Permission::generateRoleList();
             ?>
         </div>
     </div>

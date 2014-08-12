@@ -19,16 +19,18 @@
         <tbody class="no-border-y">
             <?php
                 $pages = Page::getPageList();
+                //krumo($pages);
                 foreach($pages as $content) {
-                    $content->data->author = ($content->data->author == 0) ? 'System' : DB::getInstance()->getField('users', 'name', 'uid', $content->data->author);
+                    //krumo($content->data);
+                    $author = ($content->data['author'] == 0) ? 'System' : DB::getInstance()->getField('users', 'name', 'uid', $content->data['author']);
                     print '<tr>
-                            <td>'.$content->data->title.'</td>
-                            <td class="hidden-xs" >'.$content->data->author.'</td>
-                            <td class="hidden-xs" >'.$content->data->access.'</td>
-                            <td>'.$content->data->last_updated.'</td>
+                            <td>'.$content->data['title'].'</td>
+                            <td class="hidden-xs" >'.$author.'</td>
+                            <td class="hidden-xs" >'.(($content->data['status'] == 1) ? t('Published') : t('Unpublished')).'</td>
+                            <td>'.$content->data['last_updated'].'</td>
                             <td class="hidden-xs" style="text-align: right;">
-                                <a href="/admin/content/'.$content->data->pid.'/edit" class="btn btn-rad btn-sm btn-default"><span class="glyphicon glyphicon-edit"></span> '.t('Edit').'</a>
-                                <a href="/admin/content/'.$content->data->pid.'/delete" class="btn btn-rad btn-sm btn-danger"><span class="glyphicon glyphicon-floppy-remove"></span> '.t('Delete').'</a>
+                                <a href="/admin/content/'.$content->data['pid'].'/edit" class="btn btn-rad btn-sm btn-default"><span class="glyphicon glyphicon-edit"></span> '.t('Edit').'</a>
+                                <a href="/admin/content/'.$content->data['pid'].'/delete" class="btn btn-rad btn-sm btn-danger"><span class="glyphicon glyphicon-floppy-remove"></span> '.t('Delete').'</a>
                             </td>
                            </tr>';
                 }
@@ -125,29 +127,18 @@
                                             <?php print t('Published'); ?>
                                         </label>
                                     </div>
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="published" id="optionsPublished3" class="icheck" value="2">
-                                            <?php print t('Login required'); ?>
-                                        </label>
-                                    </div>
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="published" id="optionsPublished4" class="icheck" value="3">
-                                            <?php print t('Admin only'); ?>
-                                        </label>
-                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <input type="hidden" name="form-token" value="<?php print $csrf->get_token($token_id); ?>">
+                        <input type="hidden" name="form-token" value="<?php print Token::generate(); ?>">
+                        <input type="hidden" name="form_id" value="addPage">
                         <button type="submit" name="addPage" class="btn btn-rad btn-primary"><?php print t('Create new page'); ?></button>
                         <button type="button" class="btn btn-rad btn-default" data-dismiss="modal"><?php print t('Close'); ?></button>                        
                     </div>
                 </form>
-                <script src="<?php print site_root();?>/core/js/ckeditor/ckeditor.js"></script>
+                <script src="<?php print CORE_JS_PATH;?>/ckeditor/ckeditor.js"></script>
                 <script>
                     CKEDITOR.replace( 'body', {
                         language: 'da'

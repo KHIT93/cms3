@@ -9,13 +9,13 @@ class File {
             addMessage('error', t('Not found').': '.$path.'<br/>'.t('The file does not exists'));
         }
     }
-    public function write($handle) {
+    public function write() {
         
     }
-    public function read($handle) {
+    public function read() {
         
     }
-    public function delete($handle) {
+    public function delete() {
         
     }
     public static function parse_info_file($filepath = NULL) {
