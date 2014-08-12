@@ -105,29 +105,10 @@ class System {
         return $admin_menu;
     }
     public static function getDashboard() {
-        $db = db_connect();
+        $db = DB::getInstance();
         $dashboard = array();
-        $query = $db->prepare("SELECT `page_id`, `page_title`, `page_author` FROM `pages` ORDER BY `create_date` DESC LIMIT 5");
-        try {
-            $query->execute(); //Executes query
-
-            $dashboard['pages'] = $query->fetchAll(PDO::FETCH_ASSOC);
-        }
-        catch (Exception $e) {
-            addMessage('error', t('There was an error while querying the pagedata'), $e);
-            //die($e->getMessage());
-        }
-        $query = $db->prepare("SELECT `uid`, `user_name`  FROM `users` ORDER BY `uid` DESC LIMIT 5");
-        try {
-            $query->execute(); //Executes query
-
-            $dashboard['users'] = $query->fetchAll(PDO::FETCH_ASSOC);
-        }
-        catch (Exception $e) {
-            addMessage('error', t('There was an error while querying the userdata'), $e);
-            //die($e->getMessage());
-        }
-        $db = NULL;
+        $dashboard['pages'] = $db->query("SELECT * FROM `pages` ORDER BY `created` DESC LIMIT 5")->results();
+        $dashboard['users'] = $db->query("SELECT * FROM `users` ORDER BY `uid` DESC LIMIT 5")->results();
         return $dashboard;
     }
     public static function runCron() {

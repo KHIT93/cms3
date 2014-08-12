@@ -12,5 +12,5 @@ else if($get_url[0] == 'login') {
 }
 else {
     http_response_code(404);
-    include path_to_theme().'/404.php';
+    include Theme::errorPage(404);
 }

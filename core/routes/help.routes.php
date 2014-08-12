@@ -8,11 +8,11 @@ if($get_url[1] == 'help') {
         
     }
     else {
-        include 'core/inc/admin.inc.php';
-        include 'core/inc/templates/help.admin.php';
+        include INCLUDES_PATH.'/admin.inc.php';
+        include INCLUDES_PATH.'/templates/help.admin.php';
     }
 }
 else {
     http_response_code(404);
-    include path_to_theme().'/404.php';
+    include Theme::errorPage(404);
 }

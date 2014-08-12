@@ -10,7 +10,7 @@ function get_breadcrumb() {
     $i = 0;
     if($count > 0) {
         $link = array();
-        $link[] = site_root().'';
+        $link[] = '';
         $breadcrumb = '<ol class="breadcrumb">';
         while($count > 0) {
             $link[] = $items[$i];

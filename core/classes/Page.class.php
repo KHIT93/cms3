@@ -253,40 +253,15 @@ class Page {
         return $page[0];
     }
     public static function getPageList() {
-        if(has_permission('access_admin_content', $_SESSION['uid']) === true) {
-            $db = db_connect();
-            $query = $db->prepare("SELECT `page_id`, `page_title`, `page_author`, `page_access`, `update_date` FROM `pages`");
-            try {
-                $query->execute();
-                $pages = $query->fetchAll(PDO::FETCH_ASSOC);
-            }
-            catch(PDOException $e) {
-                addMessage('error', t('There was an error while generating the pagelist. Please contact your administrator if this error persists'), $e);
-                //die($e->getMessage());
-            }
-            if(isset($pages) && is_array($pages)) {
-                foreach($pages as $content) {
-                    switch($content['page_access']) {
-                        case 0:
-                            $content['page_access'] = t('Unpublished');
-                        break;
-                        case 1:
-                            $content['page_access'] = t('Published');
-                        break;
-                        case 2:
-                            $content['page_access'] = t('Login required');
-                        break;
-                        case 3:
-                            $content['page_access'] = t('Admin only');
-                        break;
-                        default :
-                            $content['page_access'] = t('Invalid').' - '.$content['page_access'];
-                        break;
-                    }                
+        $pages = array();
+        if(has_permission('access_admin_content', Session::exists(Config::get('session/session_name'))) === true) {
+            $query = DB::getInstance()->getAll('pages');
+            if(!$query->error()) {
+                foreach($query->results() as $data) {
+                    $pages[] = new Page($data->pid);
                 }
             }
-            $db = NULL;
         }
-        return (isset($pages) && is_array($pages)) ? $pages : FALSE;
+        return $pages;
     }
 }

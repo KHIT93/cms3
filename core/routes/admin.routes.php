@@ -8,9 +8,9 @@ if(isset($get_url[1])) {
     $route = false;
     $mod_route = false;
     //Determine if a module has a route corresponding to this path
-    foreach (Modules::activeModules() as $module) {
+    foreach (Module::activeModules() as $module) {
         //print 'module-custom-path-each-begin';
-        if(Modules::module_route($module)) {
+        if(Module::module_route($module)) {
             //$mod_route = true;
             $function = $module['module'].'_route';
             
@@ -63,4 +63,4 @@ else {
     include INCLUDES_PATH.'/admin.inc.php';
     include INCLUDES_PATH.'/templates/admin.php';
 }
-include_once path_to_theme().'/footer.tpl.php';
+include_once Theme::path_to_theme().'/footer.tpl.php';

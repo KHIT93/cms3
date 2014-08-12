@@ -5,7 +5,7 @@
                         <div class="content">
                             <div class="side-user">
                                 <div class="avatar">
-                                    <img src="/core/css/images/avatar-noimage_50.png">
+                                    <img src="<?php print CORE_IMG_PATH; ?>/avatar-noimage_50.png">
                                 </div>
                                 <div class="info">
                                     <a href="#">Kenneth Hansen</a>

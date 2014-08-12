@@ -3,8 +3,8 @@
 </div>
 <div class="cl-mcont">
 <?php
-$dashboard = getDashboard();
-print print_messages();
+$dashboard = System::getDashboard();
+print System::print_messages();
 ?>
 <div class="col-md-12">
     <div class="row">
@@ -24,13 +24,13 @@ print print_messages();
                     
                     <?php
                     foreach($dashboard['pages'] as $content) {
-                        $content['page_author'] = ($content['page_author'] == 0) ? 'System' : getFieldFromDB('users', 'user_name', 'uid', $content['page_author']);
+                        $content->author = ($content->author == 0) ? 'System' : DB::getInstance()->getField('users', 'name', 'uid', $content->author);
                         print '<tr>
-                                <td>'.$content['page_title'].'</td>
-                                <td>'.$content['page_author'].'</td>
+                                <td>'.$content->title.'</td>
+                                <td>'.$content->author.'</td>
                                 <td style="text-align: right;" class="hidden-xs">
-                                    <a href="'.site_root().'/admin/content/'.$content['page_id'].'/edit" class="btn btn-rad btn-default btn-sm">'.t('Edit').'</a>
-                                    <a href="'.site_root().'/admin/content/'.$content['page_id'].'/delete" class="btn btn-rad btn-danger btn-sm">'.t('Delete').'</a>
+                                    <a href="/admin/content/'.$content->pid.'/edit" class="btn btn-rad btn-default btn-sm">'.t('Edit').'</a>
+                                    <a href="/admin/content/'.$content->pid.'/delete" class="btn btn-rad btn-danger btn-sm">'.t('Delete').'</a>
                                 </td>
                                </tr>';
                     }
@@ -47,7 +47,7 @@ print print_messages();
                 foreach($dashboard['users'] as $content) {
                     //$content['page_author'] = ($content['page_author'] == 0) ? 'System' : getFieldFromDB('users', 'name', 'user_id', $content['page_author']);
                     print '<tr>
-                            <td><a href="'.site_root().'/admin/users/'.$content['uid'].'/edit">'.$content['user_name'].'</a></td>
+                            <td><a href="/admin/users/'.$content->uid.'/edit">'.$content->name.'</a></td>
                            </tr>';
                 }
                 ?>

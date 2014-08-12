@@ -25,7 +25,7 @@ define('INCLUDES_PATH', 'core/includes');
 
 define('ERROR_FILE_PATH', INCLUDES_PATH.'/errors');
 
-define('ASSETS_PATH', 'core/assets');
+define('ASSETS_PATH', '/core/assets');
 
 define('CORE_CLASSES_PATH', 'core/classes');
 
@@ -36,6 +36,8 @@ define('CORE_CSS_PATH', ASSETS_PATH.'/styles');
 define('CORE_JS_PATH', ASSETS_PATH.'/scripts');
 
 define('CORE_FONT_PATH', ASSETS_PATH.'/fonts');
+
+define('CORE_IMG_PATH', ASSETS_PATH.'/images');
 
 define('DEFAULT_ADMIN_RID', 1);
 

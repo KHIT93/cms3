@@ -19,7 +19,7 @@
         <link href="<?php print CORE_JS_PATH;?>/bootstrap.datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" >
 	<link href="<?php print CORE_JS_PATH;?>/jquery.select2/select2.css" rel="stylesheet" type="text/css" >
         <link href="<?php print CORE_JS_PATH;?>/bootstrap.slider/css/slider.css" rel="stylesheet" type="text/css" >
-        <link href="<?php print Theme::path_to_theme();?>/css/framework.css" rel="stylesheet" type="text/css" media="screen">
+        <link href="/<?php print Theme::path_to_theme();?>/css/framework.css" rel="stylesheet" type="text/css" media="screen">
         <link href="<?php print CORE_CSS_PATH;?>/admin.css" rel="stylesheet" type="text/css" media="screen">
         <link href="<?php print CORE_JS_PATH;?>/jquery.icheck/skins/square/blue.css" rel="stylesheet">
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>

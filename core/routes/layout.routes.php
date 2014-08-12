@@ -8,53 +8,53 @@ if($get_url[1] == 'layout') {
         if($get_url[2] == 'menus') {
             if(isset($get_url[3])) {
                 if($get_url[4] == 'links') {
-                    include 'core/inc/admin.inc.php';
-                    include 'core/inc/admin/links.admin.php';
+                    include INCLUDES_PATH.'/admin.inc.php';
+                    include INCLUDES_PATH.'/admin/links.admin.php';
                 }
                 else if(isset ($get_url[5])) {
                     if($get_url[5] == 'edit') {
-                        include 'core/inc/admin.inc.php';
-                        include 'core/inc/admin/edit.admin.php';
+                        include INCLUDES_PATH.'/admin.inc.php';
+                        include INCLUDES_PATH.'/admin/edit.admin.php';
                     }
                     else if($get_url[5] == 'delete') {
-                        include 'core/inc/admin.inc.php';
-                        include 'core/inc/admin/delete.admin.php';
+                        include INCLUDES_PATH.'/admin.inc.php';
+                        include INCLUDES_PATH.'/admin/delete.admin.php';
                     }
                 }
             }
             else {
-                include 'core/inc/admin.inc.php';
-                include 'core/inc/templates/menus.layout.php';
+                include INCLUDES_PATH.'/admin.inc.php';
+                include INCLUDES_PATH.'/templates/menus.layout.php';
             }
         }
         else if($get_url[2] == 'widgets') {
             if($get_url[3] == 'add') {
-                include 'core/inc/admin.inc.php';
+                include INCLUDES_PATH.'/admin.inc.php';
                 print Widgets::createWidgetForm();
             }
             else if(is_numeric($get_url[3])) {
                 if($get_url[4] == 'edit') {
-                    include 'core/inc/admin.inc.php';
+                    include INCLUDES_PATH.'/admin.inc.php';
                     print Widgets::updateWidgetForm($get_url[3]);
                 }
                 else if($get_url[4] == 'delete') {
-                    include 'core/inc/admin.inc.php';
+                    include INCLUDES_PATH.'/admin.inc.php';
                     print Forms::form_delete(t('Delete widget'), 'deleteWidget', $get_url[3], getFieldFromDB('widgets', 'widget_title', 'widget_id', $get_url[3]), site_root().'/admin/layout/widgets');
                 }
             }
             else {
-                include 'core/inc/admin.inc.php';
-                include 'core/inc/templates/widgets.layout.php';
+                include INCLUDES_PATH.'/admin.inc.php';
+                include INCLUDES_PATH.'/templates/widgets.layout.php';
             }
         }
         else if($get_url[2] == 'themes') {
             if($get_url[2] == 'themes' && $get_url[4] == 'apply') {
-                include 'core/inc/admin.inc.php';
-                include 'core/inc/admin/confirm.admin.php';
+                include INCLUDES_PATH.'/admin.inc.php';
+                include INCLUDES_PATH.'/admin/confirm.admin.php';
             }
             else {
-                include 'core/inc/admin.inc.php';
-                include 'core/inc/templates/themes.layout.php';
+                include INCLUDES_PATH.'/admin.inc.php';
+                include INCLUDES_PATH.'/templates/themes.layout.php';
             }
         }
         else {
@@ -70,18 +70,18 @@ if($get_url[1] == 'layout') {
                 }
                 if($mod_route === FALSE) {
                     http_response_code(404);
-                    include path_to_theme().'/404.php';
+                    include Theme::errorPage(404);
                     exit();
                 }
             }
         }
     }
     else {
-        include 'core/inc/admin.inc.php';
-        include 'core/inc/templates/layout.admin.php';
+        include INCLUDES_PATH.'/admin.inc.php';
+        include INCLUDES_PATH.'/templates/layout.admin.php';
     }
 }
 else {
     http_response_code(404);
-    include path_to_theme().'/404.php';
+    include Theme::errorPage(404);
 }
