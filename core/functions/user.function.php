@@ -24,6 +24,10 @@ function not_active_logout() {
     session_destroy();
     addMessage('error', t('You have been logged out because your account is not activated'));
 }
+function log_out() {
+    $user = User::getInstance();
+    $user->logout();
+}
 function user_login_validate() {
     return form_validate(array(
         'username' => array('required' => true),

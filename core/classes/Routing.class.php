@@ -46,25 +46,25 @@ class Routing {
             }
         }
         else if($url[0] == 'admin') {
-            if(!isset($_SESSION['uid'])) {
+            if(!Session::exists(Config::get('session/session_name'))) {
                 http_response_code(403);
-                include '403.php';
-                die();
+                Theme::errorPage(403);
+                exit();
             }
             else {
-                if(has_permission('access_admin', $_SESSION['uid']) === true) {
+                if(has_permission('access_admin', Session::get(Config::get('session/session_name'))) === true) {
                     include_once 'core/routes/admin.routes.php';
                 }
                 else {
                     http_response_code(403);
-                    include '403.php';
-                    die();
+                    Theme::errorPage(403);
+                    exit();
                 }
             }
         }
         else if($url[0] == 'logout') {
             log_out();
-            header('Location: '.site_root());
+            Redirect::to('/home');
             exit();
         }
     }

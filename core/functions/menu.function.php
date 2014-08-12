@@ -34,10 +34,10 @@ function sidebar_traverse($array, $class = NULL) {
     $str = '<ul class="'.$class.'">';
     foreach($array as $item) {
         if($active == $item['link']) {
-            $str .= '<li class="active"><a href="'.site_root().'/'.$item['link'].'"'.(isset($item['children'])?' class="parent"':'').'>'.$item['title'].'</a>'.(isset($item['children'])&&$item['children']?traverse($item['children'], 'sub-menu'):'').'</li>';
+            $str .= '<li class="active"><a href="/'.$item['link'].'"'.(isset($item['children'])?' class="parent"':'').'>'.$item['title'].'</a>'.(isset($item['children'])&&$item['children']?traverse($item['children'], 'sub-menu'):'').'</li>';
         }
         else {
-            $str .= '<li><a href="'.site_root().'/'.$item['link'].'"'.(isset($item['children'])?' class="parent"':'').'>'.$item['title'].'</a>'.(isset($item['children'])&&$item['children']?traverse($item['children'], 'sub-menu'):'').'</li>';
+            $str .= '<li><a href="/'.$item['link'].'"'.(isset($item['children'])?' class="parent"':'').'>'.$item['title'].'</a>'.(isset($item['children'])&&$item['children']?traverse($item['children'], 'sub-menu'):'').'</li>';
         }
     }
     $str .= '</ul>';

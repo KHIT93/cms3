@@ -34,12 +34,14 @@ class String {
                 case '@':
                     // Escaped only.
                     $args[$key] = Sanitize::checkPlain($value);
+                    //$args[$key] = $value;
                 break;
 
                 case '%':
                 default:
                 // Escaped and placeholder.
-                    $args[$key] = Sanitize::stringPlaceholder($value);
+                    //$args[$key] = Sanitize::stringPlaceholder($value);
+                    $args[$key] = $value;
                 break;
 
                 case '!':

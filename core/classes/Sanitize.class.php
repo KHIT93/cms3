@@ -2,10 +2,7 @@
 class Sanitize {
     public static function checkPlain($string) {
         //Sanitize input from text-inputs
-        krumo(debug_backtrace());
-        $output = htmlspecialchars($input, ENT_QUOTES, 'UTF-8');
-        $output = nl2br($output);
-        return $output;
+        return htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
     }
     public static function stringPlaceholder($string) {
         return '<em class="placeholder">'.self::checkPlain($string).'</em>';

@@ -2,19 +2,8 @@
 class Permission {
     //Class containg functions for managing permissions
     static function get_permission($permission) {
-        //Function for getting an array of roles.rid that have the supplied permission
-        $db = db_connect();
-        $query = $db->prepare("SELECT `p_rid` FROM `permissions` WHERE `permission`=:permission");
-        $query->bindValue(':permission', $permission, PDO::PARAM_STR);
-        try {
-            $query->execute();
-            $rid = explode(';', $query->fetchColumn());
-        }
-        catch (Exception $e) {
-            addMessage('error', t('There was an error while processing your request'), $e);
-        }
-        $db = NULL;
-        return $rid;
+        $rid = DB::getInstance()->getField('permissions', 'rid', 'permission', $permission);
+        return explode(';', $rid);
     }
     static function set_permission($info, $module) {
         //Function for setting a new permission on the permissions table. Administrator will have this permission as default
@@ -175,8 +164,8 @@ class Permission {
     }
     public static function has_permission($permission, $uid) {
         //Verifies if a user has permission to perform an action
-        $access = Permissions::get_permission($permission);
-        $rid = getFieldFromDB('users', 'user_role', 'uid', $uid);
+        $access = self::get_permission($permission);
+        $rid = DB::getInstance()->getField('users', 'role', 'uid', $uid);
         return (in_array($rid, $access)) ? true : false;
     }
     public static function action_denied($print = false) {

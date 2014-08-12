@@ -39,7 +39,7 @@ class User {
     }
     public function update($fields = array(), $id = null) {
         if(!$id && $this->isLoggedIn()) {
-            $id = $this->data()->id;
+            $id = $this->data()->uid;
         }
         if(!$this->_db->update('users', $id, $fields)) {
             throw new Exception(t('There was an error updating your user information'), 'SYS_U_U-2');
@@ -47,10 +47,11 @@ class User {
     }
     public function find($user = null) {
         if($user) {
-            $field = (is_numeric($user)) ? 'id' : 'username';
+            $field = (is_numeric($user)) ? 'uid' : 'username';
             $data = $this->_db->get('users', array($field, '=', $user));
             if($data->count()) {
                 $this->_data = $data->first();
+                return true;
             }
         }
         return false;
@@ -58,19 +59,18 @@ class User {
     public function login($username = null, $password = null, $remember = false) {
         $user = $this->find($username);
         if(!$username && !$password && $this->exists()) {
-            Session::put($this->_sessionName, $this->data()->id);
+            Session::put($this->_sessionName, $this->data()->uid);
         }
         else {
             $user = $this->find($username);
-        
             if($user) {
                 if($this->data()->password === Hash::validateHash($password, $this->data()->password)) {
-                    Session::put($this->_sessionName, $this->data()->id);
+                    Session::put($this->_sessionName, $this->data()->uid);
                     if($remember) {
                         $hash = Hash::unique();
-                        $hashCheck = $this->_db->get('users_session', array('user_id', '=', $this->data()->id));
+                        $hashCheck = $this->_db->get('users_session', array('user_id', '=', $this->data()->uid));
                         if(!$hashCheck->count()) {
-                            $this->_db->insert('users_session', array('user_id' => $this->data()->id, 'hash' => $hash));
+                            $this->_db->insert('users_session', array('user_id' => $this->data()->uid, 'hash' => $hash));
                         }
                         else {
                             $hash = $hashCheck->first->hash;
@@ -131,6 +131,9 @@ class User {
         $this->_db->delete('users_session', array('user_id', '=', $this->data()->id));
         Session::delete($this->_sessionName);
         Cookie::delete($this->_cookieName);
+    }
+    private function data() {
+        return $this->_data;
     }
     public function username() {
         return (isset($this->_data->username)) ? $this->_data->username: false;

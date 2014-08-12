@@ -4,8 +4,6 @@
  * Handles initial routing the backend
  */
 $get_url = splitURL();
-$csrf = Csrf::addCsrf();
-$token_id = $csrf->get_token_id();
 if(isset($get_url[1])) {
     $route = false;
     $mod_route = false;
@@ -18,7 +16,7 @@ if(isset($get_url[1])) {
             
             if($function(implode('/', $get_url)) != FALSE) {
                 $mod_route = true;
-                include 'core/inc/admin.inc.php';
+                include INCLUDES_PATH.'/admin.inc.php';
                 $function = $module['module'].'_route';
                 print $function(implode('/', $get_url));
             }
@@ -62,7 +60,7 @@ if(isset($get_url[1])) {
     }
 }
 else {
-    include 'core/inc/admin.inc.php';
-    include 'core/inc/templates/admin.php';
+    include INCLUDES_PATH.'/admin.inc.php';
+    include INCLUDES_PATH.'/templates/admin.php';
 }
 include_once path_to_theme().'/footer.tpl.php';

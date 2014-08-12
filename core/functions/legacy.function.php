@@ -22,3 +22,14 @@ function print_messages() {
 function print_messages_simple() {
     System::print_messages_simple();
 }
+function has_permission($permission, $uid) {
+    return Permission::has_permission($permission, $uid);
+}
+function action_denied($print = false) {
+    if($print === true) {
+        return Permission::action_denied(true);
+    }
+    else {
+        Permission::action_denied();
+    }
+}

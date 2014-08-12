@@ -3,7 +3,7 @@ class System {
     public static function getAdminMenu() {
         $items = array();
         $menu = array();
-        if(has_permission('access_admin', $_SESSION['uid']) === true) {
+        if(has_permission('access_admin', Session::get(Config::get('session/session_name'))) === true) {
             $items[] = array(
                 'title' => '<i class="fa fa-home fa-lg"></i> '.t('Site'),
                 'link' => 'admin/dashboard',
@@ -27,7 +27,7 @@ class System {
                 )
             );
         }
-        if(has_permission('access_admin', $_SESSION['uid']) === true) {
+        if(has_permission('access_admin', Session::get(Config::get('session/session_name'))) === true) {
             $items[] = array(
                 'title' => '<i class="fa fa-file-text-o"></i> '.t('Add content'),
                 'link' => 'admin/content/add',
@@ -39,7 +39,7 @@ class System {
                 )
             );
         }
-        if(has_permission('access_admin', $_SESSION['uid']) === true) {
+        if(has_permission('access_admin', Session::get(Config::get('session/session_name'))) === true) {
             $items[] = array(
                 'title' => '<i class="fa fa-question fa-lg"></i> '.t('Help'),
                 'link' => 'admin/help'
@@ -51,19 +51,19 @@ class System {
     public static function getAdminSideBar() {
         $items = array();
         $menu = array();
-        if(has_permission('access_admin_dashboard', $_SESSION['uid']) === true) {
+        if(has_permission('access_admin_dashboard', Session::get(Config::get('session/session_name'))) === true) {
             $items[] = array(
                 'title' => '<i class="fa fa-dashboard nav-icon"></i><span>'.t('Dashboard').'</span>',
                 'link' => 'admin'
             );
         }
-        if(has_permission('access_admin_content', $_SESSION['uid']) === true) {
+        if(has_permission('access_admin_content', Session::get(Config::get('session/session_name'))) === true) {
             $items[] = array(
                 'title' => '<i class="fa fa-file nav-icon"></i><span>'.t('Content').'</span>',
                 'link' => 'admin/content'
             );
         }
-        if(has_permission('access_admin_layout', $_SESSION['uid']) === true) {
+        if(has_permission('access_admin_layout', Session::get(Config::get('session/session_name'))) === true) {
             $items[] = array(
                 'title' => '<i class="fa fa-picture-o nav-icon"></i><span>'.t('Layout').'</span>',
                 'link' => 'admin/layout',
@@ -83,19 +83,19 @@ class System {
                 )
             );
         }
-        if(has_permission('access_admin_modules', $_SESSION['uid']) === true) {
+        if(has_permission('access_admin_modules', Session::get(Config::get('session/session_name'))) === true) {
             $items[] = array(
                 'title' => '<i class="fa fa-cubes nav-icon"></i><span>'.t('Modules').'</span>',
                 'link' => 'admin/modules'
             );
         }
-        if(has_permission('access_admin_users', $_SESSION['uid']) === true) {
+        if(has_permission('access_admin_users', Session::get(Config::get('session/session_name'))) === true) {
             $items[] = array(
                 'title' => '<i class="fa fa-user nav-icon"></i><span>'.t('Users').'</span>',
                 'link' => 'admin/users'
             );
         }
-        if(has_permission('access_admin_settings', $_SESSION['uid']) === true) {
+        if(has_permission('access_admin_settings', Session::get(Config::get('session/session_name'))) === true) {
             $items[] = array(
                 'title' => '<i class="fa fa-wrench nav-icon"></i><span>'.t('Settings').'</span>',
                 'link' => 'admin/settings'

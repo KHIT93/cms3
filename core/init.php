@@ -98,7 +98,7 @@ if(version_compare(phpversion(), '5.4.0', '>')) {
 
         if(isset($_GET['q']) && $_GET['q'] == 'logout') {
             log_out();
-            header('Location: '.site_root());
+            Redirect::to(page_front());
             exit();
         }
     }
