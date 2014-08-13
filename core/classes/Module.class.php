@@ -38,22 +38,6 @@ class Module {
         $output = array();
         $readin = ($core === true) ? 'core/modules/'.$modulepath.'/'.$modulepath.'.info' : 'modules/'.$modulepath.'/'.$modulepath.'.info';
         $output = File::parse_info_file($readin);
-        /*foreach ($readin as $value) {
-                $array = explode(' = ', $value);
-                $output[$array[0]] = $array[1];
-                $output['installed'] = (countItemsFromDB('modules', '*', 'module_name', $modulepath) == 1) ? true : false ;
-        }
-        if($output['installed'] === true) {
-            $output['enabled'] = (getFieldFromDB('modules', 'module_active', 'module_name', $modulepath) == 1) ? true : false ;
-        }
-        else {
-            $output['enabled'] = false;
-        }
-        $output['core_module'] = ($core === true) ? 1 : 0 ;
-        $output['machine_name'] = $modulepath;
-        if(isset($output['cancontrol']) && $core == false) {
-            unset($output['cancontrol']);
-        }*/
         $output['core'] = ($core === true) ? 1 : 0;
         $output['module'] = $modulepath;
         $output['installed'] = (DB::getInstance()->countItems('modules', '*', 'name', $modulepath) == 1) ? true : false ;

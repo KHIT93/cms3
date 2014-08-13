@@ -31,8 +31,8 @@ class Page {
         return (empty($page)) ? false : true;
 
     }
-    public function getMetaRobots($page) {
-        return explode(', ', $page['robots']);
+    public function getMetaRobots() {
+        return explode(', ', $this->data->robots);
     }
     public function pageAccess($uid = 0) {
         $page_access = json_decode($this->_db->getField('pages', 'access', 'pid', 1), true);
@@ -59,60 +59,27 @@ class Page {
     }
     public function create($formdata) {
         $db = db_connect();
-        //print_r($formdata);
-        $fields = array();
-        $values = array();
-
-        $fields[] = 'page_title';
-        $values[] = check_plain($formdata['title']);
-        $fields[] = 'page_content';
-        $values[] = $formdata['body'];
-        $fields[] = 'page_access';
-        $values[] = $formdata['published'];
-        $query = $db->query("SHOW TABLE STATUS LIKE 'pages'");
-        $row = $query->fetchAll(PDO::FETCH_ASSOC);
-        $page_id = $row[0]['Auto_increment'];
-        $fields[] = 'page_url';
-        $values[] = 'page/'.$page_id;
-        $fields[] = 'create_date';
-        $values[] = date('Y-m-d');
-        $fields[] = 'update_date';
-        $values[] = date('Y-m-d');
-        if(isset($formdata['url_alias'])) {
-            $fields[] = 'page_alias';
-            $values[] = check_plain($formdata['url_alias']);
-        }
-        else {
-            $fields[] = 'page_alias';
-            $values[] = createPageURL($formdata['title']);
-        }
-        if(isset($formdata['meta_keywords'])) {
-            $fields[] = 'meta_keywords';
-            $values[] = $formdata['meta_keywords'];
-        }
-        if(isset($formdata['meta_description'])) {
-            $fields[] = 'meta_description';
-            $values[] = $formdata['meta_description'];
-        }
-        if(isset($formdata['metaRobots'])) {
-            $fields[] = 'meta_robots';
-            $values[] = implode(', ', $formdata['metaRobots']);
-        }
-        $q_fields = '`'.implode('`, `', $fields).'`';
-        $q_values = "'".implode("', '", $values)."'";
-        $query = $db->prepare("INSERT INTO `pages` ({$q_fields}) VALUES({$q_values})");
-        try {
-            $query->execute();
-            addMessage('success', t('New page has been created'));
-        }
-        catch(PDOException $e) {
-            addMessage('error', t('There was an error creating the new page').' '.check_plain($formdata['title']), $e);
-            //die($e->getMessage());        
+        $pid = $db->query("SHOW TABLE STATUS LIKE 'pages'")->first();
+        $db = DB::getInstance();
+        $fields = array(
+            'title' => $formdata['title'],
+            'content' => $formdata['body'],
+            'author' => User::getInstance()->name(),
+            'status' => $formdata['status'],
+            'access' => $formdata['access'],
+            'keywords' => $formdata['keywords'],
+            'description' => $formdata['description'],
+            'robots' => implode(',', $formdata['robots']),
+            'created' => date("Y-m-d"),
+            'last_updated' => date("Y-m-d")
+        );
+        $alias = (hasValue($formdata['alias'])) ? $formdata['alias'] : generateURL($fields['title']);
+        if(hasValue($alias)) {
+            //Add url alias
         }
         if(isset($formdata['enable_item'])) {
-            addMenuItem($formdata['inputMenu'], $formdata['title'], $values[6]);
+            Menu::addMenuItem($formdata['inputMenu'], $formdata['title'], $alias);
         }
-        $db = NULL;
     }
     public function update($formdata) {
         $db = db_connect();
