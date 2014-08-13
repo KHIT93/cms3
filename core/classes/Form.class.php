@@ -1,10 +1,33 @@
 <?php
 class Form {
+    private $_prepared, $_raw;
     public function __construct($form = array()) {
-        
+        $this->_raw = $form;
+        $this->prepare();
     }
     public function render() {
-        //Prepares the form for rendering as HTML on a page
+        //Prepares the final HTML for the form and returns it to the caller
+        
+        //After processing the form
+        //$_rendered = output;
+        //return $_rendered;
+        return $this->_prepared;
+    }
+    public function prepare() {
+        //Prepare the form for rendering
+        $prepared = '<form'.((isset($this->_raw['#name'])) ? ' name="'.$this->_raw['#name'].'"': '')
+            .((isset($this->_raw['#method'])) ? ' method="'.$this->_raw['#method'].'"': '')
+            .((isset($this->_raw['#action'])) ? ' action="'.$this->_raw['#action'].'"': '')
+            .((is_array($this->_raw['#attr'])) ? ' '.Render::prepareAttributes($this->_raw['#attr']): '').'>';
+        //Render elements, actions and other fields
+        foreach($this->_raw['elements'] as $element) {
+            $prepared .= Render::prepareElement($element);
+        }
+        $prepared .= Render::prepareActions($this->_raw['actions']);
+        
+        $prepared .= '</form>';
+        //After rendering set $_prepared to the returned data
+        $this->_prepared = $prepared;
     }
     public static function submit() {
         //Handles form submission

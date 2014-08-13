@@ -34,15 +34,3 @@ function user_login_validate() {
         'password' => array('required' => true)
         ));
 }
-function user_login_submit($formdata) {
-    $user = new User();
-    if($user->login(Input::get('username'), Input::get('password'), Input::get('remember-me'))) {
-        System::addMessage('success', t('You have been successfully logged in'));
-        Redirect::to('/admin');
-    }
-    else {
-        System::addMessage('error', t('Login failed. Please check username and password'));
-    }
-    
-    
-}

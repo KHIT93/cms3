@@ -63,11 +63,11 @@ if(isset($get_url)) {
     <h4 class="modal-title"><?php print t('Delete menu'); ?></h4>
 </div>
 <div class="modal-body">
-    <p><?php print t('Are you sure that you want to delete "<i>@menu</i>"', array('@menu' => DB::getInstance()->getField('menus', 'title', 'mid', $get_url[4])));?></p>
+    <p><?php print t('Are you sure that you want to delete "<i>@menu</i>"', array('@menu' => DB::getInstance()->getField('menus', 'name', 'mid', $get_url[3])));?></p>
 </div>
 <div class="modal-footer">
     <form name="deleteMenu" method="POST" action="">
-        <input type="hidden" name="item_id" value="<?php print $get_url[2]; ?>">
+        <input type="hidden" name="item_id" value="<?php print $get_url[3]; ?>">
         <input type="hidden" name="form-token" value="<?php print Token::generate(); ?>">
         <input type="hidden" name="form_id" value="deleteMenu">
         <a href="/admin/layout/menus" class="btn btn-rad btn-sm btn-default"><?php print t('Cancel'); ?></a>

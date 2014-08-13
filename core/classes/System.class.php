@@ -121,26 +121,14 @@ class System {
         addMessage('info', t('Cron has been completed'));
     }
     public static function setDevMode($formdata) {
-        $db = db_connect();
-        $query = $db->prepare("UPDATE `config` SET `config_value`=:devmode WHERE `config_name`='enable_wysiwyg'");
-        $query->bindValue(':devmode', $formdata['inputDevMode'], PDO::PARAM_INT);
-        try {
-            $query->execute();
-            addMessage('success', t('Changes have been saved'));
-        }
-        catch (Exception $e) {
-            addMessage('error', t('There was an error while updating the settings'), $e);
-        }
-        $db = NULL;
-    }
-    public static function root() {
-        global $config;
-        if(isset($config['site_root'])) {
-            return $config['site_root'];
+        if(DB::getInstance()->update('config', 'dev_mode', array('dev_mode', '=', $formdata['devMode']))) {
+            self::addMessage('success', t('Developer mode has been changed'));
+            return true;
         }
         else {
-            return $_SERVER['DOCUMENT_ROOT'];
+            self::addMessage('error', t('There was an error changen the developer mode'));
         }
+        return false;
     }
     public static function print_messages() {
         //Outputs the different messages

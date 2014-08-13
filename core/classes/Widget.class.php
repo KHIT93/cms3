@@ -96,7 +96,6 @@ class Widget {
         return $output;
     }
     static function createWidgetForm() {
-        $csrf = Csrf::addCsrf();
         $output = '<div class="page-head">'
                     .'<h2>'.t('Widgets').'</h2>'
                     .get_breadcrumb()
@@ -145,9 +144,9 @@ class Widget {
                 </div>';
         $output .= '<div class="tab-pane fade" id="widgetRoles">';
         $output .= '<p>'.t('This widget will only be shown to the following roles. If no roles are selected it will be shown to all roles').'</p>';
-        $roles = Permissions::get_roles();
+        $roles = Permission::get_roles();
         foreach ($roles as $role) {
-            $output .= '<label for="inputRoles"><input type="checkbox" name="roles[]" value="'.$role['rid'].'"> '.ucfirst($role['name']).'</label><br/>'."\n";
+            $output .= '<label for="inputRoles"><input type="checkbox" name="roles[]" value="'.$role->rid.'"> '.ucfirst($role->name).'</label><br/>'."\n";
         }
         $output .= '</div>'
             .'</div>'
@@ -157,9 +156,9 @@ class Widget {
                 ."});"
             ."</script>"
         .'<div class="form-actions">'
-            .'<input type="hidden" name="form-token" value="'.$csrf->get_token($token_id).'">'
+            .'<input type="hidden" name="form-token" value="'.Token::generate().'">'
             .'<button type="submit" name="addWidget" class="btn btn-rad btn-sm btn-primary"><span class="glyphicon glyphicon-floppy-saved"></span> '.t('Save widget').'</button>'
-            .'<a class="btn btn-rad btn-sm btn-default" href="'.site_root().'/admin/layout/widgets">'.t('Cancel').'</a>'
+            .'<a class="btn btn-rad btn-sm btn-default" href="/admin/layout/widgets">'.t('Cancel').'</a>'
         .'</div>'
         .'</form>'
         .'</div>';
@@ -186,26 +185,24 @@ class Widget {
         return false;
     }
     static function updateWidgetForm($wid) {
-        $csrf = Csrf::addCsrf();
-        $token_id = $csrf->get_token_id();
         $widget = self::getWidget($wid);
-        if($widget['widget_type'] == 'static') {
+        if($widget->type == 'static') {
             $output = '<div class="page-head">'
-                        .'<h2>'.t('Edit').' <i>'.$widget['widget_title'].'</i></h2>'
+                        .'<h2>'.t('Edit').' <i>'.$widget->title.'</i></h2>'
                         .get_breadcrumb()
                     .'</div>'
                     . '<div class="cl-mcont">'
                     . print_messages()
                     .'<div class="col-md-12">
-                <form method="POST" name="addWidget" action="" role="form">
-                <script src="'.site_root().'/core/js/ckeditor/ckeditor.js"></script>
+                <form method="POST" name="editWidget" action="" role="form">
+                <script src="/core/js/ckeditor/ckeditor.js"></script>
                 <div id="widgetTitle" class="form-group form300">
                     <label for="inputTitle">'.t('Title').'</label>
-                    <input type="text" class="form-control" name="inputTitle" value="'.$widget['widget_title'].'">
+                    <input type="text" class="form-control" name="inputTitle" value="'.$widget->title.'">
                 </div>
                 <div id="widgetContent" class="form-group">
                     <label for="inputContent">'.t('Content').'</label>
-                    <textarea name="inputContent">'.$widget['widget_content'].'</textarea>
+                    <textarea name="inputContent">'.$widget->content.'</textarea>
                 </div>
                 <div id="widgetSection" class="form-group form300">
                     <p>'.t('Choose a section for this widget').'</p>'
@@ -222,18 +219,18 @@ class Widget {
                         <div class="form-group">
                             <div class="radio">
                                 <label>
-                                    <input type="radio" name="inputShow" value="0" '.(($widget['data']['data_show'] == 0) ? 'checked' :'' ).'>'
+                                    <input type="radio" name="inputShow" value="0" '.(($widget->show == 0) ? 'checked' :'' ).'>'
                                     .t('All pages except the ones listed')
                                 .'</label>
                             </div>
                             <div class="radio">
                                 <label>
-                                    <input type="radio" name="inputShow" value="1" '.(($widget['data']['data_show'] == 1) ? 'checked' :'' ).'>'
+                                    <input type="radio" name="inputShow" value="1" '.(($widget->show == 1) ? 'checked' :'' ).'>'
                                     .t('Only the listed pages')
                                .'</label>
                             </div>
                             <div id="widgetPages" class="form-group">
-                                <textarea name="inputPages" class="form-control" cols="60" rows="5">'.((!is_null($widget['data']['data_pages'])) ?str_replace(';', "\n", $widget['data']['data_pages']) : '').'</textarea>
+                                <textarea name="inputPages" class="form-control" cols="60" rows="5">'.((!is_null($widget->pages)) ?str_replace(';', "\n", $widget->pages) : '').'</textarea>
                             </div>
                         </div>
                     </div>';
@@ -241,7 +238,7 @@ class Widget {
             $output .= '<p>'.t('This widget will only be shown to the following roles. If no roles are selected it will be shown to all roles').'</p>';
             $roles = Permissions::get_roles();
             foreach ($roles as $role) {
-                $output .= '<label for="inputRoles"><input type="checkbox" name="roles[]" value="'.$role['rid'].'" '.((in_array($role['rid'], explode(';', $widget['data']['data_roles']))) ? 'checked' :'' ).'> '.ucfirst($role['name']).'</label><br/>'."\n";
+                $output .= '<label for="inputRoles"><input type="checkbox" name="roles[]" value="'.$role->rid.'" '.((in_array($role->rid, explode(';', $widget->roles))) ? 'checked' :'' ).'> '.ucfirst($role->name).'</label><br/>'."\n";
             }
             $output .= '</div>'
                 .'</div>'
@@ -251,28 +248,29 @@ class Widget {
                     ."});"
                 ."</script>"
             .'<div class="form-actions">'
-                .'<input type="hidden" name="form-token" value="'.$csrf->get_token($token_id).'">'
-                .'<input type="hidden" name="inputWid" value="'.$widget['widget_id'].'">'
-                .'<input type="hidden" name="inputType" value="'.$widget['widget_type'].'">'
-                .'<button type="submit" name="addWidget" class="btn btn-rad btn-sm btn-primary"><span class="glyphicon glyphicon-floppy-saved"></span> '.t('Save widget').'</button>'
-                .'<a class="btn btn-rad btn-sm btn-default" href="'.site_root().'/admin/layout/widgets">'.t('Cancel').'</a>'
+                .'<input type="hidden" name="form-token" value="'.Token::generate().'">'
+                .'<input type="hidden" name="form_id" value="editWidget">'
+                .'<input type="hidden" name="inputWid" value="'.$widget->wid.'">'
+                .'<input type="hidden" name="inputType" value="'.$widget->type.'">'
+                .'<button type="submit" name="editWidget" class="btn btn-rad btn-sm btn-primary"><span class="glyphicon glyphicon-floppy-saved"></span> '.t('Save widget').'</button>'
+                .'<a class="btn btn-rad btn-sm btn-default" href="/admin/layout/widgets">'.t('Cancel').'</a>'
             .'</div>'
             .'</form>'
             .'</div>';
         }
-        else if($widget['widget_type'] == 'dynamic') {
+        else if($widget->type == 'dynamic') {
             $output = '<div class="page-head">'
-                        .'<h2>'.t('Edit').' <i>'.$widget['widget_title'].'</i></h2>'
+                        .'<h2>'.t('Edit').' <i>'.$widget->title.'</i></h2>'
                         .get_breadcrumb()
                     .'</div>'
                     . '<div class="cl-mcont">'
                     . print_messages()
                     .'<div class="col-md-12">
-                <form method="POST" name="addWidget" action="" role="form">
-                <script src="'.site_root().'/core/js/ckeditor/ckeditor.js"></script>
+                <form method="POST" name="editWidget" action="" role="form">
+                <script src="/core/js/ckeditor/ckeditor.js"></script>
                 <div id="widgetTitle" class="form-group form300">
                     <label for="inputTitle">'.t('Title').'</label>
-                    <input type="text" class="form-control" name="inputTitle" value="'.$widget['widget_title'].'">
+                    <input type="text" class="form-control" name="inputTitle" value="'.$widget->title.'">
                 </div>
                 <div id="widgetSection" class="form-group form300">
                     <p>'.t('Choose a section for this widget').'</p>'
@@ -289,18 +287,18 @@ class Widget {
                         <div class="form-group">
                             <div class="radio">
                                 <label>
-                                    <input type="radio" name="inputShow" value="0" '.(($widget['data']['data_show'] == 0) ? 'checked' :'' ).'>'
+                                    <input type="radio" name="inputShow" value="0" '.(($widget->show == 0) ? 'checked' :'' ).'>'
                                     .t('All pages except the ones listed')
                                 .'</label>
                             </div>
                             <div class="radio">
                                 <label>
-                                    <input type="radio" name="inputShow" value="1" '.(($widget['data']['data_show'] == 1) ? 'checked' :'' ).'>'
+                                    <input type="radio" name="inputShow" value="1" '.(($widget->show == 1) ? 'checked' :'' ).'>'
                                     .t('Only the listed pages')
                                .'</label>
                             </div>
                             <div id="widgetPages" class="form-group">
-                                <textarea name="inputPages" class="form-control" cols="60" rows="5">'.((!is_null($widget['data']['data_pages'])) ?str_replace(';', "\n", $widget['data']['data_pages']) : '').'</textarea>
+                                <textarea name="inputPages" class="form-control" cols="60" rows="5">'.((!is_null($widget->pages)) ?str_replace(';', "\n", $widget->pages) : '').'</textarea>
                             </div>
                         </div>
                     </div>';
@@ -308,16 +306,18 @@ class Widget {
             $output .= '<p>'.t('This widget will only be shown to the following roles. If no roles are selected it will be shown to all roles').'</p>';
             $roles = Permissions::get_roles();
             foreach ($roles as $role) {
-                $output .= '<label for="inputRoles"><input type="checkbox" name="roles[]" value="'.$role['rid'].'" '.((in_array($role['rid'], explode(';', $widget['data']['data_roles']))) ? 'checked' :'' ).'> '.ucfirst($role['name']).'</label><br/>'."\n";
+                $output .= '<label for="inputRoles"><input type="checkbox" name="roles[]" value="'.$role->rid.'" '.((in_array($role->rid, explode(';', $widget->roles))) ? 'checked' :'' ).'> '.ucfirst($role['name']).'</label><br/>'."\n";
             }
             $output .= '</div>'
                 .'</div>'
             .'<div class="form-actions">'
-                .'<input type="hidden" name="form-token" value="'.$csrf->get_token($token_id).'">'
-                .'<input type="hidden" name="inputWid" value="'.$widget['widget_id'].'">'
-                .'<input type="hidden" name="inputContent" value="'.$widget['widget_content'].'">'
-                .'<button type="submit" name="addWidget" class="btn btn-rad btn-sm btn-primary"><span class="glyphicon glyphicon-floppy-saved"></span> '.t('Save widget').'</button>'
-                .'<a class="btn btn-rad btn-sm btn-default" href="'.site_root().'/admin/layout/widgets">'.t('Cancel').'</a>'
+                .'<input type="hidden" name="form-token" value="'.Token::generate().'">'
+                .'<input type="hidden" name="form_id" value="editWidget">'
+                .'<input type="hidden" name="inputWid" value="'.$widget->wid.'">'
+                .'<input type="hidden" name="inputType" value="'.$widget->type.'">'
+                .'<input type="hidden" name="inputContent" value="'.$widget->content.'">'
+                .'<button type="submit" name="editWidget" class="btn btn-rad btn-sm btn-primary"><span class="glyphicon glyphicon-floppy-saved"></span> '.t('Save widget').'</button>'
+                .'<a class="btn btn-rad btn-sm btn-default" href="/admin/layout/widgets">'.t('Cancel').'</a>'
             .'</div>'
             .'</form>'
             .'</div>';

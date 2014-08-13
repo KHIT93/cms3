@@ -21,6 +21,13 @@ if($get_url[1] == 'layout') {
                         include INCLUDES_PATH.'/admin/delete.admin.php';
                     }
                 }
+                else if($get_url[4] == 'delete') {
+                    include INCLUDES_PATH.'/admin.inc.php';
+                    include INCLUDES_PATH.'/admin/delete.admin.php';
+                }
+                else if($get_url[3] == 'items' && $get_url[4] == 'add') {
+                    
+                }
             }
             else {
                 include INCLUDES_PATH.'/admin.inc.php';
@@ -31,12 +38,12 @@ if($get_url[1] == 'layout') {
             if(isset($get_url[3])) {
                 if($get_url[3] == 'add') {
                     include INCLUDES_PATH.'/admin.inc.php';
-                    print Widgets::createWidgetForm();
+                    print Widget::createWidgetForm();
                 }
                 else if(is_numeric($get_url[3])) {
                     if($get_url[4] == 'edit') {
                         include INCLUDES_PATH.'/admin.inc.php';
-                        print Widgets::updateWidgetForm($get_url[3]);
+                        print Widget::updateWidgetForm($get_url[3]);
                     }
                     else if($get_url[4] == 'delete') {
                         include INCLUDES_PATH.'/admin.inc.php';

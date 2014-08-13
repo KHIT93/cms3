@@ -34,8 +34,8 @@ if(version_compare(phpversion(), '5.4.0', '>')) {
                     )
                 ),
                 'scripts' => array(
-                    CORE_JS_PATH.'/bootstrap.min.js',
-                    CORE_JS_PATH.'/modernizr-2.6.2-respond-1.1.0.min.js'
+                    CORE_JS_PATH.'/bootstrap/bootstrap.min.js',
+                    CORE_JS_PATH.'/modernizr/modernizr.min.js'
                 )
             )
         );

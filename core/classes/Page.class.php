@@ -32,7 +32,7 @@ class Page {
 
     }
     public function getMetaRobots() {
-        return explode(', ', $this->data->robots);
+        return explode(',', $this->data['robots']);
     }
     public function pageAccess($uid = 0) {
         $page_access = json_decode($this->_db->getField('pages', 'access', 'pid', 1), true);
@@ -144,7 +144,7 @@ class Page {
     }
     public static function getPageData($pid) {
         $page = new Page($pid);
-        return $page->data;
+        return $page;
     }
     public static function getPageList() {
         $pages = array();

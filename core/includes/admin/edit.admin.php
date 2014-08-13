@@ -2,22 +2,22 @@
 if(isset($get_url)) {
     if($get_url[1] == 'content') {
         $editPage = Page::getPageData($get_url[2]);
-        $editPage['robots'] = Page::getMetaRobots($editPage);
-        $editPage['alias'] = DB::getInstance()->getField('url_alias', 'alias', 'source', 'pages/'.$editPage['pid']);
+        $robots = $editPage->getMetaRobots();
+        $alias = DB::getInstance()->getField('url_alias', 'alias', 'source', 'pages/'.$editPage->data['pid']);
 ?>
     <div class="page-head">
-        <h2><?php print t('Edit <i>@content</i>', array('@content' => $editPage['title'])); ?></h2>
+        <h2><?php print t('Edit <i>@content</i>', array('@content' => $editPage->data['title'])); ?></h2>
     </div>
     <div class="cl-mcont">
     <?php print print_messages(); ?>
     <form method="POST" name="editPage" action="" role="form">
         <div id="pageTitle" class="form-group form300">
             <label for="inputTitle"><?php print t('Title'); ?></label>
-            <input type="text" class="form-control" name="title" value="<?php print $editPage['title']; ?>">
+            <input type="text" class="form-control" name="title" value="<?php print $editPage->data['title']; ?>">
         </div>
         <div id="pageBody" class="form-group">
             <label for="inputBody"><?php print t('Body'); ?></label>
-            <textarea name="body" class="form-control" id="bodyText"><?php print $editPage['content']; ?></textarea>
+            <textarea name="body" class="form-control" id="bodyText"><?php print $editPage->data['content']; ?></textarea>
         </div>
         <ul id="content-tab" class="nav nav-tabs">
             <li class="active"><a href="#metaData" data-toggle="tab"><?php print t('Metadata'); ?></a></li>
@@ -29,23 +29,23 @@ if(isset($get_url)) {
             <div class="tab-pane fade in active" id="metaData">
                 <div class="form-group form600">
                     <label for="inputMetaKeywords"><?php print t('Meta Keywords'); ?></label>
-                    <input type="text" name="meta_keywords" class="form-control" value="<?php print $editPage['keywords']; ?>">
+                    <input type="text" name="meta_keywords" class="form-control" value="<?php print $editPage->data['keywords']; ?>">
                     <label for="inputMetaDesc"><?php print t('Meta Description'); ?></label>
-                    <textarea name="meta_description" class="form-control"><?php print $editPage['description']; ?></textarea>
+                    <textarea name="meta_description" class="form-control"><?php print $editPage->data['description']; ?></textarea>
                     <label for="inputMeta">
-                        <input type="checkbox" name="robots[]" class=icheck" value="index" <?php print (in_array('index', $editPage['robots']) ? 'checked' : '') ?>>
+                        <input type="checkbox" name="robots[]" class=icheck" value="index" <?php print (in_array('index', $robots) ? 'checked' : '') ?>>
                         <?php print t('Index'); ?>
                     </label>
                     <label for="inputMeta">
-                        <input type="checkbox" name="robots[]" class=icheck" value="follow" <?php print (in_array('follow', $editPage['robots']) ? 'checked' : '') ?>>
+                        <input type="checkbox" name="robots[]" class=icheck" value="follow" <?php print (in_array('follow', $robots) ? 'checked' : '') ?>>
                         <?php print t('Follow'); ?>
                     </label>
                     <label for="inputMeta">
-                        <input type="checkbox" name="robots[]" class=icheck" value="noindex" <?php print (in_array('noindex', $editPage['robots']) ? 'checked' : '') ?>>
+                        <input type="checkbox" name="robots[]" class=icheck" value="noindex" <?php print (in_array('noindex', $robots) ? 'checked' : '') ?>>
                         <?php print t('No Index'); ?>
                     </label>
                     <label for="inputMeta">
-                        <input type="checkbox" name="robots[]" class=icheck" value="nofollow" <?php print (in_array('nofollow', $editPage['robots']) ? 'checked' : '') ?>>
+                        <input type="checkbox" name="robots[]" class=icheck" value="nofollow" <?php print (in_array('nofollow', $robots) ? 'checked' : '') ?>>
                         <?php print t('No Follow'); ?>
                     </label>
                     
@@ -54,7 +54,7 @@ if(isset($get_url)) {
             <div class="tab-pane fade" id="urlAlias">
                 <div class="form-group form300">
                     <label for="inputAlias"><?php print t('URL Alias'); ?></label>
-                    <input type="text" name="alias" class="form-control" value="<?php print $editPage['alias']; ?>">
+                    <input type="text" name="alias" class="form-control" value="<?php print $alias; ?>">
                 </div>
             </div>
             <div class="tab-pane fade" id="menuItem">
@@ -74,13 +74,13 @@ if(isset($get_url)) {
                 <div class="form-group">
                     <div class="radio">
                         <label>
-                            <input type="radio" name="published" class=icheck" id="optionsPublished1" value="0" <?php print ($editPage['access'] ==0) ? 'checked' : ''; ?>>
+                            <input type="radio" name="published" class=icheck" id="optionsPublished1" value="0" <?php print ($editPage->data['access'] ==0) ? 'checked' : ''; ?>>
                             <?php print t('Unpublished'); ?>
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="published" class=icheck" id="optionsPublished2" value="1" <?php print ($editPage['access'] == 1) ? 'checked' : ''; ?>>
+                            <input type="radio" name="published" class=icheck" id="optionsPublished2" value="1" <?php print ($editPage->data['access'] == 1) ? 'checked' : ''; ?>>
                             <?php print t('Published'); ?>
                         </label>
                     </div>
@@ -88,7 +88,7 @@ if(isset($get_url)) {
             </div>
         </div>
         <div class="form-actions">
-            <input type="hidden" name="page_id" value="<?php print $editPage['pid']; ?>">
+            <input type="hidden" name="page_id" value="<?php print $editPage->data['pid']; ?>">
             <input type="hidden" name="form-token" value="<?php print Token::generate(); ?>">
             <input type="hidden" name="form_id" value="editPage">
             <button type="submit" name="editPage" class="btn btn-rad btn-sm btn-primary"><span class="glyphicon glyphicon-floppy-saved"></span> <?php print t('Save changes'); ?></button>

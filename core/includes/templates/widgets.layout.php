@@ -57,6 +57,7 @@
                 }
             ?>
         <input type="hidden" name="form-token" value="<?php print Token::generate(); ?>">
+        <input type="hidden" name="form_id" value="editSections">
             <?php if(has_permission('access_admin_layout_widgets_move', Session::exists(Config::get('session/session_name'))) === true) : ?>
             <tr>
                 <td class="hidden-xs" colspan="3"><button type="submit" class="btn btn-rad btn-primary" name="editSections"><?php print t('Save changes'); ?></button></td>
