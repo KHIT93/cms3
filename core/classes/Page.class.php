@@ -58,9 +58,8 @@ class Page {
         return false;
     }
     public function create($formdata) {
-        $db = db_connect();
-        $pid = $db->query("SHOW TABLE STATUS LIKE 'pages'")->first();
         $db = DB::getInstance();
+        $pid = $db->query("SHOW TABLE STATUS LIKE 'pages'")->first();
         $fields = array(
             'title' => $formdata['title'],
             'content' => $formdata['body'],
@@ -73,133 +72,75 @@ class Page {
             'created' => date("Y-m-d"),
             'last_updated' => date("Y-m-d")
         );
-        $alias = (hasValue($formdata['alias'])) ? $formdata['alias'] : generateURL($fields['title']);
-        if(hasValue($alias)) {
-            //Add url alias
-        }
-        if(isset($formdata['enable_item'])) {
-            Menu::addMenuItem($formdata['inputMenu'], $formdata['title'], $alias);
-        }
-    }
-    public function update($formdata) {
-        $db = db_connect();
-        //print_r($formdata);
-        $fields = array();
-        $values = array();
-        $fields[] = 'page_id';
-        $values[] = (int)$formdata['page_id'];
-        $fields[] = 'page_title';
-        $values[] = check_plain($formdata['title']);
-        $fields[] = 'page_content';
-        $values[] = $formdata['body'];
-        $fields[] = 'page_access';
-        $values[] = $formdata['published'];
-        $fields[] = 'page_url';
-        $values[] = $formdata['page_url'];
-        $fields[] = 'update_date';
-        $values[] = date('Y-m-d');
-        if(isset($formdata['meta_keywords'])) {
-            $fields[] = 'meta_keywords';
-            $values[] = $formdata['meta_keywords'];
-        }
-        if(isset($formdata['meta_description'])) {
-            $fields[] = 'meta_description';
-            $values[] = $formdata['meta_description'];
-        }
-        if(isset($formdata['metaRobots'])) {
-            $fields[] = 'meta_robots';
-            $values[] = implode(', ', $formdata['metaRobots']);
-        }
-        if(isset($formdata['url_alias'])) {
-            $fields[] = 'page_alias';
-            $values[] = check_plain($formdata['url_alias']);
+        if($db->insert('pages', $fields)) {
+            $alias = (hasValue($formdata['alias'])) ? $formdata['alias'] : generateURL($fields['title']);
+            if(hasValue($alias)) {
+                //Add url alias
+                if(!$db->insert('url_alias', array('source' => 'pages/'.$pid, 'alias' => $alias))) {
+                    System::addMessage('error', t('There was an error while creating the URL Alias for <i>@title</i>', array('@title' => $fields['title'])));
+                }
+            }
+            if(isset($formdata['enable_item'])) {
+                Menu::addMenuItem($formdata['inputMenu'], $formdata['title'], $alias);
+            }
+            System::addMessage('success', t('The page @page has been created', array('@page' => $fields['title'])));
+            return true;
         }
         else {
-            $fields[] = 'page_alias';
-            $values[] = createPageURL($formdata['title']);
+            System::addMessage('error', t('The new page <i>@page</i> could not be created', array('@page' => $fields['title'])));
         }
-        //print "<p>INSERT INTO `pages` ({$q_fields}) VALUES({$q_values})</p>";
-        $query = $db->prepare("UPDATE `pages` SET `$fields[1]`='$values[1]', `$fields[2]`='$values[2]', `$fields[3]`='$values[3]', `$fields[4]`='$values[4]', `$fields[5]`='$values[5]', `$fields[6]`='$values[6]', `$fields[7]`='$values[7]', `$fields[8]`='$values[8]', `$fields[9]`='$values[9]' WHERE `$fields[0]`='$values[0]'");
-        try {
-            $query->execute();
-            addMessage('success', t('Page has been successfully updated'));
+        return false;
+    }
+    public function update($formdata) {
+        $db = DB::getInstance();
+        $pid = $formdata['pid'];
+        $fields = array(
+            'title' => $formdata['title'],
+            'content' => $formdata['body'],
+            'status' => $formdata['status'],
+            'access' => $formdata['access'],
+            'keywords' => $formdata['keywords'],
+            'description' => $formdata['description'],
+            'robots' => implode(',', $formdata['robots']),
+            'last_updated' => date("Y-m-d")
+        );
+        if($db->update('pages', $pid, $fields)) {
+            $alias = (hasValue($formdata['alias']) && $formdata['alias'] == $db->getField('url_alias', 'alias', 'source', 'pages/'.$pid)) ? $formdata['alias'] : generateURL($fields['title']);
+            if(hasValue($alias)) {
+                //Add url alias
+                if(!$db->update('url_alias', array('source' => 'pages/'.$pid, 'alias' => $alias))) {
+                    System::addMessage('error', t('There was an error while creating the URL Alias for <i>@title</i>', array('@title' => $fields['title'])));
+                }
+            }
+            if(isset($formdata['enable_item'])) {
+                Menu::updateMenuItem($formdata['inputMenu'], $formdata['title'], $alias);
+            }
+            System::addMessage('success', t('The page @page has been created', array('@page' => $fields['title'])));
+            return true;
         }
-        catch(PDOException $e) {
-            addMessage('error', t('There was an error updating the page').' '.check_plain($formdata['title']), $e);
-            //die($e->getMessage());        
+        else {
+            System::addMessage('error', t('The new page <i>@page</i> could not be created', array('@page' => $fields['title'])));
         }
-        $db = NULL;
+        return false;
     }
     public function delete($page_id) {
-        $db = db_connect();
-        $page_id = (int)$page_id;
-        $query = $db->prepare("SELECT COUNT(*) FROM `pages` WHERE `page_id`=:page_id");
-        $query->bindValue(':page_id', $page_id, PDO::PARAM_INT);
-        try {
-            $query->execute(); //Executes query
-
-            $page = $query->fetchColumn();
-        }
-        catch (Exception $e) {
-            addMessage('error', t('There was an error while querying the pagedata'), $e);
-            //die($e->getMessage());
-        }
+        $db = DB::getInstance();
+        $name = $db->getField('pages', 'title', 'pid', $page_id);
+        $pid = (int)$page_id;
+        $page = $db->get('pages', array('pid', '=', $pid))->count();
         if($page > 0) {
-            //Check if page has associated a menu-item
-            $query = $db->prepare("SELECT COUNT(*) FROM `menu_items` AS `m`, `pages` AS `p` WHERE `p`.`page_alias`=`m`.`item_link` AND `p`.`page_id`=:page_id");
-            $query->bindValue(':page_id', $page_id, PDO::PARAM_INT);
-            try {
-                $query->execute(); //Executes query
-
-                $count = $query->fetchColumn();
-            }
-            catch (Exception $e) {
-                addMessage('error', t('There was an error while querying the menu items'), $e);
-                //die($e->getMessage());
-            }
+            //Check if the page has associated a menu-item
+            $count = $db->get('menu_items', array('pid', '=', $pid))->count();
             if(isset($count) && $count > 0) {
-                $query = $db->prepare("SELECT `item_id` FROM `menu_items` AS `m`, `pages` AS `p` WHERE `p`.`page_alias`=`m`.`item_link` AND `p`.`page_id`=:page_id");
-                $query->bindValue(':page_id', $page_id, PDO::PARAM_INT);
-                try {
-                    $query->execute(); //Executes query
-
-                    $item_id = $query->fetchColumn();
-                }
-                catch (Exception $e) {
-                    addMessage('error', t('There was an error while processing the request'), $e);
-                    //die($e->getMessage());
-                }
                 deleteMenuItem($item_id);
-                //Delete page
-                $query = $db->prepare("DELETE FROM  `pages` WHERE `page_id`=:page_id");
-                $query->bindValue(':page_id', $page_id, PDO::PARAM_INT);
-                try {
-                    $query->execute(); //Executes query
-                    addMessage('success', t('The page has been deleted'));
-                }
-                catch (Exception $e) {
-                    addMessage('error', t('There was an error while deleting the page'), $e);
-                    //die($e->getMessage());
-                }
             }
-            else {
-                //Delete page
-                $query = $db->prepare("DELETE FROM  `pages` WHERE `page_id`=:page_id");
-                $query->bindValue(':page_id', $page_id, PDO::PARAM_INT);
-                try {
-                    $query->execute(); //Executes query
-                    addMessage('success', t('The page has been deleted'));
-                }
-                catch (Exception $e) {
-                    addMessage('error', t('There was an error while deleting the page'), $e);
-                    //die($e->getMessage());
-                }
+            if($db->delete('pages', array('pid', '=', $pid))) {
+                System::addMessage('error', t('The page <i>@page</i> has been deleted', array('@page', $name)));
             }
         }
         else {
             addMessage('error', t('Page does not exist or URL was not typed correctly'));
         }
-        $db = NULL;
     }
     public static function getPageData($pid) {
         $page = new Page($pid);
