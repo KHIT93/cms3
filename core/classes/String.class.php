@@ -19,7 +19,11 @@ class String {
                 }
                 else {
                     $db->insert('translation', array('string' => $string, 'language' => $lang));
+                    $output = $string;
                 }
+            }
+            else {
+                $output = $string;
             }
         }
         else {
