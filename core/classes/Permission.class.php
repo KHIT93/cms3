@@ -6,9 +6,9 @@ class Permission {
         return explode(';', $rid);
     }
     static function set_permission($info, $module) {
-        //Function for setting a new permission on the permissions table. Administrator will have this permission as default
+        //Function for setting a new permission in the permissions table. Administrator will have this permission as default
         if(is_array($info)) {
-            $db = db_connect();
+            $db = DB::getInstance();
         
             $db = NULL;
         }
@@ -18,20 +18,12 @@ class Permission {
     }
     static function update_permission($permission, $roles) {
         //Function that updates the roles.rid of a permission
-        if(has_permission('access_admin_users_permissions_change', $_SESSION['uid']) === true) {
-            $db = db_connect();
-            $query = $db->prepare("UPDATE `permissions` SET `p_rid` = :rid WHERE `permission` = :permission");
-            $query->bindValue(':rid', $roles, PDO::PARAM_STR);
-            $query->bindValue(':permission', $permission, PDO::PARAM_STR);
-            try {
-                $query->execute();
+        if(has_permission('access_admin_users_permissions_change', Session::exists(Config::get('session/session_name'))) === true) {
+            $db = DB::getInstance();
+            if($db->update('permissions', $permission, array('rid' => $roles))) {
+                System::addMessage('error', t('Permission could not be updated'));
                 return true;
             }
-            catch (Exception $e) {
-                addMessage('error', '<strong><i>'.$permission.'</i></strong> '.t('permission could not be updated'), $e);
-                return false;
-            }
-            $db = NULL;
         }
         else {
             action_denied();
@@ -40,7 +32,7 @@ class Permission {
     }
     static function revoke_permission($permission) {
         //Function for revoking a permission and removing it from the permissions table
-        $db = db_connect();
+        $db = DB::getInstance();
         
         $db = NULL;
     }
