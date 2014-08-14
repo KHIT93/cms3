@@ -56,9 +56,9 @@ $form = array(
         /*'checkboxes' => */array(
             '#type' => 'checkbox',
             '#name' => 'myCheck',
-            '#attr' => array(
+            /*'#attr' => array(
                 'class' => 'form-control'
-            ),
+            ),*/
             '#default_value' => 'value2',
             '#disabled' => false,
             '#description' => 'This is a small helper text which will be displayed below the field',
@@ -111,9 +111,9 @@ $form = array(
         /*'radio' => */array(
             '#type' => 'radio',
             '#name' => 'myRadio',
-            '#attr' => array(
+            /*'#attr' => array(
                 'class' => 'form-control'
-            ),
+            ),*/
             '#default_value' => 'value2',
             '#description' => 'This is a small helper text which will be displayed below the field',
             '#disabled' => false,
@@ -143,7 +143,7 @@ $form = array(
                 'value3' => 'label for value3'
             ),
             '#required' => false,
-            '#size' => 5,
+            /*'#size' => 5,*/
             '#label' => 'This is a label/header for the select group'
         ),
         /*'tab1' => */array(

@@ -14,7 +14,7 @@ class Render {
                     $output .= self::prepareElement($child);
                 }
             }
-            if($element['#type'] == 'markup') {
+            else if($element['#type'] == 'markup') {
                 $output .= $element['#value'];
             }
             else {
@@ -159,6 +159,13 @@ class Render {
                 $output .= self::prepareButton($action);
                 $output .= '</div>';
             }
+        }
+        return $output;
+    }
+    public static function prepareTab($tab = array()) {
+        $output = '';
+        if(count($tab)) {
+            $output .= '';
         }
         return $output;
     }
