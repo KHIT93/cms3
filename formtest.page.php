@@ -2,7 +2,6 @@
 define('SITE_ROOT', getcwd());
 include_once 'core/init.php';
 include_once 'core/modules/krumo/class.krumo.php';
-//include_once 'core/classes/Form.class.php';
 
 $form = array(
     '#name' => 'myForm',
@@ -11,8 +10,16 @@ $form = array(
     '#attr' => array(
         'role' => 'form'
     ),
-    'elements' => array(
-        'textfield' => array(
+    'elements' =>array(
+        /*'myHeaderMarkup' => */array(
+            '#type' => 'markup',
+            '#value' => '<h1>My Form</h1>'
+        ),
+        /*'myIntroMarkup' => */array(
+            '#type' => 'markup',
+            '#value' => '<p>Please fill in all the required <strong>fields</strong></p>'
+        ),
+        /*'textfield' => */array(
             '#type' => 'text',
             '#name' => 'myText',
             '#label' => 'This is a textfield label',
@@ -30,24 +37,28 @@ $form = array(
             '#autocomplete' => false,
             '#disabled' => false,
         ),
-        'textarea' => array(
+        /*'textarea' => */array(
             '#type' => 'textarea',
             '#name' => 'myBody',
             '#default_value' => 'This is an optional default value',
             '#placeholder' => '',
             '#cols' => 60,
             '#rows' => 5,
-            '#attr' => array(),
+            '#attr' => array(
+                'class' => 'form-control'
+            ),
             '#required' => true,
             '#description' => 'This is a small helper text which will be displayed below the field',
             '#disabled' => false,
             '#resizeable' => true,
             '#label' => 'This is a textarea label'
         ),
-        'checkboxes' => array(
+        /*'checkboxes' => */array(
             '#type' => 'checkbox',
             '#name' => 'myCheck',
-            '#attr' => array(),
+            '#attr' => array(
+                'class' => 'form-control'
+            ),
             '#default_value' => 'value2',
             '#disabled' => false,
             '#description' => 'This is a small helper text which will be displayed below the field',
@@ -59,30 +70,36 @@ $form = array(
             '#required' => false,
             '#label' => 'This is a label/header for the checkbox group'
         ),
-        'date' => array(
+        /*'date' => */array(
             '#type' => 'date',
             '#name' => 'myDate',
-            '#attr' => array(),
+            '#attr' => array(
+                'class' => 'form-control'
+            ),
             '#default_value' => date("Y-m-d"),
             '#description' => 'This is a small helper text which will be displayed below the field',
             '#disabled' => false,
             '#required' => false,
             '#label' => 'This is a date label'
         ),
-        'file' => array(
+        /*'file' => */array(
             '#type' => 'file',
             '#name' => 'myFile',
-            '#attr' => array(),
+            '#attr' => array(
+                'class' => 'form-control'
+            ),
             '#description' => 'This is a small helper text which will be displayed below the field',
             '#disabled' => false,
             '#required' => false,
             '#size' => 60,
             '#label' => 'This is a file label'
         ),
-        'password' => array(
+        /*'password' => */array(
             '#type' => 'password',
             '#name' => 'myPassword',
-            '#attr' => array(),
+            '#attr' => array(
+                'class' => 'form-control'
+            ),
             '#description' => 'This is a small helper text which will be displayed below the field',
             '#disabled' => false,
             '#maxlength' => 255,
@@ -91,10 +108,12 @@ $form = array(
             '#size' => 60,
             '#label' => 'This is a password label'
         ),
-        'radio' => array(
+        /*'radio' => */array(
             '#type' => 'radio',
             '#name' => 'myRadio',
-            '#attr' => array(),
+            '#attr' => array(
+                'class' => 'form-control'
+            ),
             '#default_value' => 'value2',
             '#description' => 'This is a small helper text which will be displayed below the field',
             '#disabled' => false,
@@ -106,10 +125,12 @@ $form = array(
             '#required' => false,
             '#label' => 'This is a label/header for the radio group'
         ),
-        'select' => array(
+        /*'select' => */array(
             '#type' => 'select',
             '#name' => 'mySelect',
-            '#attr' => array(),
+            '#attr' => array(
+                'class' => 'form-control'
+            ),
             '#default_value' => 'value2',
             '#description' => 'This is a small helper text which will be displayed below the field',
             '#disabled' => false,
@@ -125,12 +146,14 @@ $form = array(
             '#size' => 5,
             '#label' => 'This is a label/header for the select group'
         ),
-        'tab1' => array(
+        /*'tab1' => */array(
             '#type' => 'tab',
             '#name' => 'myTab1',
-            '#attr' => array(),
+            '#attr' => array(
+                'class' => 'form-wrapper'
+            ),
             '#children' => array(
-                'textfield' => array(
+                /*'textfield' => */array(
                     '#type' => 'text',
                     '#name' => 'myTextField1',
                     '#label' => 'This is a textfield label',
@@ -148,7 +171,7 @@ $form = array(
                     '#autocomplete' => false,
                     '#disabled' => false,
                 ),
-                'textfield' => array(
+                /*'textfield' => */array(
                     '#type' => 'text',
                     '#name' => 'myTextField2',
                     '#label' => 'This is a textfield label',
@@ -166,7 +189,7 @@ $form = array(
                     '#autocomplete' => false,
                     '#disabled' => false,
                 ),
-                'textfield' => array(
+                /*'textfield' => */array(
                     '#type' => 'text',
                     '#name' => 'myTextField3',
                     '#label' => 'This is a textfield label',
@@ -187,12 +210,14 @@ $form = array(
             ),
             '#label' => 'This is a label for the container'
         ),
-        'tab2' => array(
+        /*'tab2' => */array(
             '#type' => 'tab',
             '#name' => 'myTab2',
-            '#attr' => array(),
+            '#attr' => array(
+                'class' => 'form-wrapper'
+            ),
             '#children' => array(
-                'textfield' => array(
+                /*'textfield' => */array(
                     '#type' => 'text',
                     '#name' => 'myTextField4',
                     '#label' => 'This is a textfield label',
@@ -210,7 +235,7 @@ $form = array(
                     '#autocomplete' => false,
                     '#disabled' => false,
                 ),
-                'textfield' => array(
+                /*'textfield' => */array(
                     '#type' => 'text',
                     '#name' => 'myTextField5',
                     '#label' => 'This is a textfield label',
@@ -228,7 +253,7 @@ $form = array(
                     '#autocomplete' => false,
                     '#disabled' => false,
                 ),
-                'textfield' => array(
+                /*'textfield' => */array(
                     '#type' => 'text',
                     '#name' => 'myTextField6',
                     '#label' => 'This is a textfield label',
@@ -249,12 +274,15 @@ $form = array(
             ),
             '#label' => 'This is a label for the 2nd container'
         ),
-        'myMarkup' => array(
+        /*'myMarkup' => */array(
             '#type' => 'markup',
             '#value' => '<p>This is some <strong>HTML</strong> <i>markup</i> in the form</p>'
         ),
-        'pid' => array(
+        /*'pid' => */array(
             '#type' => 'hidden',
+            '#attr' => array(
+                'class' => 'form-hidden'
+            ),
             '#name' => 'myToken',
             '#value' => 10,
             
@@ -263,6 +291,9 @@ $form = array(
     'actions' => array(
         'submit' => array(
             '#type' => 'submit',
+            '#attr' => array(
+                'class' => 'btn btn-default btn-sm btn-success'
+            ),
             '#name' => 'mySubmit',
             '#value' => 'Submit'
         )
@@ -320,7 +351,10 @@ $screen = new Form($form);
                 <div id="section-content">
 <div class="widget" id="widget-primary-content">
 <p>This is the form test page</p>
-<?php krumo($form); ?>
+<?php
+krumo($form);
+print $screen->render();
+?>
 </div>
 </div>
             </div>

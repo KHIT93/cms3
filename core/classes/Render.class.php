@@ -7,17 +7,21 @@ class Render {
     public static function prepareElement($element = array(), $wrapper = true) {
         $allowed = self::allowedElementTypes();
         $output = '';
-        if(count($element) && in_array($element['#type'], $allowed)) {
-            $output .= ($wrapper == true) ? '<div id="form-'.(isset($element['#name']) ? $element['#name'] : 'element').'" class="form-group">': '';
+        if(count($element)) {
+            $output .= ($wrapper == true || $element['#type'] == 'markup') ? '<div id="form-'.(isset($element['#name']) ? $element['#name'] : 'element').'" class="form-group">': '';
             if(isset($element['#children'])) {
                 foreach($element['#children'] as $child) {
                     $output .= self::prepareElement($child);
                 }
             }
+            if($element['#type'] == 'markup') {
+                $output .= $element['#value'];
+            }
             else {
                 $output .= ($element['#type'] == 'textarea') ? self::prepareTextArea($element) : self::prepareInput($element);
+                //$output .= ($element['#type'] == 'textarea') ? 'render textarea' : 'render normal input field';
             }
-            $output .= ($wrapper == true) ? '</div>': '';
+            $output .= ($wrapper == true || $element['#type'] == 'markup') ? '</div>': '';
         }
         return $output;
     }
@@ -27,13 +31,13 @@ class Render {
         if(count($element)) {
             if(in_array($element['#type'], $withOptions)) {
                 if($element['#type'] == 'select') {
-                    $output .= self::prepareLabel($element['#label']).'<select'
+                    $output .= ((isset($element['#label'])) ? self::prepareLabel($element['#label']) : '').'<select'
                             .((isset($element['#name'])) ? ' name="'.$element['#name'].'"': '')
                             .((isset($element['#size'])) ? ' size="'.$element['#size'].'"': '')
-                            .((isset($element['#disabled'])) ? ' disabled': '')
-                            .((isset($element['#multiple'])) ? ' multiple': '')
-                            .((isset($element['#required'])) ? ' required': '')
-                            .self::prepareAttributes($element['#attr'])
+                            .((isset($element['#disabled']) && $element['#disabled'] == true) ? ' disabled': '')
+                            .((isset($element['#required']) && $element['#required'] == true) ? ' required': '')
+                            .((isset($element['#multiple']) && $element['#multiple'] == true) ? ' multiple': '')
+                            .((isset($element['#attr'])) ? self::prepareAttributes($element['#attr']) : '')
                             .'>';
                     $output .= self::prepareOptions($element['#options']);
                     $output .= '</select>';
@@ -42,13 +46,15 @@ class Render {
                     $keys = array_keys($element['#options']);
                     for ($i = 0; $i < count($element['#options']); $i++) {
                         $output .= '<div class="'.$element['#type'].'">'
-                            .self::prepareLabel($element['#label'], false).'<input type="'.$element['#type'].'" '
+                            .'<label>'
+                            . '<input type="'.$element['#type'].'" '
                             .((isset($element['#name'])) ? ' name="'.$element['#name'].'"': '')
-                            .self::prepareAttributes($element['#attr'])
+                            .((isset($element['#attr'])) ? self::prepareAttributes($element['#attr']) : '')
                             .'value="'.$keys[$i].'"'
-                            .((isset($element['#disabled'])) ? ' disabled': '')
-                            .((isset($element['#required'])) ? ' required': '')
+                            .((isset($element['#disabled']) && $element['#disabled'] == true) ? ' disabled': '')
+                            .((isset($element['#required']) && $element['#required'] == true) ? ' required': '')
                             .'>'
+                            .((isset($element['#label'])) ? self::prepareLabel($element['#label'], NULL, false, true) : '')
                             . '</div>';
                     }
                 }
@@ -56,16 +62,16 @@ class Render {
             else {
                 $element_value = (isset($element['#default_value'])) ? ' value="'.$element['#default_value'].'"': '';
                 $element_value = (isset($element['#value'])) ? ' value="'.$element['#value'].'"': $element_value;
-                $output .= self::prepareLabel($element['#label']).'<input type="'.$element['#type'].'" '
+                $output .= ((isset($element['#label'])) ? self::prepareLabel($element['#label']) : '').'<input type="'.$element['#type'].'" '
                         .((isset($element['#name'])) ? ' name="'.$element['#name'].'"': '')
                         .((isset($element['#size'])) ? ' size="'.$element['#size'].'"': '')
                         .((isset($element['#maxlength'])) ? ' maxlength="'.$element['#maxlength'].'"': '')
                         .((isset($element['#placeholder'])) ? ' placeholder="'.$element['#placeholder'].'"': '')
                         .$element_value
-                        .self::prepareAttributes($element['#attr'])
-                        .((isset($element['#autocomplete']) && $element['#autcomplete'] == false) ? ' autocomplete="off"': '')
-                        .((isset($element['#disabled'])) ? ' disabled': '')
-                        .((isset($element['#required'])) ? ' required': '')
+                        .((isset($element['#attr'])) ? self::prepareAttributes($element['#attr']) : '')
+                        .((isset($element['#autocomplete']) && $element['#autocomplete'] == false) ? ' autocomplete="off"': '')
+                        .((isset($element['#disabled']) && $element['#disabled'] == true) ? ' disabled': '')
+                        .((isset($element['#required']) && $element['#required'] == true) ? ' required': '')
                         .'>';
             }
         }
@@ -74,26 +80,26 @@ class Render {
     public static function prepareTextArea($element = array()) {
         $output = '';
         if(count($element)) {
-            $element_value = (isset($element['#default_value'])) ? ' value="'.$element['#default_value'].'"': '';
-            $element_value = (isset($element['#value'])) ? ' value="'.$element['#value'].'"': $element_value;
-            $output .= self::prepareLabel($element['#label']).'<textarea'
+            $element_value = (isset($element['#default_value'])) ? $element['#default_value'] : '';
+            $element_value = (isset($element['#value'])) ? $element['#value'] : $element_value;
+            $output .= ((isset($element['#label'])) ? self::prepareLabel($element['#label']) : '').'<textarea'
                     .((isset($element['#name'])) ? ' name="'.$element['#name'].'"': '')
                     .((isset($element['#cols'])) ? ' cols="'.$element['#cols'].'"': '')
                     .((isset($element['#rows'])) ? ' rows="'.$element['#rows'].'"': '')
                     .((isset($element['#placeholder'])) ? ' placeholder="'.$element['#placeholder'].'"': '')
-                    .self::prepareAttributes($element['#attr'])
+                    .((isset($element['#attr'])) ? self::prepareAttributes($element['#attr']) : '')
                     .((isset($element['#resizeable']) && $element['#resizeable'] == true) ? ' resizeable': '')
-                    .((isset($element['#disabled'])) ? ' disabled': '')
-                    .((isset($element['#required'])) ? ' required': '')
+                    .((isset($element['#disabled']) && $element['#disabled'] == true) ? ' disabled': '')
+                    .((isset($element['#required']) && $element['#required'] == true) ? ' required': '')
                     .'>'
                     .$element_value
                     .'</textarea>';
         }
         return $output;
     }
-    public static function prepareOptions($data = array(), $type) {
+    public static function prepareOptions($data = array()) {
         $output = '';
-        if(count($element)) {
+        if(count($data)) {
             foreach($data as $value => $label) {
                 $output .= '<option value="'.$value.'">'.$label.'</option>';
             }
@@ -103,7 +109,7 @@ class Render {
     public static function prepareButton($element = array()) {
         $output = '';
         if(count($element)) {
-            $output .= '';
+            $output .= '<button type="'.$element['#type'].'"'.((isset($element['#attr'])) ? ' '.self::prepareAttributes($element['#attr']) : '').'>'.$element['#value'].'</button>';
         }
         return $output;
     }
@@ -116,35 +122,43 @@ class Render {
             return $attr;
         }
     }
-    public static function prepareLabel($label = NULL, $field_id = NULL, $close_tag = true) {
+    public static function prepareLabel($label = NULL, $field_id = NULL, $open_tag = true, $close_tag = true) {
         $output = '';
         if($label) {
-            $output .= '<label'.(($field) ? 'for="'.$field_id.'"': '').'>'.$label.(($close_tag == true) ? '</label>': '');
+            if($open_tag == false) {
+                $output .= $label.(($close_tag == true) ? '</label>': '');
+            }
+            else if ($close_tag == false && $open_tag == false) {
+                $output .= $label;
+            }
+            else {
+                $output .= '<label'.(($field_id) ? ' for="'.$field_id.'"': '').'>'.$label.(($close_tag == true) ? '</label>': '');
+            }
         }
         return $output;
     }
     public static function prepareSystemElements($form_id) {
         $output = '';
-        if(count($element)) {
-            $output .= self::prepareInput(array(
-                '#type' => 'hidden',
-                '#name' => 'form-token',
-                '#value' => Token::generate()
-            ));
-            $output .= self::prepareInput(array(
-                '#type' => 'hidden',
-                '#name' => 'form_id',
-                '#value' => $form_id
-            ));
-        }
+        $output .= self::prepareInput(array(
+            '#type' => 'hidden',
+            '#name' => 'form-token',
+            '#value' => Token::generate()
+        ));
+        $output .= self::prepareInput(array(
+            '#type' => 'hidden',
+            '#name' => 'form_id',
+            '#value' => $form_id
+        ));
         return $output;
     }
     public static function prepareActions($actions = array()) {
         $output = '';
         if(count($actions)) {
-            $output .= '<div class="form-actions">'.self::prepareSystemElements($actions['submit']['#name']);
-            
-            $output .= '</div>';
+            foreach($actions as $action) {
+                $output .= '<div class="form-actions">'.self::prepareSystemElements($action['#name']);
+                $output .= self::prepareButton($action);
+                $output .= '</div>';
+            }
         }
         return $output;
     }
