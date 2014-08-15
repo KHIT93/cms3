@@ -4,24 +4,25 @@
  * Handles the rendering of the elements passed by renderable arrays
  */
 class Render {
-    public static function prepareElement($element = array(), $wrapper = true) {
+    public static function prepareElement($element = array(), $wrapper = true, &$tab_menu = NULL) {
         $allowed = self::allowedElementTypes();
         $output = '';
         if(count($element)) {
-            $output .= ($wrapper == true || $element['#type'] == 'markup') ? '<div id="form-'.(isset($element['#name']) ? $element['#name'] : 'element').'" class="form-group">': '';
             if(isset($element['#children'])) {
+                $output .= '<div class="tab-content">';
                 foreach($element['#children'] as $child) {
-                    $output .= self::prepareElement($child);
+                    $output .= self::prepareTab($child, $tab_menu);
                 }
+                $output .= '</div>';
             }
             else if($element['#type'] == 'markup') {
                 $output .= $element['#value'];
             }
             else {
+                $output .= ($wrapper == true || $element['#type'] == 'markup') ? '<div id="form-'.(isset($element['#name']) ? $element['#name'] : 'element').'" class="form-group">': '';
                 $output .= ($element['#type'] == 'textarea') ? self::prepareTextArea($element) : self::prepareInput($element);
-                //$output .= ($element['#type'] == 'textarea') ? 'render textarea' : 'render normal input field';
+                $output .= ($wrapper == true || $element['#type'] == 'markup') ? '</div>': '';
             }
-            $output .= ($wrapper == true || $element['#type'] == 'markup') ? '</div>': '';
         }
         return $output;
     }
@@ -162,10 +163,14 @@ class Render {
         }
         return $output;
     }
-    public static function prepareTab($tab = array()) {
+    public static function prepareTab($tab = array(), &$tab_control) {
         $output = '';
         if(count($tab)) {
-            $output .= '';
+            $tab['#attr']['id'] = (isset($tab['#attr']['id'])) ? $tab['#attr']['id'].' '.$tab['#name'] : $tab['#name'];
+            $tab_control .= '<li><a href="#'.$tab['#name'].' data-toggle="tab">'.((isset($tab['#title'])) ? $tab['#title'] : $tab['#name']).'</a></li>';
+            foreach($tab['#children'] as $child) {
+                $output .= ''.self::prepareElement($child).'';
+            }
         }
         return $output;
     }

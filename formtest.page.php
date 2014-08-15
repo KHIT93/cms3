@@ -149,6 +149,8 @@ $form = array(
         /*'tab1' => */array(
             '#type' => 'tab',
             '#name' => 'myTab1',
+            '#title' => 'My Tab 1',
+            '#alignment' => 'top',
             '#attr' => array(
                 'class' => 'form-wrapper'
             ),
@@ -213,6 +215,9 @@ $form = array(
         /*'tab2' => */array(
             '#type' => 'tab',
             '#name' => 'myTab2',
+            '#title' => 'My Tab 2',
+            /*'#alignment' => 'top, left, right, bottom',*/
+            '#alignment' => 'top',
             '#attr' => array(
                 'class' => 'form-wrapper'
             ),

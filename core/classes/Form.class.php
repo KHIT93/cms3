@@ -20,9 +20,13 @@ class Form {
             .((isset($this->_raw['#action'])) ? ' action="'.$this->_raw['#action'].'"': '')
             .((is_array($this->_raw['#attr'])) ? ' '.Render::prepareAttributes($this->_raw['#attr']): '').'>';
         //Render elements, actions and other fields
+        $tab_control = '<ul id="content-tab" class="nav nav-tabs">';
+        
         foreach($this->_raw['elements'] as $element) {
-            $prepared .= Render::prepareElement($element);
+            $prepared .= Render::prepareElement($element, true, $tab_control);
         }
+        
+        $tab_control .= '</ul>';
         $prepared .= Render::prepareActions($this->_raw['actions']);
         
         $prepared .= '</form>';
