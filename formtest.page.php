@@ -146,6 +146,21 @@ $form = array(
             /*'#size' => 5,*/
             '#label' => 'This is a label/header for the select group'
         ),
+        /*'myMarkup' => */array(
+            '#type' => 'markup',
+            '#value' => '<p>This is some <strong>HTML</strong> <i>markup</i> in the form</p>'
+        ),
+        /*'pid' => */array(
+            '#type' => 'hidden',
+            '#attr' => array(
+                'class' => 'form-hidden'
+            ),
+            '#name' => 'myToken',
+            '#value' => 10,
+            
+        )
+    ),
+    'tabs' => array(
         /*'tab1' => */array(
             '#type' => 'tab',
             '#name' => 'myTab1',
@@ -278,19 +293,6 @@ $form = array(
                 ),
             ),
             '#label' => 'This is a label for the 2nd container'
-        ),
-        /*'myMarkup' => */array(
-            '#type' => 'markup',
-            '#value' => '<p>This is some <strong>HTML</strong> <i>markup</i> in the form</p>'
-        ),
-        /*'pid' => */array(
-            '#type' => 'hidden',
-            '#attr' => array(
-                'class' => 'form-hidden'
-            ),
-            '#name' => 'myToken',
-            '#value' => 10,
-            
         )
     ),
     'actions' => array(

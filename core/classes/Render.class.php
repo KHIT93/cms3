@@ -4,24 +4,24 @@
  * Handles the rendering of the elements passed by renderable arrays
  */
 class Render {
-    public static function prepareElement($element = array(), $wrapper = true, &$tab_menu = NULL) {
+    public static function prepareElement($element = array(), $wrapper = true) {
         $allowed = self::allowedElementTypes();
         $output = '';
         if(count($element)) {
-            if(isset($element['#children'])) {
+            /*if(isset($element['#children'])) {
                 $output .= '<div class="tab-content">';
-                foreach($element['#children'] as $child) {
-                    $output .= self::prepareTab($child, $tab_menu);
-                }
+                //foreach($element as $child) {
+                    $output .= self::prepareTab($element, $tab_menu);
+                //}
                 $output .= '</div>';
-            }
-            else if($element['#type'] == 'markup') {
+            }*/
+            if($element['#type'] == 'markup') {
                 $output .= $element['#value'];
             }
             else {
-                $output .= ($wrapper == true || $element['#type'] == 'markup') ? '<div id="form-'.(isset($element['#name']) ? $element['#name'] : 'element').'" class="form-group">': '';
+                $output .= ($wrapper == true || $element['#type'] == 'markup') ? '<div id="form-'.(isset($element['#name']) ? $element['#name'] : 'element').'" class="form-group">'."\n": '';
                 $output .= ($element['#type'] == 'textarea') ? self::prepareTextArea($element) : self::prepareInput($element);
-                $output .= ($wrapper == true || $element['#type'] == 'markup') ? '</div>': '';
+                $output .= ($wrapper == true || $element['#type'] == 'markup') ? '</div>'."\n": '';
             }
         }
         return $output;
@@ -39,24 +39,24 @@ class Render {
                             .((isset($element['#required']) && $element['#required'] == true) ? ' required': '')
                             .((isset($element['#multiple']) && $element['#multiple'] == true) ? ' multiple': '')
                             .((isset($element['#attr'])) ? self::prepareAttributes($element['#attr']) : '')
-                            .'>';
+                            .'>'."\n";
                     $output .= self::prepareOptions($element['#options']);
-                    $output .= '</select>';
+                    $output .= '</select>'."\n";
                 }
                 else {
                     $keys = array_keys($element['#options']);
                     for ($i = 0; $i < count($element['#options']); $i++) {
-                        $output .= '<div class="'.$element['#type'].'">'
-                            .'<label>'
+                        $output .= '<div class="'.$element['#type'].'">'."\n"
+                            .'<label>'."\n"
                             . '<input type="'.$element['#type'].'" '
                             .((isset($element['#name'])) ? ' name="'.$element['#name'].'"': '')
                             .((isset($element['#attr'])) ? self::prepareAttributes($element['#attr']) : '')
                             .'value="'.$keys[$i].'"'
                             .((isset($element['#disabled']) && $element['#disabled'] == true) ? ' disabled': '')
                             .((isset($element['#required']) && $element['#required'] == true) ? ' required': '')
-                            .'>'
+                            .'>'."\n"
                             .((isset($element['#label'])) ? self::prepareLabel($element['#label'], NULL, false, true) : '')
-                            . '</div>';
+                            . '</div>'."\n";
                     }
                 }
             }
@@ -73,7 +73,7 @@ class Render {
                         .((isset($element['#autocomplete']) && $element['#autocomplete'] == false) ? ' autocomplete="off"': '')
                         .((isset($element['#disabled']) && $element['#disabled'] == true) ? ' disabled': '')
                         .((isset($element['#required']) && $element['#required'] == true) ? ' required': '')
-                        .'>';
+                        .'>'."\n";
             }
         }
         return $output;
@@ -94,7 +94,7 @@ class Render {
                     .((isset($element['#required']) && $element['#required'] == true) ? ' required': '')
                     .'>'
                     .$element_value
-                    .'</textarea>';
+                    .'</textarea>'."\n";
         }
         return $output;
     }
@@ -102,7 +102,7 @@ class Render {
         $output = '';
         if(count($data)) {
             foreach($data as $value => $label) {
-                $output .= '<option value="'.$value.'">'.$label.'</option>';
+                $output .= '<option value="'.$value.'">'.$label.'</option>'."\n";
             }
         }
         return $output;
@@ -110,7 +110,7 @@ class Render {
     public static function prepareButton($element = array()) {
         $output = '';
         if(count($element)) {
-            $output .= '<button type="'.$element['#type'].'"'.((isset($element['#attr'])) ? ' '.self::prepareAttributes($element['#attr']) : '').'>'.$element['#value'].'</button>';
+            $output .= '<button type="'.$element['#type'].'"'.((isset($element['#attr'])) ? ' '.self::prepareAttributes($element['#attr']) : '').'>'.$element['#value'].'</button>'."\n";
         }
         return $output;
     }
@@ -127,13 +127,13 @@ class Render {
         $output = '';
         if($label) {
             if($open_tag == false) {
-                $output .= $label.(($close_tag == true) ? '</label>': '');
+                $output .= $label.(($close_tag == true) ? '</label>'."\n": '');
             }
             else if ($close_tag == false && $open_tag == false) {
                 $output .= $label;
             }
             else {
-                $output .= '<label'.(($field_id) ? ' for="'.$field_id.'"': '').'>'.$label.(($close_tag == true) ? '</label>': '');
+                $output .= '<label'.(($field_id) ? ' for="'.$field_id.'"': '').'>'.$label.(($close_tag == true) ? '</label>'."\n": '');
             }
         }
         return $output;
@@ -156,20 +156,36 @@ class Render {
         $output = '';
         if(count($actions)) {
             foreach($actions as $action) {
-                $output .= '<div class="form-actions">'.self::prepareSystemElements($action['#name']);
-                $output .= self::prepareButton($action);
-                $output .= '</div>';
+                $output .= '<div class="form-actions">'.self::prepareSystemElements($action['#name'])."\n";
+                $output .= self::prepareButton($action)."\n";
+                $output .= '</div>'."\n";
             }
         }
         return $output;
     }
-    public static function prepareTab($tab = array(), &$tab_control) {
+    public static function prepareTab($tab) {
+        $output = array(
+            'nav' => '',
+            'content' => ''
+        );
+        if(count($tab)) {
+            if(isset($tab['#children'])) {
+                $tab['#attr']['id'] = (isset($tab['#attr']['id'])) ? $tab['#attr']['id'].' '.$tab['#name'] : $tab['#name'];
+                $output['nav'] .= '<li><a href="#'.$tab['#name'].'" data-toggle="tab">'.((isset($tab['#title'])) ? $tab['#title'] : $tab['#name']).'</a></li>'."\n";
+                $output['content'] .= '<div class="tab-pane fade in" '.self::prepareAttributes($tab['#attr']).'>'."\n";
+                foreach ($tab['#children'] as $child) {
+                    $output['content'] .= self::prepareTabContent($child)."\n";
+                }
+                $output['content'] .= '</div>'."\n";
+            }
+        }
+        return $output;
+    }
+    public static function prepareTabContent($tab) {
         $output = '';
         if(count($tab)) {
-            $tab['#attr']['id'] = (isset($tab['#attr']['id'])) ? $tab['#attr']['id'].' '.$tab['#name'] : $tab['#name'];
-            $tab_control .= '<li><a href="#'.$tab['#name'].' data-toggle="tab">'.((isset($tab['#title'])) ? $tab['#title'] : $tab['#name']).'</a></li>';
-            foreach($tab['#children'] as $child) {
-                $output .= ''.self::prepareElement($child).'';
+            foreach($tab as $child) {
+                $output .= ''.self::prepareElement($child)."\n";
             }
         }
         return $output;

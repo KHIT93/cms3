@@ -1,6 +1,6 @@
 <?php
 class Form {
-    private $_prepared, $_raw;
+    private $_prepared, $_raw, $_tabControl = '', $_tabs = '', $_elements = '';
     public function __construct($form = array()) {
         $this->_raw = $form;
         $this->prepare();
@@ -20,13 +20,26 @@ class Form {
             .((isset($this->_raw['#action'])) ? ' action="'.$this->_raw['#action'].'"': '')
             .((is_array($this->_raw['#attr'])) ? ' '.Render::prepareAttributes($this->_raw['#attr']): '').'>';
         //Render elements, actions and other fields
-        $tab_control = '<ul id="content-tab" class="nav nav-tabs">';
+        $tab_control = '';
         
-        foreach($this->_raw['elements'] as $element) {
-            $prepared .= Render::prepareElement($element, true, $tab_control);
+        if(isset($this->_raw['elements'])) {
+            foreach($this->_raw['elements'] as $element) {
+                $this->_elements .= Render::prepareElement($element);
+            }
+        }
+        if(isset($this->_raw['tabs'])) {
+            $this->_tabControl .= '<ul id="content-tab" class="nav nav-tabs">';
+            $this->_tabs .= '<div class="tab-content">';
+            foreach ($this->_raw['tabs'] as $tab) {
+                $this->_tabs .= Render::prepareTab($tab);
+            }
+            $this->_tabs .= '</div>';
+            $this->_tabControl .= '</ul>';
         }
         
-        $tab_control .= '</ul>';
+        $prepared .= $this->_elements;
+        $prepared .= $this->_tabControl;
+        $prepared .= $this->_tabs;
         $prepared .= Render::prepareActions($this->_raw['actions']);
         
         $prepared .= '</form>';
