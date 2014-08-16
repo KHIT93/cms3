@@ -185,6 +185,9 @@ class System {
             }
         }
     }
+    public static function getForm($form) {
+        return $form[$form];
+    }
     public static function mail($to, $subject='', $message='', $from='', $cc='', $bcc='') {
         $from = escapeAddr($from);
         $header = 'From: '.$from.PHP_EOL

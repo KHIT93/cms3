@@ -8,20 +8,22 @@ class Render {
         $allowed = self::allowedElementTypes();
         $output = '';
         if(count($element)) {
-            /*if(isset($element['#children'])) {
-                $output .= '<div class="tab-content">';
-                //foreach($element as $child) {
-                    $output .= self::prepareTab($element, $tab_menu);
-                //}
-                $output .= '</div>';
-            }*/
-            if($element['#type'] == 'markup') {
-                $output .= $element['#value'];
-            }
-            else {
-                $output .= ($wrapper == true || $element['#type'] == 'markup') ? '<div id="form-'.(isset($element['#name']) ? $element['#name'] : 'element').'" class="form-group">'."\n": '';
-                $output .= ($element['#type'] == 'textarea') ? self::prepareTextArea($element) : self::prepareInput($element);
-                $output .= ($wrapper == true || $element['#type'] == 'markup') ? '</div>'."\n": '';
+            if(isset($element['#type'])) {
+                /*if(isset($element['#children'])) {
+                    $output .= '<div class="tab-content">';
+                    //foreach($element as $child) {
+                        $output .= self::prepareTab($element, $tab_menu);
+                    //}
+                    $output .= '</div>';
+                }*/
+                if($element['#type'] == 'markup') {
+                    $output .= $element['#value'];
+                }
+                else {
+                    $output .= ($wrapper == true || $element['#type'] == 'markup') ? '<div id="form-'.(isset($element['#name']) ? $element['#name'] : 'element').'" class="form-group">'."\n": '';
+                    $output .= (isset($element['#type']) && $element['#type'] == 'textarea') ? self::prepareTextArea($element) : self::prepareInput($element);
+                    $output .= ($wrapper == true || $element['#type'] == 'markup') ? '</div>'."\n": '';
+                }
             }
         }
         return $output;
@@ -155,11 +157,11 @@ class Render {
     public static function prepareActions($actions = array()) {
         $output = '';
         if(count($actions)) {
+            $output .= '<div class="form-actions">'.self::prepareSystemElements($action['#name'])."\n";
             foreach($actions as $action) {
-                $output .= '<div class="form-actions">'.self::prepareSystemElements($action['#name'])."\n";
                 $output .= self::prepareButton($action)."\n";
-                $output .= '</div>'."\n";
             }
+            $output .= '</div>'."\n";
         }
         return $output;
     }
@@ -174,14 +176,14 @@ class Render {
                 $output['nav'] .= '<li><a href="#'.$tab['#name'].'" data-toggle="tab">'.((isset($tab['#title'])) ? $tab['#title'] : $tab['#name']).'</a></li>'."\n";
                 $output['content'] .= '<div class="tab-pane fade in" '.self::prepareAttributes($tab['#attr']).'>'."\n";
                 foreach ($tab['#children'] as $child) {
-                    $output['content'] .= self::prepareTabContent($child)."\n";
+                    $output['content'] .= self::prepareElement($child)."\n";
                 }
                 $output['content'] .= '</div>'."\n";
             }
         }
         return $output;
     }
-    public static function prepareTabContent($tab) {
+    /*public static function prepareTabContent($tab) {
         $output = '';
         if(count($tab)) {
             foreach($tab as $child) {
@@ -189,7 +191,7 @@ class Render {
             }
         }
         return $output;
-    }
+    }*/
     static function allowedElementTypes() {
         return $types = array(
                             'input' => array(

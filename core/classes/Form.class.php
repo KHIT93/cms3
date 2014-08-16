@@ -31,7 +31,9 @@ class Form {
             $this->_tabControl .= '<ul id="content-tab" class="nav nav-tabs">';
             $this->_tabs .= '<div class="tab-content">';
             foreach ($this->_raw['tabs'] as $tab) {
-                $this->_tabs .= Render::prepareTab($tab);
+                $content = Render::prepareTab($tab);
+                $this->_tabControl .= $content['nav'];
+                $this->_tabs .= $content['content'];
             }
             $this->_tabs .= '</div>';
             $this->_tabControl .= '</ul>';
