@@ -69,11 +69,13 @@ if(version_compare(phpversion(), '5.4.0', '>')) {
         require_once CORE_CLASSES_PATH.'/Bootstrapper.class.php';*/
         //Include functions
         require_once CORE_FUNCTIONS_PATH.'/bootstrapper.function.php';
+        require_once CORE_FUNCTIONS_PATH.'/form.function.php';
         require_once CORE_FUNCTIONS_PATH.'/language.function.php';
         require_once CORE_FUNCTIONS_PATH.'/legacy.function.php';
         require_once CORE_FUNCTIONS_PATH.'/menu.function.php';
         require_once CORE_FUNCTIONS_PATH.'/page.function.php';
         require_once CORE_FUNCTIONS_PATH.'/sanitize.function.php';
+        require_once CORE_FUNCTIONS_PATH.'/string.function.php';
         require_once CORE_FUNCTIONS_PATH.'/system.function.php';
         require_once CORE_FUNCTIONS_PATH.'/theme.function.php';
         require_once CORE_FUNCTIONS_PATH.'/user.function.php';
@@ -101,6 +103,7 @@ if(version_compare(phpversion(), '5.4.0', '>')) {
             Redirect::to(page_front());
             exit();
         }
+        require_once INCLUDES_PATH.'/systemforms.inc.php';
     }
 }
 else {

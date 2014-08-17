@@ -4,7 +4,7 @@
  * Handles communication with the global configuration
  */
 class Config {
-    public static function get($path = NULL) {
+    public static function get($path = NULL, $return_as_array = false) {
         if($path) {
             $config = $GLOBALS['config'];
             $path = explode('/', $path);
@@ -14,7 +14,13 @@ class Config {
                     $config = $config[$bit];
                 }
             }
-            return $config;
+            if(is_array($config)) {
+                return ($return_as_array == true) ? $config : false;
+            }
+            else {
+                return $config;
+            }
+            
         }
         else {
             return false;

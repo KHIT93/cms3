@@ -252,20 +252,20 @@ class Settings {
         
         $output .= '<form name="globalUser" role="form" action="" method="POST">';
         $output .= '<div class="radio"><label>'
-                . '<input type="radio" name="optionsUser" id="optionsUser1" value="0"';
-        $output .= ($site_data['create_user'] == 0) ? 'checked>' : '>';
+                . '<input type="radio" name="optionsUser" class="icheck" id="optionsUser1" value="0"';
+        $output .= (Config::get('site/create_user') == 0) ? 'checked>' : '>';
         $output .= t('Only admin can create new users')
                 . '</label>'
                 . '</div>';
         $output .= '<div class="radio"><label>'
-                . '<input type="radio" name="optionsUser" id="optionsUser1" value="1"';
-        $output .= ($site_data['create_user'] == 1) ? 'checked>' : '>';
+                . '<input type="radio" name="optionsUser" class="icheck" id="optionsUser1" value="1"';
+        $output .= (Config::get('site/create_user') == 1) ? 'checked>' : '>';
         $output .= t('Users can create an account, but it requires approval from admin')
                 . '</label>'
                 . '</div>';
         $output .= '<div class="radio"><label>'
-                . '<input type="radio" name="optionsUser" id="optionsUser1" value="2"';
-        $output .= ($site_data['create_user'] == 2) ? 'checked>' : '>';
+                . '<input type="radio" name="optionsUser" class="icheck" id="optionsUser1" value="2"';
+        $output .= (Config::get('site/create_user') == 2) ? 'checked>' : '>';
         $output .= t('Users can create an account without approval from admin')
                 . '</label>'
                 . '</div>'
@@ -301,7 +301,7 @@ class Settings {
                     . '<div class="cl-mcont">'
                     . print_messages()
                     . '<div class="col-md-12">';
-        $wysiwyg = Config::get('site/wysiwyg');
+        $wysiwyg = 0 /*Config::get('site/wysiwyg')*/;
         $output .= t('Here you can either enable or disable the built-in CKEditor. CKEditor is a Graphical editor for textareas which makes you create content like in any other texteditor.');
         $output .= '<form name="enableWysiwyg" action="" method="POST" role="form">'
                 . '<div class="checkbox">'
@@ -323,7 +323,7 @@ class Settings {
     }
     public static function development() {
         $get_url = splitURL();
-        $site_data = Config::get('site');
+        $site_data = Config::get('site', true);
         if(isset($get_url[3])) {
             if($get_url[3] == 'maintenance') {
                 $output = self::maintenance();
@@ -371,7 +371,7 @@ class Settings {
         return $output;
     }
     public static function developmentMaintenance() {
-        $site_data = Config::get('site');
+        $site_data = Config::get('site', true);
         $mode = $site_data['maintenance'];
         $output = ($mode == 1) ? '<div class="alert alert-info alert-box"><p>'.t('Maintenance mode is enabled').'</p></div>' : '';
         $message = $site_data['maintenance_message'];
@@ -409,13 +409,121 @@ class Settings {
         return $output;
     }
     public static function search_metaData() {
+        //Form-ID = globalMetaData
+        $output = '<div class="page-head">'
+                . '<h2>'.t('Meta tags').'</h2>'
+                . get_breadcrumb()
+                . '</div>'
+                . '<div class="cl-mcont">'
+                    . System::print_messages()
+                . '<div class="col-md-12">'
+                . 'search and metadata settings'
+                . '</div>';
         
+        return $output;
     }
     public static function search_metaRedirect() {
+        $get_url = splitURL();
+        if(isset($get_url[4])) {
+            if(is_numeric($get_url[4]) && isset($get_url[5])) {
+                if($get_url[5] == 'edit') {
+                    $output = self::search_metaRedirectEdit($get_url[4]);
+                }
+                else if($get_url[5] == 'delete') {
+                    $output = self::search_metaRedirectDelete($get_url[4]);
+                }
+            }
+            else if($get_url[4] == 'add') {
+                $output = self::search_metaRedirectAdd();
+            }
+        }
+        else {
+            $count = DB::getInstance()->getAll('url_alias')->count();
+            $limit = 25;
+            $data = pagination($limit, 'url_alias', '*');
+            $output = '<div class="page-head">'
+                    . '<h2>'.t('URL Redirect').'</h2>'
+                    . get_breadcrumb()
+                    . '</div>'
+                    . '<div class="cl-mcont">'
+                        . System::print_messages()
+                    . '<div class="col-md-12">'
+                    . '<a href="/admin/settings/search/redirect/add"><span class="glyphicon glyphicon-plus"></span> '.t('Add redirect').'</a><br/><br/>';
+            $output .= '<table class="table table-striped table-hover">'
+                        . '<thead style="background-color: #CCC;">'
+                             .'<tr>'
+                                 .'<th><strong>'.t('From').'</strong></th>'
+                                 .'<th><strong>'.t('To').'</strong></th>'
+                                 .'<th><strong>'.t('Language').'</strong></th>'
+                                 .'<th><strong>'.t('Actions').'</strong></th>'
+                             .'</tr>'
+                        . '</thead>'
+                        . '<tbody>';
+            foreach ($data['data'] as $alias) {
+                $output .= '<tr>'
+                            .'<td>'.$alias['source'].'</td>'
+                            .'<td>'.$alias['alias'].'</td>'
+                            .'<td>'.(($alias['language'] == 0)? t('All') : DB::getInstance()->getField('languages', 'name', 'code', $alias['language'])).'</td>'
+                            .'<td>'
+                                .'<a href="/admin/settings/search/redirect/'.$alias['aid'].'/edit" class="btn btn-rad btn-sm btn-default">'.t('Edit').'</a>'
+                                .'<a href="/admin/settings/search/redirect/'.$alias['aid'].'/delete" class="btn btn-rad btn-sm btn-danger">'.t('Delete').'</a>'
+                            .'</td>';
+            }
+            $output .= '</tbody></table>';
+            $output .= (($count > $limit) ? $data['controls'] : '')
+                    . '</div>';
+        }
+        return $output;
+    }
+    public static function search_metaRedirectAdd() {
+        $form = new Form(System::getForm('addMetaRedirect'));
+        $output = '<div class="page-head">'
+                . '<h2>'.t('URL Redirect').'</h2>'
+                . get_breadcrumb()
+                . '</div>'
+                . '<div class="cl-mcont">'
+                    . System::print_messages()
+                . '<div class="col-md-12">'
+                . $form->render()
+                . '</div>';
         
+        return $output;
+    }
+    public static function search_metaRedirectEdit($aid) {
+        $data = DB::getInstance()->get('url_alias', array('aid', '=', $aid))->first();
+        $formdata = System::getForm('editMetaRedirect');
+        $formdata['elements'][0]['#value'] = $data->source;
+        $formdata['elements'][1]['#value'] = $data->alias;
+        $form = new Form($formdata);
+        $output = '<div class="page-head">'
+                . '<h2>'.t('URL Redirect').'</h2>'
+                . get_breadcrumb()
+                . '</div>'
+                . '<div class="cl-mcont">'
+                    . System::print_messages()
+                . '<div class="col-md-12">'
+                . $form->render()
+                . '</div>';
+        
+        return $output;
+    }
+    public static function search_metaRedirectDelete($aid) {
+        //Call delete form
+        return Form::formDelete(t('Delete URL Alias'), 'deleteMetaRedirect', $aid, DB::getInstance()->getField('url_alias', 'alias', 'aid', $aid), '/admin/settings/search/redirect', 'deleteMetaRedirect');
     }
     public static function search_errorPages() {
+        //Form-ID = globalErrorPages
+        $output = '<div class="page-head">'
+                . '<h2>'.t('Error pages').'</h2>'
+                . get_breadcrumb()
+                . '</div>'
+                . '<div class="cl-mcont">'
+                    . System::print_messages()
+                . '<div class="col-md-12">'
+                . 'search and metadata settings'
+                . '</div>';
         
+        return $output;
     }
     public static function language() {
         $get_url = splitURL();
@@ -436,7 +544,9 @@ class Settings {
                         . print_messages()
                         . '<div class="col-md-12">';
                 $output .= '<div class="hidden-xs">';
-                $data = pagination(25, 'translation', '*');
+                $limit = 25;
+                $count = DB::getInstance()->getAll('translation');
+                $data = pagination($limit, 'translation', '*');
                 $translations = $data['data'];
                 $output .= '<table class="table table-striped table-hover">'
                         . '<thead style="background-color: #CCC;">'
@@ -456,7 +566,7 @@ class Settings {
                                   .'</td>';
                 }
                 $output .= '</tbody></table>';
-                $output .= $data['controls'];
+                $output .= (($count > $limit) ? $data['controls'] : '');
                 $output .= '</div>';
                 $output .= '<div class="visible-xs"><p>'.t('Interface translation is not available on mobile devices and screens with low resolution.').'</p></div>'
                         . '</div>';

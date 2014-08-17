@@ -54,7 +54,7 @@ if(isset($get_url[1])) {
                 break;
             default:
                 http_response_code(404);
-                include path_to_theme().'/404.php';
+                include Theme::path_to_theme().'/404.php';
                 break;
         }
     }

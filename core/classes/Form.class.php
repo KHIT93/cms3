@@ -42,7 +42,7 @@ class Form {
         $prepared .= $this->_elements;
         $prepared .= $this->_tabControl;
         $prepared .= $this->_tabs;
-        $prepared .= Render::prepareActions($this->_raw['actions']);
+        $prepared .= Render::prepareActions($this->_raw['actions'], $this->_raw['#name']);
         
         $prepared .= '</form>';
         //After rendering set $_prepared to the returned data

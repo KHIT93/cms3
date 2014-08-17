@@ -9,6 +9,9 @@ function t($string, array $args = array()) {
 function format_string($string, array $args = array()) {
     return String::format($string, $args);
 }
+function get_active_languages() {
+    return DB::getInstance()->get('languages', array('active', '=', '1'), PDO::FETCH_ASSOC)->results();
+}
 function getTranslations($language) {
     $db = db_connect();
     $query = $db->prepare("SELECT * FROM `translation` WHERE `t_locale`=:field");

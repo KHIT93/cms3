@@ -10,5 +10,4 @@ include 'core/modules/krumo/class.krumo.php';
 require_once SITE_ROOT.'/core/init.php';
 core_bootstrapper($init, EXEC_BOOTSTRAPPER_FULL);
 finalize_page($init);
-//krumo(Theme::getTheme());
 ?>

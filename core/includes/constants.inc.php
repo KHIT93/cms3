@@ -11,25 +11,25 @@ define('VERSION', '3.1');
 
 define('ADMIN_ROOT', 'admin');
 
-define('CORE_MODULE_PATH', 'core/modules');
+define('CORE_MODULE_PATH', SITE_ROOT.'core/modules');
 
 define('MODULE_PATH', 'modules');
 
 define('MODULE_DEFAULT_CONFIG_PATH', 'admin/modules');
 
-define('CORE_THEME_PATH', 'core/templates');
+define('CORE_THEME_PATH', '/core/templates');
 
-define('THEME_PATH', 'templates');
+define('THEME_PATH', '/templates');
 
-define('INCLUDES_PATH', 'core/includes');
+define('INCLUDES_PATH', SITE_ROOT.'/core/includes');
 
 define('ERROR_FILE_PATH', INCLUDES_PATH.'/errors');
 
-define('ASSETS_PATH', 'core/assets');
+define('ASSETS_PATH', '/core/assets');
 
-define('CORE_CLASSES_PATH', 'core/classes');
+define('CORE_CLASSES_PATH', SITE_ROOT.'/core/classes');
 
-define('CORE_FUNCTIONS_PATH', 'core/functions');
+define('CORE_FUNCTIONS_PATH', SITE_ROOT.'/core/functions');
 
 define('CORE_CSS_PATH', ASSETS_PATH.'/styles');
 

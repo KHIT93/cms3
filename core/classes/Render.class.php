@@ -42,7 +42,8 @@ class Render {
                             .((isset($element['#multiple']) && $element['#multiple'] == true) ? ' multiple': '')
                             .((isset($element['#attr'])) ? self::prepareAttributes($element['#attr']) : '')
                             .'>'."\n";
-                    $output .= self::prepareOptions($element['#options']);
+                    $output .= '<option value="'.((isset($element['#empty_value'])) ? $element['#empty_value']: 0).'">'.((isset($element['#empty_option'])) ? $element['#empty_option']: '- '.t('Select').' -').'</option>'
+                            .self::prepareOptions($element['#options']);
                     $output .= '</select>'."\n";
                 }
                 else {
@@ -112,7 +113,12 @@ class Render {
     public static function prepareButton($element = array()) {
         $output = '';
         if(count($element)) {
-            $output .= '<button type="'.$element['#type'].'"'.((isset($element['#attr'])) ? ' '.self::prepareAttributes($element['#attr']) : '').'>'.$element['#value'].'</button>'."\n";
+            if($element['#type'] == 'markup') {
+                $output .= $element['#value'];
+            }
+            else {
+                $output .= '<button type="'.$element['#type'].'"'.((isset($element['#attr'])) ? ' '.self::prepareAttributes($element['#attr']) : '').'>'.$element['#value'].'</button>'."\n";
+            }
         }
         return $output;
     }
@@ -154,10 +160,10 @@ class Render {
         ));
         return $output;
     }
-    public static function prepareActions($actions = array()) {
+    public static function prepareActions($actions = array(), $form_id) {
         $output = '';
         if(count($actions)) {
-            $output .= '<div class="form-actions">'.self::prepareSystemElements($action['#name'])."\n";
+            $output .= '<div class="form-actions">'.self::prepareSystemElements($form_id)."\n";
             foreach($actions as $action) {
                 $output .= self::prepareButton($action)."\n";
             }

@@ -145,7 +145,7 @@ class Bootstrapper {
         return $rendered_styles;
     }
     private static function prepare_core_styles() {
-        $core_css = Config::get('assets/styles');
+        $core_css = Config::get('assets/styles', true);
         $styles = '';
         foreach ($core_css as $media => $data) {
             for ($i=0; $i<count($data); $i++) {
@@ -170,7 +170,7 @@ class Bootstrapper {
         return $rendered_jscripts;
     }
     private static function prepare_core_jscripts() {
-        $core_js = Config::get('assets/scripts');
+        $core_js = Config::get('assets/scripts', true);
         $jscripts = '<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>'."\n";
         foreach ($core_js as $data) {
             $jscripts .= '<script src="/'.$data.'"></script>'."\n";

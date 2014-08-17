@@ -1,5 +1,6 @@
 INSERT INTO `languages`
 (`code`, `name`) VALUES
+('en', 'English'),
 ('prs', 'Afghanistan Persian'),
 ('af', 'Afrikaans'),
 ('sq', 'Albanian'),

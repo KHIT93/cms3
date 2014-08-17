@@ -33,3 +33,12 @@ function action_denied($print = false) {
         Permission::action_denied();
     }
 }
+function openFile($path, $type = 'a') {
+    if(file_exists($path)) {
+        return $handle = fopen($path, $type);
+    }
+    else {
+        addMessage('error', t('Not found').': '.$path.'<br/>'.t('The file does not exists'));
+        return false;
+    }
+}
