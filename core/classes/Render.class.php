@@ -160,7 +160,7 @@ class Render {
         ));
         return $output;
     }
-    public static function prepareActions($actions = array(), $form_id) {
+    public static function prepareActions($actions, $form_id) {
         $output = '';
         if(count($actions)) {
             $output .= '<div class="form-actions">'.self::prepareSystemElements($form_id)."\n";
