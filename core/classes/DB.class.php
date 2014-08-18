@@ -23,11 +23,7 @@ class DB {
             if(count($params) > 0) {
                 $x = 1;
                 foreach($params as $param) {
-                    if(is_array($param)) {
-                        krumo(debug_backtrace());
-                        krumo($param);
-                    }
-                    $this->_query->bindValue($x, $param);
+                    $this->_query->bindValue($x, $param, get_datatype($param));
                     $x++;
                 }
             }
