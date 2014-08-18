@@ -28,7 +28,7 @@ class Page {
             $url = $get_url;
         }
         $page = DB::getInstance()->getField('pages', 'pid', 'pid', $url);
-        return (empty($page)) ? false : true;
+        return (is_int($page) ||  is_string($page)) ? true : false;
 
     }
     public function getMetaRobots() {

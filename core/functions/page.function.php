@@ -97,9 +97,15 @@ function getPageId($alias) {
     //krumo(debug_backtrace());
     //$alias_convert = (strpos($alias, 'pages/') == false) ? DB::getInstance()->getField('url_alias', 'source', 'alias', $alias) : $alias;
     $alias_convert = ($convert[0] == 'pages') ? $alias : DB::getInstance()->getField('url_alias', 'source', 'alias', $alias);
-    $page_id = explode('/', $alias_convert)[1];
+    if(!is_null($alias_convert)) {
+        $page_id = explode('/', $alias_convert)[1];
+        return $page_id;
+    }
+    else {
+        return false;
+    }
     //$page_id = DB::getInstance()->getField('pages', 'pid', 'page_url', $alias_convert);
-    return $page_id;
+    return false;
 }
 function page_front() {
     return Config::get('site/site_home');

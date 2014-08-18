@@ -184,7 +184,7 @@ class Bootstrapper {
             //If the page exists establish a new page object
             //$page = new Page($url);
             $page = Page::getInstance($url);
-            if($page->pageAccess(((isset($_SESSION['uid'])) ? $_SESSION['uid'] : 0))) {
+            if($page->pageAccess(((Session::exists(Config::get('session/session_name'))) ? Session::get(Config::get('session/session_name')) : 0))) {
                 //$page = getPage($url);
                 foreach (Module::activeModules() as $module) {
                     $func_name = $module->module.'_theme_page_alter';

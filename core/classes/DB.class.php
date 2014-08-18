@@ -101,7 +101,7 @@ class DB {
     }
     public function getField($table, $item, $field, $input, $pdoFetch = PDO::FETCH_OBJ) {
         //$this->action("SELECT {$item}", $table, array($field, '=', $input));
-        return (is_object($this->action("SELECT {$item}", $table, array($field, '=', $input)))) ? $this->results()[0]->{$item} : NULL;
+        return (is_object($this->action("SELECT {$item}", $table, array($field, '=', $input)))) ? $this->first()->{$item} : NULL;
     }
     public function countItems($table, $item, $field, $input, $pdoFetch = PDO::FETCH_OBJ) {
         return $this->action("SELECT COUNT({$field})", $table, array($field, '=', $input))->count();

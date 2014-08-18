@@ -20,7 +20,6 @@ class Form {
             .((isset($this->_raw['#action'])) ? ' action="'.$this->_raw['#action'].'"': '')
             .((is_array($this->_raw['#attr'])) ? ' '.Render::prepareAttributes($this->_raw['#attr']): '').'>';
         //Render elements, actions and other fields
-        $tab_control = '';
         
         if(isset($this->_raw['elements'])) {
             foreach($this->_raw['elements'] as $element) {
