@@ -25,7 +25,7 @@ define('INCLUDES_PATH', SITE_ROOT.'/core/includes');
 
 define('ERROR_FILE_PATH', INCLUDES_PATH.'/errors');
 
-define('ASSETS_PATH', 'core/assets');
+define('ASSETS_PATH', '/core/assets');
 
 define('CORE_CLASSES_PATH', SITE_ROOT.'/core/classes');
 
