@@ -66,7 +66,9 @@ class Render {
             else {
                 $element_value = (isset($element['#default_value'])) ? ' value="'.$element['#default_value'].'"': '';
                 $element_value = (isset($element['#value'])) ? ' value="'.$element['#value'].'"': $element_value;
-                $output .= ((isset($element['#label'])) ? self::prepareLabel($element['#label']) : '').'<input type="'.$element['#type'].'" '
+                $output .= ((isset($element['#label'])) ? self::prepareLabel($element['#label']) : '')
+                        .((isset($element['#prefix'])) ? $element['#prefix'] : '')
+                        .'<input type="'.$element['#type'].'" '
                         .((isset($element['#name'])) ? ' name="'.$element['#name'].'"': '')
                         .((isset($element['#size'])) ? ' size="'.$element['#size'].'"': '')
                         .((isset($element['#maxlength'])) ? ' maxlength="'.$element['#maxlength'].'"': '')
@@ -76,7 +78,9 @@ class Render {
                         .((isset($element['#autocomplete']) && $element['#autocomplete'] == false) ? ' autocomplete="off"': '')
                         .((isset($element['#disabled']) && $element['#disabled'] == true) ? ' disabled': '')
                         .((isset($element['#required']) && $element['#required'] == true) ? ' required': '')
-                        .'>'."\n";
+                        .'>'
+                        .((isset($element['#suffix'])) ? $element['#suffix'] : '')
+                        ."\n";
             }
         }
         return $output;
