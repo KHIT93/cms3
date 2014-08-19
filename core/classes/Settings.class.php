@@ -227,7 +227,7 @@ class Settings {
                     . '</div>'
                     . '<div id="siteFrontpage" class="form-group form-inline">'
                     . '<label for="inputFrontpage">'.t('Site frontpage').'</label>'
-                    . '<p>http://'.$_SERVER['HTTP_HOST'].'/<input type="text" class="form-control form300" name="frontpage" value="'.$editSite['site_front'].'"></p>'
+                    . '<p>'.System::siteURL().'/<input type="text" class="form-control form300" name="frontpage" value="'.$editSite['site_front'].'"></p>'
                     . '<p class="help-block">'.t('Enter the relative path for the page that you want to use').'</p>'
                     . '</div>'
                     . '<input type="hidden" name="form-token" value="'.Token::generate().'">'

@@ -202,4 +202,9 @@ class System {
         $header .= PHP_EOL;
         return mail($to, '=?UTF-8?B?'.base64_encode($subject).'?=', $message, $header);
     }
+    public static function siteURL() {
+        $protocol = strtolower(explode('/', $_SERVER['SERVER_PROTOCOL'])[0]);
+        $address = $_SERVER['HTTP_HOST'].(($_SERVER['SERVER_PORT'] != 80) ? $_SERVER['SERVER_PORT']: '');
+        return $protocol.'://'.$address;
+    }
 }

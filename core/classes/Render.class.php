@@ -20,7 +20,7 @@ class Render {
                     $output .= $element['#value'];
                 }
                 else {
-                    $output .= ($wrapper == true || $element['#type'] == 'markup') ? '<div id="form-'.(isset($element['#name']) ? $element['#name'] : 'element').'" class="form-group">'."\n": '';
+                    $output .= ($wrapper == true || $element['#type'] == 'markup') ? '<div id="form-'.(isset($element['#name']) ? $element['#name'] : 'element').'" class="form-group'.((isset($element['#wrapper_class'])) ? ' '.$element['#wrapper_class']: '').'">'."\n": '';
                     $output .= (isset($element['#type']) && $element['#type'] == 'textarea') ? self::prepareTextArea($element) : self::prepareInput($element);
                     $output .= ($wrapper == true || $element['#type'] == 'markup') ? '</div>'."\n": '';
                 }

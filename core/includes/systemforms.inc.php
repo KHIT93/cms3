@@ -96,6 +96,9 @@ $GLOBALS['forms'] = array(
                     'class' => 'form-control'
                 ),
                 '#size' => 60,
+                '#prefix' => '<p>'.System::siteURL().'/ ',
+                '#suffix' => '</p>',
+                '#wrapper_class' => 'form-inline',
                 '#value' => Input::get('source'),
                 '#maxlength' => 255,
                 '#required' => true,
@@ -109,6 +112,9 @@ $GLOBALS['forms'] = array(
                     'class' => 'form-control'
                 ),
                 '#size' => 60,
+                '#prefix' => '<p>'.System::siteURL().'/ ',
+                '#suffix' => '</p>',
+                '#wrapper_class' => 'form-inline',
                 '#value' => Input::get('destination'),
                 '#maxlength' => 255,
                 '#required' => true,
@@ -158,6 +164,9 @@ $GLOBALS['forms'] = array(
                     'class' => 'form-control'
                 ),
                 '#size' => 60,
+                '#prefix' => '<p>'.System::siteURL().'/ ',
+                '#suffix' => '</p>',
+                '#wrapper_class' => 'form-inline',
                 '#value' => Input::get('source'),
                 '#maxlength' => 255,
                 '#required' => true,
@@ -171,6 +180,9 @@ $GLOBALS['forms'] = array(
                     'class' => 'form-control'
                 ),
                 '#size' => 60,
+                '#prefix' => '<p>'.System::siteURL().'/ ',
+                '#suffix' => '</p>',
+                '#wrapper_class' => 'form-inline',
                 '#value' => Input::get('destination'),
                 '#maxlength' => 255,
                 '#required' => true,
@@ -224,6 +236,9 @@ $GLOBALS['forms'] = array(
                     'class' => 'form-control'
                 ),
                 '#size' => 60,
+                '#prefix' => '<p>'.System::siteURL().'/ ',
+                '#suffix' => '</p>',
+                '#wrapper_class' => 'form-inline',
                 '#value' => Input::get('error404'),
                 '#maxlength' => 255,
                 '#required' => false,
@@ -237,6 +252,9 @@ $GLOBALS['forms'] = array(
                     'class' => 'form-control'
                 ),
                 '#size' => 60,
+                '#prefix' => '<p>'.System::siteURL().'/ ',
+                '#suffix' => '</p>',
+                '#wrapper_class' => 'form-inline',
                 '#value' => Input::get('title'),
                 '#maxlength' => 255,
                 '#required' => false,
