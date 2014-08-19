@@ -10,7 +10,7 @@ class System {
                 'children' => array(
                     array(
                         'title' => t('Go to homepage'),
-                        'link' => 'admin/content/add/page'
+                        'link' => page_front()
                     ),
                     array(
                         'title' => t('Modules'),
