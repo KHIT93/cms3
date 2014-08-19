@@ -57,14 +57,14 @@ class Page {
         }
         return false;
     }
-    public function create($formdata) {
+    public static function create($formdata) {
         $db = DB::getInstance();
         $pid = $db->query("SHOW TABLE STATUS LIKE 'pages'")->first();
         $fields = array(
             'title' => $formdata['title'],
             'content' => $formdata['body'],
             'author' => User::getInstance()->name(),
-            'status' => $formdata['status'],
+            'status' => $formdata['published'],
             'access' => $formdata['access'],
             'keywords' => $formdata['keywords'],
             'description' => $formdata['description'],
@@ -91,13 +91,13 @@ class Page {
         }
         return false;
     }
-    public function update($formdata) {
+    public static function update($formdata) {
         $db = DB::getInstance();
         $pid = $formdata['pid'];
         $fields = array(
             'title' => $formdata['title'],
             'content' => $formdata['body'],
-            'status' => $formdata['status'],
+            'status' => $formdata['published'],
             'access' => $formdata['access'],
             'keywords' => $formdata['keywords'],
             'description' => $formdata['description'],
@@ -106,8 +106,8 @@ class Page {
         );
         if($db->update('pages', $pid, $fields)) {
             $alias = (hasValue($formdata['alias']) && $formdata['alias'] == $db->getField('url_alias', 'alias', 'source', 'pages/'.$pid)) ? $formdata['alias'] : generateURL($fields['title']);
-            if(hasValue($alias)) {
-                //Add url alias
+            if(hasValue($alias) && DB::getInstance('url_alias', 'alias', 'source', 'pages/'.$pid) != $alias) {
+                //Update url alias
                 if(!$db->update('url_alias', array('source' => 'pages/'.$pid, 'alias' => $alias))) {
                     System::addMessage('error', t('There was an error while creating the URL Alias for <i>@title</i>', array('@title' => $fields['title'])));
                 }
@@ -115,11 +115,11 @@ class Page {
             if(isset($formdata['enable_item'])) {
                 Menu::updateMenuItem($formdata['inputMenu'], $formdata['title'], $alias);
             }
-            System::addMessage('success', t('The page @page has been created', array('@page' => $fields['title'])));
+            System::addMessage('success', t('The page @page has been updated', array('@page' => $fields['title'])));
             return true;
         }
         else {
-            System::addMessage('error', t('The new page <i>@page</i> could not be created', array('@page' => $fields['title'])));
+            System::addMessage('error', t('The page <i>@page</i> could not be updated', array('@page' => $fields['title'])));
         }
         return false;
     }

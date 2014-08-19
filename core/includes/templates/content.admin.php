@@ -57,7 +57,7 @@
                     <div class="modal-body">
                         <div id="pageTitle" class="form-group form300">
                             <label for="inputTitle"><?php print t('Title'); ?></label>
-                            <input type="text" class="form-control" name="title" placeholder="Name">
+                            <input type="text" class="form-control" name="title">
                         </div>
                         <div id="pageBody" class="form-group">
                             <label for="inputBody"><?php print t('Body'); ?></label>
@@ -73,23 +73,23 @@
                             <div class="tab-pane fade in active" id="metaData">
                                 <div class="form-group form600">
                                     <label for="inputMetaKeywords"><?php print t('Meta Keywords'); ?></label>
-                                    <input type="text" name="meta_keywords" class="form-control" placeholder="Keywords">
+                                    <input type="text" name="keywords" class="form-control" placeholder="Keywords">
                                     <label for="inputMetaDesc"><?php print t('Meta Description'); ?></label>
-                                    <textarea name="meta_description" class="form-control"></textarea>
+                                    <textarea name="description" class="form-control"></textarea>
                                     <label for="inputMeta">
-                                        <input type="checkbox" name="metaRobots[]" class="icheck" value="index" checked>
+                                        <input type="checkbox" name="robots[]" class="icheck" value="index" checked>
                                         <?php print t('Index'); ?>
                                     </label>
                                     <label for="inputMeta">
-                                        <input type="checkbox" name="metaRobots[]" class="icheck" value="follow" checked>
+                                        <input type="checkbox" name="robots[]" class="icheck" value="follow" checked>
                                         <?php print t('Follow'); ?>
                                     </label>
                                     <label for="inputMeta">
-                                        <input type="checkbox" name="metaRobots[]" class="icheck" value="noindex">
+                                        <input type="checkbox" name="robots[]" class="icheck" value="noindex">
                                         <?php print t('No Index'); ?>
                                     </label>
                                     <label for="inputMeta">
-                                        <input type="checkbox" name="metaRobots[]" class="icheck" value="nofollow">
+                                        <input type="checkbox" name="robots[]" class="icheck" value="nofollow">
                                         <?php print t('No Follow'); ?>
                                     </label>
                                 </div>
@@ -97,7 +97,7 @@
                             <div class="tab-pane fade" id="urlAlias">
                                 <div class="form-group form300">
                                     <label for="inputAlias"><?php print t('URL Alias'); ?></label>
-                                    <input type="text" name="url_alias" class="form-control" placeholder="URL Path Alias">
+                                    <input type="text" name="alias" class="form-control" placeholder="URL Path Alias">
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="menuItem">

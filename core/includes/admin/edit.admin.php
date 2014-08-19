@@ -29,9 +29,9 @@ if(isset($get_url)) {
             <div class="tab-pane fade in active" id="metaData">
                 <div class="form-group form600">
                     <label for="inputMetaKeywords"><?php print t('Meta Keywords'); ?></label>
-                    <input type="text" name="meta_keywords" class="form-control" value="<?php print $editPage->data['keywords']; ?>">
+                    <input type="text" name="keywords" class="form-control" value="<?php print $editPage->data['keywords']; ?>">
                     <label for="inputMetaDesc"><?php print t('Meta Description'); ?></label>
-                    <textarea name="meta_description" class="form-control"><?php print $editPage->data['description']; ?></textarea>
+                    <textarea name="description" class="form-control"><?php print $editPage->data['description']; ?></textarea>
                     <label for="inputMeta">
                         <input type="checkbox" name="robots[]" class=icheck" value="index" <?php print (in_array('index', $robots) ? 'checked' : '') ?>>
                         <?php print t('Index'); ?>

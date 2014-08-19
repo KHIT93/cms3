@@ -47,7 +47,7 @@ class Menu {
         $data = DB::getInstance()->get('menu_items', array('mlid', '=', $item_id));
         return (!$data->error()) ? $data->first() : false;
     }
-    public function delete($menu_id) {
+    public static function delete($menu_id) {
         $db = DB::getInstance();
         $count = $db->get('menus', array('mid', '=', $menu_id))->count();
         $name = $db->getField('menus', 'name', 'mid', $menu_id);
@@ -69,20 +69,20 @@ class Menu {
         }
         return false;
     }
-    public static function addMenuItem($mid, $title, $link, $parent) {
+    public static function addMenuItem($formdata) {
         $data = array(
-            'mid' => $mid,
-            'title' => $title,
-            'link' => $link,
-            'parent' => $parent,
+            'mid' => $formdata['mid'],
+            'title' => $formdata['title'],
+            'link' => $formdata['link'],
+            'parent' => $formdata['parent'],
             'position' => 0,
             'show' => 1
         );
-        if(!$this->_db->insert('menu_items', $data)) {
+        if(!DB::getInstance()->insert('menu_items', $data)) {
             System::addMessage('error', t('There was an error while creating the new menu item <i>@menu_item</i> in the menu <i>@menu</i>', array('@menu' => $db->getField('menus', 'name', 'mid', $mid), '@menu_item' => $title)));
         }
     }
-    public function updateMenuItem($formdata) {
+    public static function updateMenuItem($formdata) {
         $fields = array(
             'mid' => $formdata['mid'],
             'title' => $formdata['title'],
@@ -92,11 +92,11 @@ class Menu {
             'show' => $formdata['show']
         );
         $id = $formdata['mlid'];
-        if(!$this->_db->update('users', $id, $fields)) {
+        if(!DB::getInstance()->update('users', $id, $fields)) {
             System::addMessage('error', t('There was an error while updating the menu item <i>@menu_item</i> in the menu <i>@menu</i>', array('@menu' => $db->getField('menus', 'name', 'mid', $fields['mid']), '@menu_item' => $title)));
         }
     }
-    public function deleteMenuItem($item_id) {
+    public static function deleteMenuItem($item_id) {
         $db = DB::getInstance();
         $name = $db->getField('menu_items', 'title', 'mlid', $item_id);
         $count = $db->get('menu_items', array('mlid', '=', $item_id))->count();

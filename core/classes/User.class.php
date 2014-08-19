@@ -34,15 +34,35 @@ class User {
     }
     public function create($fields = array()) {
         if(!$this->_db->insert('users', $fields)) {
-            throw new Exception(t('There was an error creating the user'), 'SYS_U_C-1');
+            addMessage('error', t('The new user <i>@user</i> could not be created', array('@user' => $fields['username'])));
+        }
+        else {
+            addMessage('success', t('The new user <i>@user</i> has been created', array('@user' => $fields['username'])));
         }
     }
     public function update($fields = array(), $id = null) {
+        $username = '';
         if(!$id && $this->isLoggedIn()) {
-            $id = $this->data()->uid;
+            $id = $this->uid();
+            $username = $this->username();
+        }
+        else {
+            $username = $this->_db->getField('users', 'username', 'uid', $id);
         }
         if(!$this->_db->update('users', $id, $fields)) {
-            throw new Exception(t('There was an error updating your user information'), 'SYS_U_U-2');
+            addMessage('error', t('The user <i>@user</i> could not be updated', array('@user' => $username)));
+        }
+        else {
+            addMessage('success', t('The user <i>@user</i> has been updated', array('@user' => $username)));
+        }
+    }
+    public function delete($uid) {
+        $username = $this->_db->getField('users', 'username', 'uid', $uid);
+        if(!$this->_db->delete('users', array('uid', '=', $uid))) {
+            addMessage('error', t('The user <i>@user</i> could not be deleted', array('@user' => $username)));
+        }
+        else {
+            addMessage('success', t('The user <i>@user</i> has been deleted', array('@user' => $username)));
         }
     }
     public function find($user = null) {

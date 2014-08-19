@@ -1,11 +1,11 @@
 <?php
 class Permission {
     //Class containg functions for managing permissions
-    static function get_permission($permission) {
+    public static function get_permission($permission) {
         $rid = DB::getInstance()->getField('permissions', 'rid', 'permission', $permission);
         return explode(';', $rid);
     }
-    static function set_permission($info, $module) {
+    public static function set_permission($info, $module) {
         //Function for setting a new permission in the permissions table. Administrator will have this permission as default
         if(is_array($info)) {
             $db = DB::getInstance();
@@ -16,7 +16,7 @@ class Permission {
             addMessage('warning', t('Invalid argument supplied when trying to set permission from the').$module.' '.t('module'));
         }
     }
-    static function update_permission($permission, $roles) {
+    public static function update_permission($permission, $roles) {
         //Function that updates the roles.rid of a permission
         if(has_permission('access_admin_users_permissions_change', Session::exists(Config::get('session/session_name'))) === true) {
             $db = DB::getInstance();
@@ -30,27 +30,40 @@ class Permission {
             return false;
         }
     }
-    static function revoke_permission($permission) {
+    public static function revoke_permission($permission) {
         //Function for revoking a permission and removing it from the permissions table
         $db = DB::getInstance();
         
         $db = NULL;
     }
-    static function get_roles() {
+    public static function get_roles() {
         $db = DB::getInstance();
         if(!$db->query("SELECT * FROM `roles` ORDER BY `position` ASC")->error()) {
             return $db->results();
         }
         return false;
     }
-    static function get_permissions() {
+    public static function add_role($formdata) {
+        $db = DB::getInstance();
+        $fields = array(
+            'name' => $formdata['name'],
+            'position' => $db->query("SHOW TABLE STATUS LIKE 'roles'")->first()
+        );
+        if($db->insert('roles', $fields)) {
+            addMessage('success', t('The new role <i>@role</i> has been created', array('@role' => $formdata['name'])));
+        }
+        else {
+            addMessage('success', t('The new role <i>@role</i> could not be created', array('@role' => $formdata['name'])));
+        }
+    }
+    public static function get_permissions() {
         $db = DB::getInstance();
         if(!$db->query("SELECT * FROM `permissions` ORDER BY `module` ASC")->error()) {
             return $db->results();
         }
         return false;
     }
-    static function generatePermissionList() {
+    public static function generatePermissionList() {
         $roles = self::get_roles();
         $permissions = self::get_permissions();
         $num_roles = count($roles);
@@ -91,7 +104,7 @@ class Permission {
         $output .= '</form>';
         return $output;
     }
-    static function generateRoleList() {
+    public static function generateRoleList() {
         $roles = self::get_roles();
         $output = '<table class="table">'
                 . '<thead style="background-color: #CCC;">'
@@ -118,7 +131,7 @@ class Permission {
                 . '</table>';
         return $output;
     }
-    static function updatePermissions($formdata) {
+    public static function updatePermissions($formdata) {
         if(has_permission('access_admin_users_permissions_change', Session::exists(Config::get('session/session_name'))) === true) {
             unset($formdata['editPermissions']);
             unset($formdata['permission']);
@@ -130,9 +143,9 @@ class Permission {
                     $count++;
                 }
             }
-            addMessage('success', $count.' '.t('permissions have been updated'));
+            addMessage('success', t('@count permissions have been updated', array('@count' => $count)));
             if(($items - $count) != 0) {
-                addMessage('warning', ($items - $count).' '.t('permissions have not been updated'));
+                addMessage('warning', t('@count permissions have not been updated', array('@count' >= ($items - $count))));
             }
         }
         else {

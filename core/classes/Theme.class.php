@@ -39,18 +39,9 @@ class Theme {
     }
     public static function applyTheme($themename) {
         //$db = DB::getInstance();
-        if(!DB::getInstance()->update('config', array('property', 'site_theme'), array('contents' => $themename))) {
-            throw new Exception(t('There was an error updating your user information'));
+        if(!DB::getInstance()->update('config', array('property' => 'site_theme'), array('contents' => $themename))) {
+            addMessage('error', t('There was an error updating your user information'));
         }
-        //DB::getInstance()->query("UPDATE `config` SET `config_value`=:theme WHERE `config_name`='site_theme'", array($themename));
-        //$query->bindValue(':theme', $themename, PDO::PARAM_STR);
-        try {
-            $query->execute();
-        }
-        catch (Exception $e) {
-            addMessage('error', t('We were unable to apply the theme'), $e);
-        }
-        $db = NULL;
     }
     public static function errorPage($error_code, $message = '') {
         if(file_exists(self::path_to_theme().'/'.$error_code.'.error.php')) {
