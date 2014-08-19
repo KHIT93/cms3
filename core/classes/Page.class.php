@@ -84,7 +84,13 @@ class Page {
                 }
             }
             if(isset($formdata['enable_item'])) {
-                Menu::addMenuItem($formdata['inputMenu'], $formdata['title'], $alias);
+                $menudata = array(
+                    'mid' => $formdata['inputMenu'],
+                    'title' => $formdata['title'],
+                    'link' => $alias,
+                    'parent' => 0
+                );
+                Menu::addMenuItem($menudata);
             }
             System::addMessage('success', t('The page @page has been created', array('@page' => $fields['title'])));
             return true;
@@ -115,11 +121,18 @@ class Page {
             }
             if(isset($formdata['enable_item'])) {
                 if($formdata['enable_item'] == 'enabled') {
-                    Menu::updateMenuItem($formdata['inputMenu'], $formdata['title'], $alias);
+                    $menudata = array(
+                        'mlid' => $db->getField('menu_links', 'mlid', 'link', $alias),
+                        'mid' => $formdata['inputMenu'],
+                        'title' => $formdata['title'],
+                        'link' => $alias,
+                        'parent' => 0
+                    );
+                    Menu::updateMenuItem($menudata);
                 }
-                else if($formdata['enable_item'] == 'disabled') {
-                    //Delete menu item
-                }
+            }
+            else {
+                //Delete menu item
             }
             System::addMessage('success', t('The page @page has been updated', array('@page' => $fields['title'])));
             return true;
