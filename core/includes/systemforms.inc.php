@@ -21,7 +21,65 @@ $GLOBALS['forms'] = array(
     'enableWysiwyg' => array(),
     'setDevMode' => array(),
     'setMaintenance' => array(),
-    'globalMetaData' => array(),
+    'globalMetaData' => array(
+        '#name' => 'globalMetaData',
+        '#method' => 'POST',
+        '#action' => '',
+        '#attr' => array(
+            'role' => 'form'
+        ),
+        'elements' => array(
+            array(
+                '#type' => 'text',
+                '#name' => 'title',
+                '#label' => t('Page title'),
+                '#attr' => array(
+                    'class' => 'form-control'
+                ),
+                '#size' => 60,
+                '#value' => Input::get('title'),
+                '#maxlength' => 255,
+                '#required' => false,
+                '#description' => t('Enter a pattern for the page title. Fx. %page_title | %site_name'),
+            ),
+            array(
+                '#type' => 'text',
+                '#name' => 'description',
+                '#label' => t('SEO Description'),
+                '#attr' => array(
+                    'class' => 'form-control'
+                ),
+                '#size' => 60,
+                '#value' => Input::get('description'),
+                '#maxlength' => 255,
+                '#required' => false,
+                '#description' => t('Enter a default description, which will be used when there has not been entered a description on the page.'),
+            ),
+            array(
+                '#type' => 'text',
+                '#name' => 'keywords',
+                '#label' => t('SEO keywords'),
+                '#attr' => array(
+                    'class' => 'form-control'
+                ),
+                '#size' => 60,
+                '#value' => Input::get('keywords'),
+                '#maxlength' => 255,
+                '#required' => false,
+                '#description' => t('Enter a set of keywords which will be used when there are no keywords for a page.'),
+            ),
+        ),
+        'actions' => array(
+            'submit' => array(
+                '#type' => 'submit',
+                '#attr' => array(
+                    'class' => 'btn btn-rad btn-success btn-sm'
+                ),
+                '#name' => 'addMetaRedirect',
+                '#value' => t('Save')
+            )
+        )
+    ),
     'addMetaRedirect' => array(
         '#name' => 'addMetaRedirect',
         '#method' => 'POST',
@@ -146,7 +204,56 @@ $GLOBALS['forms'] = array(
             )
         )
     ),
-    'globalErrorPages' => array()
+    'globalErrorPages' => array(
+        '#name' => 'globalErrorPages',
+        '#method' => 'POST',
+        '#action' => '',
+        '#attr' => array(
+            'role' => 'form'
+        ),
+        'elements' => array(
+            array(
+                '#type' => 'markup',
+                '#value' => '<p>'.t('Please provide paths for the error pages below.<br/>Note that there are more error pages than the ones listed below and these will be handled by core since these errors occurs before database access is established').'</p>'
+            ),
+            array(
+                '#type' => 'text',
+                '#name' => 'error404',
+                '#label' => t('Error 404: Page not found'),
+                '#attr' => array(
+                    'class' => 'form-control'
+                ),
+                '#size' => 60,
+                '#value' => Input::get('error404'),
+                '#maxlength' => 255,
+                '#required' => false,
+                '#description' => t('Enter a path for a page which will be shown when a requested page does not exist'),
+            ),
+            array(
+                '#type' => 'text',
+                '#name' => 'error403',
+                '#label' => t('Error 403: Access Denied'),
+                '#attr' => array(
+                    'class' => 'form-control'
+                ),
+                '#size' => 60,
+                '#value' => Input::get('title'),
+                '#maxlength' => 255,
+                '#required' => false,
+                '#description' => t('Enter a path for a page which will be shown when a user does not have access to a requested page'),
+            ),
+        ),
+        'actions' => array(
+            'submit' => array(
+                '#type' => 'submit',
+                '#attr' => array(
+                    'class' => 'btn btn-rad btn-success btn-sm'
+                ),
+                '#name' => 'globalErrorPages',
+                '#value' => t('Save')
+            )
+        )
+    )
 );
 //Add default values for form attributes and fields
 $GLOBALS['config']['forms'] = array(

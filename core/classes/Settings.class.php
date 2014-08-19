@@ -410,6 +410,7 @@ class Settings {
     }
     public static function search_metaData() {
         //Form-ID = globalMetaData
+        $form = new Form(System::getForm('globalMetaData'));
         $output = '<div class="page-head">'
                 . '<h2>'.t('Meta tags').'</h2>'
                 . get_breadcrumb()
@@ -417,7 +418,7 @@ class Settings {
                 . '<div class="cl-mcont">'
                     . System::print_messages()
                 . '<div class="col-md-12">'
-                . 'search and metadata settings'
+                . $form->render()
                 . '</div>';
         
         return $output;
@@ -513,6 +514,7 @@ class Settings {
     }
     public static function search_errorPages() {
         //Form-ID = globalErrorPages
+        $form = new Form(System::getForm('globalErrorPages'));
         $output = '<div class="page-head">'
                 . '<h2>'.t('Error pages').'</h2>'
                 . get_breadcrumb()
@@ -520,7 +522,7 @@ class Settings {
                 . '<div class="cl-mcont">'
                     . System::print_messages()
                 . '<div class="col-md-12">'
-                . 'search and metadata settings'
+                . $form->render()
                 . '</div>';
         
         return $output;
