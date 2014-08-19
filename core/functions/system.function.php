@@ -12,3 +12,6 @@ function recursive_array_search($needle,$haystack) {
     }
     return false;
 }
+function getNextId($table) {
+    return (int)DB::getInstance()->query("SHOW TABLE STATUS LIKE 'pages'")->first()->Auto_increment;
+}

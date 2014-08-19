@@ -154,7 +154,7 @@ class Render {
         $output = '';
         $output .= self::prepareInput(array(
             '#type' => 'hidden',
-            '#name' => 'form-token',
+            '#name' => Config::get('session/token_name'),
             '#value' => Token::generate()
         ));
         $output .= self::prepareInput(array(

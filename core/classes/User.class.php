@@ -134,7 +134,7 @@ class User {
         $db = NULL;
     }
     public function logout() {
-        $this->_db->delete('users_session', array('uid', '=', $this->data()->id));
+        $this->_db->delete('users_session', array('uid', '=', $this->uid()));
         Session::delete($this->_sessionName);
         Cookie::delete($this->_cookieName);
     }

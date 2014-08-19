@@ -2,7 +2,9 @@
 define('SITE_ROOT', getcwd());
 include_once 'core/init.php';
 include_once 'core/modules/krumo/class.krumo.php';
-
+if(isset($_POST)) {
+    krumo($_POST);
+}
 $form = array(
     '#name' => 'myForm',
     '#method' => 'POST',

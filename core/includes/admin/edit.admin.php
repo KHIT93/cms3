@@ -9,7 +9,7 @@ if(isset($get_url)) {
         <h2><?php print t('Edit <i>@content</i>', array('@content' => $editPage->data['title'])); ?></h2>
     </div>
     <div class="cl-mcont">
-    <?php print print_messages(); ?>
+    <?php print System::print_messages(); ?>
     <form method="POST" name="editPage" action="" role="form">
         <div id="pageTitle" class="form-group form300">
             <label for="inputTitle"><?php print t('Title'); ?></label>
@@ -89,7 +89,7 @@ if(isset($get_url)) {
         </div>
         <div class="form-actions">
             <input type="hidden" name="page_id" value="<?php print $editPage->data['pid']; ?>">
-            <input type="hidden" name="form-token" value="<?php print Token::generate(); ?>">
+            <input type="hidden" name="<?php print Config::get('session/token_name'); ?>" value="<?php print Token::generate(); ?>">
             <input type="hidden" name="form_id" value="editPage">
             <button type="submit" name="editPage" class="btn btn-rad btn-sm btn-primary"><span class="glyphicon glyphicon-floppy-saved"></span> <?php print t('Save changes'); ?></button>
             <a class="btn btn-rad btn-sm btn-default" href="/admin/content"><?php print t('Cancel'); ?></a>            

@@ -56,7 +56,15 @@ class Bootstrapper {
                 }
             }
         }
-        Form::submit();
+        if(Input::exists('post')) {
+            try {
+                Form::submit();
+                System::addMessage('success', 'Form has been submitted');
+            }
+            catch(Exception $e) {
+                System::addMessage('error', 'Form could not be submitted', $e);
+            }
+        }
         if(file_exists(Theme::path_to_theme().'/template.php')) {
             include_once Theme::path_to_theme().'/template.php';
         }
@@ -97,7 +105,15 @@ class Bootstrapper {
                 }
             }
         }
-        Form::submit();
+        if(Input::exists('post')) {
+            try {
+                Form::submit();
+                System::addMessage('success', 'Form has been submitted');
+            }
+            catch(Exception $e) {
+                System::addMessage('error', 'Form could not be submitted', $e);
+            }
+        }
         if(file_exists(Theme::path_to_theme().'/template.php')) {
             include_once Theme::path_to_theme().'/template.php';
         }
@@ -139,7 +155,7 @@ class Bootstrapper {
         if(is_array($styles)) {
             foreach ($styles as $media => $data) {
                 for ($i=0; $i<count($data); $i++) {
-                    $rendered_styles .= '<link href="/'.Theme::path_to_theme().'/'.$data[$i].'" rel="stylesheet" type="text/css" media="'.$media.'">'."\n";
+                    $rendered_styles .= '<link href="'.Theme::path_to_theme().'/'.$data[$i].'" rel="stylesheet" type="text/css" media="'.$media.'">'."\n";
                 }
             }
         }
@@ -153,7 +169,7 @@ class Bootstrapper {
         $styles = '';
         foreach ($core_css as $media => $data) {
             for ($i=0; $i<count($data); $i++) {
-                $styles .= '<link href="/'.$data[$i].'" rel="stylesheet" type="text/css" media="'.$media.'">'."\n";
+                $styles .= '<link href="'.$data[$i].'" rel="stylesheet" type="text/css" media="'.$media.'">'."\n";
             }
         }
         return $styles;
@@ -165,7 +181,7 @@ class Bootstrapper {
         }
         if(is_array($jscripts)) {
             foreach ($jscripts as $data) {
-                $rendered_jscripts .= '<scripts src="/'.Theme::path_to_theme().'/'.$data.'"></scripts>'."\n";
+                $rendered_jscripts .= '<scripts src="'.Theme::path_to_theme().'/'.$data.'"></scripts>'."\n";
             }
         }
         else {
@@ -177,7 +193,7 @@ class Bootstrapper {
         $core_js = Config::get('assets/scripts', true);
         $jscripts = '<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>'."\n";
         foreach ($core_js as $data) {
-            $jscripts .= '<script src="/'.$data.'"></script>'."\n";
+            $jscripts .= '<script src="'.$data.'"></script>'."\n";
         }
         return $jscripts;
     }

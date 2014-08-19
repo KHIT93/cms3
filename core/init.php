@@ -23,7 +23,7 @@ if(version_compare(phpversion(), '5.4.0', '>')) {
             ),
             'session' => array(
                 'session_name' => 'user',
-                'token_name' => 'form_token'
+                'token_name' => 'form-token'
             ),
             'assets' => array(
                 'styles' => array(

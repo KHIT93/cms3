@@ -132,7 +132,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <input type="hidden" name="form-token" value="<?php print Token::generate(); ?>">
+                        <input type="hidden" name="<?php print Config::get('session/token_name'); ?>" value="<?php print Token::generate(); ?>">
                         <input type="hidden" name="form_id" value="addPage">
                         <button type="submit" name="addPage" class="btn btn-rad btn-primary"><?php print t('Create new page'); ?></button>
                         <button type="button" class="btn btn-rad btn-default" data-dismiss="modal"><?php print t('Close'); ?></button>                        

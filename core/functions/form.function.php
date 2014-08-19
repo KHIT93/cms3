@@ -103,3 +103,6 @@ function addRole_submit() {
 function editPermissions_submit() {
     Permission::updatePermissions($_POST);
 }
+function myForm_submit() {
+    krumo($_POST);
+}
