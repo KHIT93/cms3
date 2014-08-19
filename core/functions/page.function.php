@@ -107,6 +107,14 @@ function getPageId($alias) {
     //$page_id = DB::getInstance()->getField('pages', 'pid', 'page_url', $alias_convert);
     return false;
 }
+function urlIsAlias($url) {
+    if($url[0] == 'pages' && is_numeric($url[1])) {
+        return false;
+    }
+    else {
+        return true;
+    }
+}
 function page_front() {
     return Config::get('site/site_home');
 }

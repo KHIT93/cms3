@@ -4,7 +4,8 @@
  * Handles redirection
  */
 class Redirect {
-    public static function to($location = null) {
+    public static function to($location = null, $reponsse_code = NULL) {
+        http_response_code((($reponsse_code) ? $reponsse_code : 200));
         if($location) {
             if(is_numeric($location)) {
                 Theme::errorPage($location);

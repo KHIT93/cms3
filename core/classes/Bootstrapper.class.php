@@ -60,6 +60,10 @@ class Bootstrapper {
         if(file_exists(Theme::path_to_theme().'/template.php')) {
             include_once Theme::path_to_theme().'/template.php';
         }
+        if(!urlIsAlias($init['get_url'])) {
+            $alias = DB::getInstance()->getField('url_alias', 'alias', 'source', implode('/', $init['get_url']));
+            Redirect::to('/'.$alias, 301);
+        }
         $output['prep_page'] = self::prepare_page(getPageId(implode('/', $init['get_url'])));
         $output['page'] = (is_object($output['prep_page'])) ? $output['prep_page']->data : $output['prep_page'];
         if(is_numeric($output['page'])) {
