@@ -54,21 +54,15 @@ class Form {
                 //Validate form
                 $form_validate = Input::get('form_id').'_validate';
                 $form_submit = Input::get('form_id').'_submit';
-                System::addMessage('info', "validation handler: $form_validate");
-                System::addMessage('info', "submit handler: $form_submit");
                 if(function_exists($form_validate)) {
-                    System::addMessage('info', 'Form has validation handler');
                     if($form_validate()) {
-                        System::addMessage('info', 'Form has been validated');
                         if(function_exists($form_submit)) {
-                            System::addMessage('info', 'Submit handler exists');
                             $form_submit($_POST);
                         }
                     }
                 }
                 else {
                     if(function_exists($form_submit)) {
-                        System::addMessage('info', 'Submit handler exists');
                         $form_submit($_POST);
                     }
                 }

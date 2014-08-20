@@ -59,7 +59,6 @@ class Bootstrapper {
         if(Input::exists('post')) {
             try {
                 Form::submit();
-                System::addMessage('success', 'Form has been submitted');
             }
             catch(Exception $e) {
                 System::addMessage('error', 'Form could not be submitted', $e);
@@ -108,7 +107,6 @@ class Bootstrapper {
         if(Input::exists('post')) {
             try {
                 Form::submit();
-                System::addMessage('success', 'Form has been submitted');
             }
             catch(Exception $e) {
                 System::addMessage('error', 'Form could not be submitted', $e);
