@@ -316,20 +316,33 @@ $screen = new Form($form);
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
     <head>
-        <meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="ModernCMS">
-<title>Form Testing - KHansen IT</title>
-<meta name="description" content="This is the homepage">
-<meta name="description" content="home">
-<meta name="robots" content="index,follow">
-<link href="/core/assets/styles/bootstrap.min.css" rel="stylesheet" type="text/css" media="screen">
-<link href="/core/assets/styles/core.css" rel="stylesheet" type="text/css" media="screen">
-<link href="/core/assets/styles/font-awesome.min.css" rel="stylesheet" type="text/css" media="screen">
-<link href="/core/templates/core/css/style.css" rel="stylesheet" type="text/css" media="screen">
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-<script src="/core/assets/scripts/bootstrap/bootstrap.min.js"></script>
-<script src="/core/assets/scripts/modernizr/modernizr.min.js"></script>
-    </head><body>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="generator" content="ModernCMS">
+        <title>Form Testing - KHansen IT</title>
+        <meta name="description" content="This is the homepage">
+        <meta name="description" content="home">
+        <meta name="robots" content="index,follow">
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,400italic,700,800' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Raleway:300,200,100' rel='stylesheet' type='text/css'>
+        <link href="<?php print CORE_CSS_PATH;?>/bootstrap.min.css" rel="stylesheet" type="text/css" media="screen">
+        <link href="<?php print CORE_JS_PATH;?>/jquery.gritter/css/jquery.gritter.css" rel="stylesheet" type="text/css">
+        <link href="<?php print CORE_CSS_PATH;?>/font-awesome.min.css" rel="stylesheet" type="text/css" media="screen">
+        <link href="<?php print CORE_JS_PATH;?>/jquery.nanoscroller/nanoscroller.css" rel="stylesheet" type="text/css" >
+        <link href="<?php print CORE_JS_PATH;?>/jquery.easypiechart/jquery.easy-pie-chart.css" rel="stylesheet" type="text/css" >
+        <link href="<?php print CORE_JS_PATH;?>/bootstrap.switch/bootstrap-switch.css" rel="stylesheet" type="text/css" >
+        <link href="<?php print CORE_JS_PATH;?>/bootstrap.datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" >
+	<link href="<?php print CORE_JS_PATH;?>/jquery.select2/select2.css" rel="stylesheet" type="text/css" >
+        <link href="<?php print CORE_JS_PATH;?>/bootstrap.slider/css/slider.css" rel="stylesheet" type="text/css" >
+        <link href="<?php print CORE_CSS_PATH;?>/core.css" rel="stylesheet" type="text/css" media="screen">
+        <link href="<?php print CORE_JS_PATH;?>/jquery.icheck/skins/square/blue.css" rel="stylesheet">
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="<?php print CORE_JS_PATH;?>/bootstrap/bootstrap.min.js"></script>
+        <script src="<?php print CORE_JS_PATH;?>/modernizr/modernizr.min.js"></script>
+        <link rel="shortcut icon" href="<?php print CORE_IMG_PATH;?>/favicon.png">
+    </head>
+    <body>
     <!--[if lt IE 7]>
         <p class="chromeframe">You are using an <strong>outdated</strong> browser Please <a href="http://browsehappy.com/"> upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
     <![endif]-->
@@ -370,14 +383,48 @@ print $screen->render();
         </div>
         <hr>
     </div> <!-- /container -->
-    <script type="text/javascript">
-    $.gritter.add({
-        title: 'Title',
-        text: 'Content',
-        class_name: 'clean',//<--------- Here
-        sticky: true
-    });
-</script>
+    <div id="admin-toolbox-wrapper">
+	<div class="admin-toolbox-item-wrapper" role="alert">
+            <div class="admin-toolbox-top"></div>
+            <div class="admin-toolbox-item">
+                <div class="admin-toolbox-without-image">
+                    <span class="admin-toolbox-title">Kenneth Hansen</span>
+                    <ul class="nav navbar-nav">
+                        <li><a href="#"><i class="fa fa-question fa-lg"></i></a></li>
+                        <li><a href="#"><i class="fa fa-gear fa-lg"></i></a></li>
+                        <li><a href="#"><i class="fa fa-gear fa-lg"></i></a></li>
+                        <li><a href="#"><i class="fa fa-gear fa-lg"></i></a></li>
+                        <li><a href="#"><i class="fa fa-power-off fa-lg"></i></a></li>
+                    </ul>
+                </div>
+                <div style="clear:both"></div>
+            </div>
+            <div class="admin-toolbox-bottom"></div>
+        </div>
+    </div>
+    <script type="text/javascript" src="<?php print CORE_JS_PATH; ?>/jquery.nanoscroller/jquery.nanoscroller.js"></script>
+        <script type="text/javascript" src="<?php print CORE_JS_PATH; ?>/jquery.sparkline/jquery.sparkline.min.js"></script>
+        <script type="text/javascript" src="<?php print CORE_JS_PATH; ?>/jquery.easypiechart/jquery.easy-pie-chart.js"></script>
+        <script src="<?php print CORE_JS_PATH; ?>/jquery.ui/jquery-ui.js" type="text/javascript"></script>
+        <script type="text/javascript" src="<?php print CORE_JS_PATH; ?>/jquery.nestable/jquery.nestable.js"></script>
+        <script type="text/javascript" src="<?php print CORE_JS_PATH; ?>/bootstrap.switch/bootstrap-switch.min.js"></script>
+        <script type="text/javascript" src="<?php print CORE_JS_PATH; ?>/bootstrap.datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+        <script src="<?php print CORE_JS_PATH; ?>/jquery.select2/select2.min.js" type="text/javascript"></script>
+        <script src="<?php print CORE_JS_PATH; ?>/bootstrap.slider/js/bootstrap-slider.js" type="text/javascript"></script>
+        <script type="text/javascript" src="<?php print CORE_JS_PATH; ?>/jquery.gritter/js/jquery.gritter.js"></script>
+        <script type="text/javascript" src="<?php print CORE_JS_PATH; ?>/jquery.icheck/icheck.min.js"></script>
+        <script type="text/javascript" src="<?php print CORE_JS_PATH; ?>/behaviour/general.js"></script>
+        <script type="text/javascript" src="<?php print CORE_JS_PATH; ?>/core.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+              //initialize the javascript
+              App.init();
+            });
+        </script>
+        <script type="text/javascript" src="<?php print CORE_JS_PATH; ?>/jquery.flot/jquery.flot.js"></script>
+        <script type="text/javascript" src="<?php print CORE_JS_PATH; ?>/jquery.flot/jquery.flot.pie.js"></script>
+        <script type="text/javascript" src="<?php print CORE_JS_PATH; ?>/jquery.flot/jquery.flot.resize.js"></script>
+        <script type="text/javascript" src="<?php print CORE_JS_PATH; ?>/jquery.flot/jquery.flot.labels.js"></script>
     <div class="container">
         <div id="section-footer">
 <div class="widget" id="widget-3">
