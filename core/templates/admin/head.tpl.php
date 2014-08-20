@@ -25,4 +25,5 @@
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <script src="<?php print CORE_JS_PATH;?>/bootstrap/bootstrap.min.js"></script>
         <script src="<?php print CORE_JS_PATH;?>/modernizr/modernizr.min.js"></script>
+        <link rel="shortcut icon" href="<?php print CORE_IMG_PATH;?>/favicon.png">
     </head>

@@ -91,6 +91,8 @@ class Bootstrapper {
         self::prepare_header($init['site']['header']);
         $output['header'] = $init['site']['header']['rendered'];
         $output['sections'] = self::prepare_sections($output['page']);
+        $output['sections']['post_render'] = self::addPostRenderOptions();
+        krumo($output);
         $init['ready'] = $output;
     }
     private static function exec_bootstrapper_admin(&$init) {
@@ -265,6 +267,15 @@ class Bootstrapper {
             //Render static widget content
             $output = $widget->content;
         }
+        return $output;
+    }
+    private static function addPostRenderOptions() {
+        $output = array();
+        
+        if(has_permission('access_admin', Session::get(Config::get('session/session_name')))) {
+            
+        }
+        
         return $output;
     }
     public static function finalize_page(&$init) {

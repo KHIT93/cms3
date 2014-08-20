@@ -370,6 +370,14 @@ print $screen->render();
         </div>
         <hr>
     </div> <!-- /container -->
+    <script type="text/javascript">
+    $.gritter.add({
+        title: 'Title',
+        text: 'Content',
+        class_name: 'clean',//<--------- Here
+        sticky: true
+    });
+</script>
     <div class="container">
         <div id="section-footer">
 <div class="widget" id="widget-3">

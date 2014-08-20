@@ -30,6 +30,7 @@
                         </div>
                     </div>
                     <div style="padding:7px 9px;" class="text-right collapse-button">
+                        <a href="/admin/help" class="btn btn-default"><i class="fa fa-question" style="color:#fff;"></i></a>
                         <a href="/admin/settings" class="btn btn-default"><i class="fa fa-gear" style="color:#fff;"></i></a>
                         <a href="/logout" class="btn btn-default"><i class="fa fa-power-off" style="color:#fff;"></i></a>
                         <button style="" class="btn btn-default" id="sidebar-collapse"><i class="fa fa-angle-left" style="color:#fff;"></i></button>
