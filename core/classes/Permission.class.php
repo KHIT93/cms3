@@ -158,7 +158,7 @@ class Permission {
         $rid = DB::getInstance()->getField('users', 'role', 'uid', $uid);
         return (in_array($rid, $access)) ? true : false;
     }
-    public static function action_denied($print = false) {
+    public static function denied($print = false) {
         if($print === true) {
             return t('You do not have permission to perform this action');
         }

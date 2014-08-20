@@ -19,37 +19,114 @@ function user_login_submit() {
     }
 }
 function addPage_submit() {
-    Page::create($_POST);
+    if(has_permission('access_admin_content_add', Session::get(Config::get('session/session_name')))) {
+        Page::create($_POST);
+    }
+    else {
+        action_denied();
+    }
 }
 function editPage_submit() {
-    Page::update($_POST);
+    if(User::getInstance()->uid() == DB::getInstance()->getField('pages', 'author', 'pid', $_POST['pid'])) {
+        if(has_permission('access_admin_content_edit_own', Session::get(Config::get('session/session_name')))) {
+            Page::update($_POST);
+        }
+        else {
+            action_denied();
+        }
+    }
+    else {
+        if(has_permission('access_admin_content_edit_all', Session::get(Config::get('session/session_name')))) {
+            Page::update($_POST);
+        }
+        else {
+            action_denied();
+        }
+    }
 }
 function deletePage_submit() {
-    Page::delete($_POST['inputId']);
+    if(User::getInstance()->uid() == DB::getInstance()->getField('pages', 'author', 'pid', $_POST['pid'])) {
+        if(has_permission('access_admin_content_delete_own', Session::get(Config::get('session/session_name')))) {
+            Page::delete($_POST['inputId']);
+        }
+        else {
+            action_denied();
+        }
+    }
+    else {
+        if(has_permission('access_admin_content_delete_all', Session::get(Config::get('session/session_name')))) {
+            Page::delete($_POST['inputId']);
+        }
+        else {
+            action_denied();
+        }
+    }
+    
 }
 function deleteMenu_submit() {
-    Menu::delete($_POST['inputId']);
+    if(has_permission('access_admin_layout_menus_delete', Session::get(Config::get('session/session_name')))) {
+        Menu::delete($_POST['inputId']);
+    }
+    else {
+        action_denied();
+    }
 }
 function addMenuItem_submit() {
-    Menu::addMenuItem($_POST);
+    if(has_permission('access_admin_layout_menus_items_add', Session::get(Config::get('session/session_name')))) {
+        Menu::addMenuItem($_POST);
+    }
+    else {
+        action_denied();
+    }
 }
 function editMenuItem_submit() {
-    Menu::updateMenuItem($_POST);
+    if(has_permission('access_admin_layout_menus_items_edit', Session::get(Config::get('session/session_name')))) {
+        Menu::updateMenuItem($_POST);
+    }
+    else {
+        action_denied();
+    }
 }
 function deleteMenuItem_submit() {
-    Menu::deleteMenuItem($_POST['inputId']);
+    if(has_permission('access_admin_layout_menus_items_delete', Session::get(Config::get('session/session_name')))) {
+        Menu::deleteMenuItem($_POST['inputId']);
+    }
+    else {
+        action_denied();
+    }
 }
 function applyTheme_submit() {
-    Theme::applyTheme($_POST['inputTheme']);
+    if(has_permission('access_admin_layout_themes_change', Session::get(Config::get('session/session_name')))) {
+        Theme::applyTheme($_POST['inputTheme']);
+    }
+    else {
+        action_denied();
+    }
 }
 function editSections_submit() {
-    addMessage('info',print_r($_POST));
+    if(has_permission('access_admin_layout_widgets_move', Session::get(Config::get('session/session_name')))) {
+        addMessage('warning', t('Submit handler is missing'));
+        //krumo($_POST);
+    }
+    else {
+        action_denied();
+    }
 }
 function addWidget_submit() {
-    Widget::createWidget($_POST);
+    if(has_permission('access_admin_layout_widgets_add', Session::get(Config::get('session/session_name')))) {
+        Widget::createWidget($_POST);
+    }
+    else {
+        action_denied();
+    }
 }
 function editWidget_submit() {
-    Widget::updateWidget($_POST);
+    if(has_permission('access_admin_layout_widgets_edit', Session::get(Config::get('session/session_name')))) {
+        Widget::updateWidget($_POST);
+    }
+    else {
+        action_denied();
+    }
 }
 function enableModule_submit() {
     
@@ -64,45 +141,106 @@ function uninstallModule_submit() {
     
 }
 function addUser_submit() {
-    $fields = array(
-        'username' => $_POST['username'],
-        'password' => Hash::makePassHash($_POST['password']),
-        'role' => $_POST['role'],
-        'email' => $_POST['email'],
-        'name' => $_POST['name'],
-        'language' => $_POST['language']
-    );
-    $add_user = User::getInstance();
-    $add_user->create($fields);
+    if(has_permission('access_admin_users_add', Session::get(Config::get('session/session_name')))) {
+        $fields = array(
+            'username' => $_POST['username'],
+            'password' => Hash::makePassHash($_POST['password']),
+            'role' => $_POST['role'],
+            'email' => $_POST['email'],
+            'name' => $_POST['name'],
+            'language' => $_POST['language']
+        );
+        $add_user = User::getInstance();
+        $add_user->create($fields);
+    }
+    else {
+        action_denied();
+    }
 }
 function editUser_submit() {
-    $fields = array(
-        'username' => $_POST['username'],
-        'role' => $_POST['role'],
-        'email' => $_POST['email'],
-        'name' => $_POST['name'],
-        'language' => $_POST['language']
-    );
-    $update_user = User::getInstance();
-    $update_user->update($fields, $_POST['uid']);
+    if(User::getInstance()->uid() == DB::getInstance()->getField('pages', 'author', 'pid', $_POST['pid'])) {
+        if(has_permission('access_admin_users_edit_own', Session::get(Config::get('session/session_name')))) {
+            $fields = array(
+                'username' => $_POST['username'],
+                'role' => $_POST['role'],
+                'email' => $_POST['email'],
+                'name' => $_POST['name'],
+                'language' => $_POST['language']
+            );
+            $update_user = User::getInstance();
+            $update_user->update($fields, $_POST['uid']);
+        }
+        else {
+            action_denied();
+        }
+    }
+    else {
+        if(has_permission('access_admin_users_edit_all', Session::get(Config::get('session/session_name')))) {
+            $fields = array(
+                'username' => $_POST['username'],
+                'role' => $_POST['role'],
+                'email' => $_POST['email'],
+                'name' => $_POST['name'],
+                'language' => $_POST['language']
+            );
+            $update_user = User::getInstance();
+            $update_user->update($fields, $_POST['uid']);
+        }
+        else {
+            action_denied();
+        }
+    }
+    
 }
 function editUserPassword_submit() {
-    $fields = array(
-        'password' => Hash::makePassHash($_POST['password'])
-    );
-    $update_user = User::getInstance();
-    $update_user->update($fields, $_POST['uid']);
+    if(User::getInstance()->uid() == DB::getInstance()->getField('pages', 'author', 'pid', $_POST['pid'])) {
+        if(has_permission('accces_admin_users_change_password_own', Session::get(Config::get('session/session_name')))) {
+            $fields = array(
+                'password' => Hash::makePassHash($_POST['password'])
+            );
+            $update_user = User::getInstance();
+            $update_user->update($fields, $_POST['uid']);
+        }
+        else {
+            action_denied();
+        }
+    }
+    else {
+        if(has_permission('access_admin_users_change_password_all', Session::get(Config::get('session/session_name')))) {
+            $fields = array(
+                'password' => Hash::makePassHash($_POST['password'])
+            );
+            $update_user = User::getInstance();
+            $update_user->update($fields, $_POST['uid']);
+        }
+        else {
+            action_denied();
+        }
+    }
+    
 }
 function deleteUser_submit() {
-    $delete_user = User::getInstance();
-    $delete_user->delete($_POST['inputId']);
+    if(has_permission('access_admin_content_delete_own', Session::get(Config::get('session/session_name')))) {
+        $delete_user = User::getInstance();
+        $delete_user->delete($_POST['inputId']);
+    }
+    else {
+        action_denied();
+    }
 }
 function addRole_submit() {
-    Permission::add_role($_POST);
+    if(has_permission('access_admin_users_roles_add', Session::get(Config::get('session/session_name')))) {
+        Permission::add_role($_POST);
+    }
+    else {
+        action_denied();
+    }
 }
 function editPermissions_submit() {
-    Permission::updatePermissions($_POST);
-}
-function myForm_submit() {
-    krumo($_POST);
+    if(has_permission('access_admin_users_permissions_change', Session::get(Config::get('session/session_name')))) {
+        Permission::updatePermissions($_POST);
+    }
+    else {
+        action_denied();
+    }
 }

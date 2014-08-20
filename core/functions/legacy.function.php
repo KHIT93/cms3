@@ -27,7 +27,7 @@ function has_permission($permission, $uid) {
 }
 function action_denied($print = false) {
     if($print === true) {
-        return Permission::action_denied(true);
+        return Permission::denied(true);
     }
     else {
         Permission::action_denied();
