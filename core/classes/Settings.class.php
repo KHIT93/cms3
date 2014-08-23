@@ -471,7 +471,7 @@ class Settings {
                             .'</td>';
             }
             $output .= '</tbody></table>';
-            $output .= (($count > $limit) ? $data['controls'] : '')
+            $output .= (($count < $limit) ? $data['controls'] : '')
                     . '</div>';
         }
         return $output;
@@ -568,7 +568,7 @@ class Settings {
                                   .'</td>';
                 }
                 $output .= '</tbody></table>';
-                $output .= (($count > $limit) ? $data['controls'] : '');
+                $output .= (($count < $limit) ? $data['controls'] : '');
                 $output .= '</div>';
                 $output .= '<div class="visible-xs"><p>'.t('Interface translation is not available on mobile devices and screens with low resolution.').'</p></div>'
                         . '</div>';

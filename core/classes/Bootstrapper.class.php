@@ -92,7 +92,6 @@ class Bootstrapper {
         $output['header'] = $init['site']['header']['rendered'];
         $output['sections'] = self::prepare_sections($output['page']);
         $output['sections']['post_render'] = self::addPostRenderOptions();
-        krumo($output);
         $init['ready'] = $output;
     }
     private static function exec_bootstrapper_admin(&$init) {
@@ -273,7 +272,7 @@ class Bootstrapper {
         $output = array();
         
         if(has_permission('access_admin', Session::get(Config::get('session/session_name')))) {
-            
+            $output[] = System::generateAdminGritter();
         }
         
         return $output;

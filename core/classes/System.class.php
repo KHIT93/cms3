@@ -207,4 +207,25 @@ class System {
         $address = $_SERVER['HTTP_HOST'].(($_SERVER['SERVER_PORT'] != 80) ? $_SERVER['SERVER_PORT']: '');
         return $protocol.'://'.$address;
     }
+    public static function generateAdminGritter() {
+        return '<div id="admin-toolbox-wrapper">
+	<div class="admin-toolbox-item-wrapper" role="alert">
+            <div class="admin-toolbox-top"></div>
+            <div class="admin-toolbox-item">
+                <div class="admin-toolbox-without-image">
+                    <span class="admin-toolbox-title">'.User::getInstance()->name().'</span>
+                    <ul class="nav navbar-nav">
+                        <li><a href="/admin/content"><i class="fa fa-file fa-lg"></i></a></li>
+                        <li><a href="/admin/layout"><i class="fa fa-picture-o fa-lg"></i></a></li>
+                        <li><a href="/admin/users"><i class="fa fa-user fa-lg"></i></a></li>
+                        <li><a href="/admin/help"><i class="fa fa-question fa-lg"></i></a></li>
+                        <li><a href="/logout"><i class="fa fa-power-off fa-lg"></i></a></li>
+                    </ul>
+                </div>
+                <div style="clear:both"></div>
+            </div>
+            <div class="admin-toolbox-bottom"></div>
+        </div>
+    </div>';
+    }
 }

@@ -38,14 +38,15 @@ function pagination($limit, $table, $fields = '*', $parameter = NULL, $parameter
     $lang = Config::get('site/site_language');
     $sql = '';
     if($parameter != NULL || $parameter != '') {
-        $sql = "SELECT COUNT({$fields}) FROM `{$table}` WHERE `{$parameter}`= ?";
+        $sql = "SELECT COUNT({$fields}) FROM {$table} WHERE {$parameter}= ?";
         $params = array($parameter_value);
     }
     else {
-        $sql = "SELECT COUNT({$fields}) FROM `{$table}`";
+        $sql = "SELECT COUNT({$fields}) FROM {$table}";
     }
     $query = ($parameter) ? $db->query($sql, $params, PDO::FETCH_ASSOC) : $db->query($sql, NULL, PDO::FETCH_ASSOC);
-    $count = $query->count();
+    $count = $query->first()['COUNT('.$fields.')'];
+    krumo($count);
     $pages = ceil($count / $limit);
     if($pages < 1) {
         $pages = 1;
@@ -67,6 +68,7 @@ function pagination($limit, $table, $fields = '*', $parameter = NULL, $parameter
     }
     $query = ($parameter) ? $db->query($sql, $params, PDO::FETCH_ASSOC) : $db->query($sql, NULL, PDO::FETCH_ASSOC);
     $data = $query->results();
+    krumo($data);
     $controls = '<ul class="pagination">';
     $url = $get_url[0].'/'.$get_url[1].'/'.$get_url[2].'/'.$get_url[3];
     $previous = $pagenum - 1;

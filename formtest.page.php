@@ -390,11 +390,11 @@ print $screen->render();
                 <div class="admin-toolbox-without-image">
                     <span class="admin-toolbox-title">Kenneth Hansen</span>
                     <ul class="nav navbar-nav">
-                        <li><a href="#"><i class="fa fa-question fa-lg"></i></a></li>
-                        <li><a href="#"><i class="fa fa-gear fa-lg"></i></a></li>
-                        <li><a href="#"><i class="fa fa-gear fa-lg"></i></a></li>
-                        <li><a href="#"><i class="fa fa-gear fa-lg"></i></a></li>
-                        <li><a href="#"><i class="fa fa-power-off fa-lg"></i></a></li>
+                        <li><a href="/admin/content"><i class="fa fa-file fa-lg"></i></a></li>
+                        <li><a href="/admin/layout"><i class="fa fa-picture-o fa-lg"></i></a></li>
+                        <li><a href="/admin/users"><i class="fa fa-user fa-lg"></i></a></li>
+                        <li><a href="/admin/help"><i class="fa fa-question fa-lg"></i></a></li>
+                        <li><a href="/logout"><i class="fa fa-power-off fa-lg"></i></a></li>
                     </ul>
                 </div>
                 <div style="clear:both"></div>
