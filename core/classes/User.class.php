@@ -49,7 +49,7 @@ class User {
         else {
             $username = $this->_db->getField('users', 'username', 'uid', $id);
         }
-        if(!$this->_db->update('users', $id, $fields)) {
+        if(!$this->_db->update('users', array('uid', $id), $fields)) {
             addMessage('error', t('The user <i>@user</i> could not be updated', array('@user' => $username)));
         }
         else {

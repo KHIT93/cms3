@@ -34,7 +34,6 @@ class DB {
             }
             catch (Exception $e) {
                 System::addMessage('error', $e->getMessage(), $e);
-                //print 'error: '.$e->getMessage();
                 $this->_error = true;
             }
         }
@@ -83,17 +82,18 @@ class DB {
         }
         return false;
     }
-    public function update($table, $id, $fields = array()) {
+    public function update($table, array $where, $fields = array()) {
         $set = '';
         $x = 1;
+        print count($fields);
         foreach($fields as $name => $value) {
             $set .= "{$name} = ?";
-            if($x > count($fields)) {
+            if($x < count($fields)) {
                 $set .= ', ';
             }
             $x++;
         }
-        $sql = "UPDATE {$table} SET {$set} WHERE id={$id}";
+        $sql = "UPDATE {$table} SET {$set} WHERE {$where[0]}={$where[1]}";
         if(!$this->query($sql, $fields)->error()) {
             return true;
         }

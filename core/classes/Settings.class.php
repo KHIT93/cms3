@@ -61,7 +61,7 @@ class Settings {
             'search' => array(),
             'language' => array()
         );
-        if(has_permission('access_admin_settings_system', Session::exists(Config::get('session/session_name'))) === true) {
+        if(has_permission('access_admin_settings_system', Session::get(Config::get('session/session_name'))) === true) {
             $settings['system'][] = array(
                 'title' => t('Site configuration'),
                 'description' => t('Use this setting to configure generic site settings such as sitename and site slogan.'),
@@ -73,77 +73,77 @@ class Settings {
             'description' => t('Use this setting to configure performance settings and caching.'),
             'link' => site_root().'/admin/settings/system/perf'
         );*/
-        if(has_permission('access_admin_settings_system_users', Session::exists(Config::get('session/session_name'))) === true) {
+        if(has_permission('access_admin_settings_system_users', Session::get(Config::get('session/session_name'))) === true) {
             $settings['system'][] = array(
                 'title' => t('Users'),
                 'description' => t('Configure global settings for users and select how new users can be created.'),
                 'link' => '/admin/settings/system/users'
             );
         }
-        if(has_permission('access_admin_settings_system_systemcheck', Session::exists(Config::get('session/session_name'))) === true) {
+        if(has_permission('access_admin_settings_system_systemcheck', Session::get(Config::get('session/session_name'))) === true) {
             $settings['system'][] = array(
                 'title' => t('System check'),
                 'description' => t('Check if all files and folders exist and if they have the correct permissions.'),
                 'link' => '/admin/settings/system/systemcheck'
             );
         }
-        if(has_permission('access_admin_settings_content_wysiwyg', Session::exists(Config::get('session/session_name'))) === true) {
+        if(has_permission('access_admin_settings_content_wysiwyg', Session::get(Config::get('session/session_name'))) === true) {
             $settings['content'][] = array(
                 'title' => t('WYSIWYG settings'),
                 'description' => t('Configure the built-in CKEditor.'),
                 'link' => '/admin/settings/content/wysiwyg'
             );
         }
-        if(has_permission('access_admin_settings_development', Session::exists(Config::get('session/session_name'))) === true) {
+        if(has_permission('access_admin_settings_development', Session::get(Config::get('session/session_name'))) === true) {
             $settings['development'][] = array(
                 'title' => t('Development Mode'),
                 'description' => t('Enable or disable Development Mode.'),
                 'link' => '/admin/settings/development'
             );
         }
-        if(has_permission('access_admin_settings_development_maintenance', Session::exists(Config::get('session/session_name'))) === true) {
+        if(has_permission('access_admin_settings_development_maintenance', Session::get(Config::get('session/session_name'))) === true) {
             $settings['development'][] = array(
                 'title' => t('Maintenance'),
                 'description' => t('Configure maintenance mode for the website and enable/disable maintenance mode.'),
                 'link' => '/admin/settings/development/maintenance'
             );
         }
-        if(has_permission('access_admin_settings_cron', Session::exists(Config::get('session/session_name'))) === true) {
+        if(has_permission('access_admin_settings_cron', Session::get(Config::get('session/session_name'))) === true) {
             $settings['development'][] = array(
                 'title' => t('Cron'),
                 'description' => t('Manage automatic site maintenance tasks.'),
                 'link' => '/admin/settings/cron'
             );
         }
-        if(has_permission('access_admin_settings_search_redirect', Session::exists(Config::get('session/session_name'))) === true) {
+        if(has_permission('access_admin_settings_search_redirect', Session::get(Config::get('session/session_name'))) === true) {
             $settings['search'][] = array(
                 'title' => t('URL Redirect'),
                 'description' => t('Configure URL Redirect of different types'),
                 'link' => '/admin/settings/search/redirect'
             );
         }
-        if(has_permission('access_admin_settings_search_metadata', Session::exists(Config::get('session/session_name'))) === true) {
+        if(has_permission('access_admin_settings_search_metadata', Session::get(Config::get('session/session_name'))) === true) {
             $settings['search'][] = array(
                 'title' => t('Meta-tags'),
                 'description' => t('Configure metadata for the entire site. Change settings for search robots.'),
                 'link' => '/admin/settings/search/metadata'
             );
         }
-        if(has_permission('access_admin_settings_search_errorpages', Session::exists(Config::get('session/session_name'))) === true) {
+        if(has_permission('access_admin_settings_search_errorpages', Session::get(Config::get('session/session_name'))) === true) {
             $settings['search'][] = array(
                 'title' => t('Error pages'),
                 'description' => t('Configure custom pages for HTTP errors such as 404, 403 and 500'),
                 'link' => '/admin/settings/search/error-pages'
             );
         }
-        if(has_permission('access_admin_settings_language', Session::exists(Config::get('session/session_name'))) === true) {
+        if(has_permission('access_admin_settings_language', Session::get(Config::get('session/session_name'))) === true) {
             $settings['language'][] = array(
                 'title' => t('Language'),
                 'description' => t('Configure website language.'),
                 'link' => '/admin/settings/language'
             );
         }
-        if(has_permission('access_admin_settings_language_translate', Session::exists(Config::get('session/session_name'))) === true) {
+        if(has_permission('access_admin_settings_language_translate', Session::get(Config::get('session/session_name'))) === true) {
             $settings['language'][] = array(
                 'title' => t('Translation'),
                 'description' => t('Use the translation console to translate strings from modules and themes into active site language.'),
@@ -547,7 +547,7 @@ class Settings {
                         . '<div class="col-md-12">';
                 $output .= '<div class="hidden-xs">';
                 $limit = 25;
-                $count = DB::getInstance()->getAll('translation');
+                $count = DB::getInstance()->getAll('translation')->count();
                 $data = pagination($limit, 'translation', '*');
                 $translations = $data['data'];
                 $output .= '<table class="table table-striped table-hover">'
@@ -568,7 +568,7 @@ class Settings {
                                   .'</td>';
                 }
                 $output .= '</tbody></table>';
-                $output .= (($count < $limit) ? $data['controls'] : '');
+                $output .= (($count > $limit) ? $data['controls'] : '');
                 $output .= '</div>';
                 $output .= '<div class="visible-xs"><p>'.t('Interface translation is not available on mobile devices and screens with low resolution.').'</p></div>'
                         . '</div>';
@@ -608,8 +608,8 @@ class Settings {
                            .'<label for="inputTranslation">'.  t('Translated string').':</label><br/>'
                            .'<textarea class="form-control" name="translation">'.$translation['translation'].'</textarea>'
                        .'</div>'
-                       .'<input type="hidden" name="t_id" value="'.$get_url[5].'">'
-                       .'<input type="hidden" name="t_locale" value="'.$get_url[4].'">'
+                       .'<input type="hidden" name="tid" value="'.$get_url[5].'">'
+                       .'<input type="hidden" name="language" value="'.$get_url[4].'">'
                        .'<input type="hidden" name="form-token" value="'.Token::generate().'">'
                        . '<input type="hidden" name="form_id" value="editTranslation">'
                        .'<div class="form-actions">'

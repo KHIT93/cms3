@@ -244,3 +244,11 @@ function editPermissions_submit() {
         action_denied();
     }
 }
+function editTranslation_submit() {
+    if(has_permission('access_admin_settings_language_translate_edit', Session::get(Config::get('session/session_name'))) === true) {
+        print 'Submit procedure called';
+        krumo($_POST);
+        String::saveTranslation($_POST);
+    }
+    print 'Procedural submit end';
+}

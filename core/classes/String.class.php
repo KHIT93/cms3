@@ -54,4 +54,24 @@ class String {
         }
         return strtr($string, $args);
     }
+    public static function saveTranslation($formdata) {
+        $db = DB::getInstance();
+        print 'Executing submit handler for translation update';
+        $tid = array('tid', $formdata['tid']);
+        $fields = array(
+            'translation' => $formdata['translation'],
+            'language' => $formdata['language']
+        );
+        print 'Parameters are ready';
+        
+        if($db->update('translation', $tid, $fields)) {
+            System::addMessage('success', t('Translation has been successfully updated'));
+            print 'translation updated';
+        }
+        else {
+            System::addMessage('error', t('There was an error updating the string'));
+            print 'update error';
+        }
+        print 'Submit handler end';
+    }
 }

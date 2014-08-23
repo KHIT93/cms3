@@ -174,7 +174,7 @@ class System {
     }
     public static function addMessage($type, $message, $error = NULL) {
         $_SESSION['messages'][$type][] = $message;
-        if($type == 'error' || $type == 'warning') {
+        /*if($type == 'error' || $type == 'warning') {
             if(is_object($error) && $error instanceof Exception) {
                 $handle = openFile('logs/error_log', 'a');
                 if($handle != FALSE) {
@@ -183,7 +183,7 @@ class System {
                     fclose($handle); 
                }
             }
-        }
+        }*/
     }
     public static function getForm($form) {
         return $GLOBALS['forms'][$form];

@@ -100,7 +100,7 @@ class Page {
     }
     public static function update($formdata) {
         $db = DB::getInstance();
-        $pid = $formdata['pid'];
+        $pid = array('pid', $formdata['pid']);
         $fields = array(
             'title' => $formdata['title'],
             'content' => $formdata['body'],
