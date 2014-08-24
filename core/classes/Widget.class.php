@@ -338,7 +338,7 @@ class Widget {
             'pages' => $formdata['inputPages'],
             'rid' => implode(',', $formdata['roles'])
         );
-        if(!$db->update('widgets', $formdata['inputWid'],$data)->error()) {
+        if(!$db->update('widgets', array('wid', $formdata['inputWid']), $data)->error()) {
             return true;
         }
         else {
