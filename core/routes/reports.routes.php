@@ -9,7 +9,7 @@ if($get_url[1] == 'reports') {
     }
     else {
         include INCLUDES_PATH.'/admin.inc.php';
-        include INCLUDES_PATH.'/templates/help.admin.php';
+        include INCLUDES_PATH.'/templates/reports.admin.php';
     }
 }
 else {

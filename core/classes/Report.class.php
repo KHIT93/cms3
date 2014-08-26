@@ -5,6 +5,6 @@
  */
 class Report {
     public static function get() {
-        //Prepares report for rendering
+        //PGenerates report content
     }
 }

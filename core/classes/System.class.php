@@ -104,7 +104,17 @@ class System {
         if(has_permission('access_admin_reports', Session::get(Config::get('session/session_name'))) === true) {
             $items[] = array(
                 'title' => '<i class="fa fa-book nav-icon"></i><span>'.t('Reports').'</span>',
-                'link' => 'admin/reports'
+                'link' => 'admin/reports',
+                'children' => array(
+                    array(
+                        'title' => t('System log'),
+                        'link' => 'admin/reports/sysguard'
+                    ),
+                    array(
+                        'title' => t('Users'),
+                        'link' => 'admin/reports/users'
+                    ),
+                )
             );
         }
         $admin_menu = sidebar_traverse($items, 'cl-vnavigation');
