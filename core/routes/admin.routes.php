@@ -52,6 +52,10 @@ if(isset($get_url[1])) {
                 $route = true;
                 include 'help.routes.php';
                 break;
+            case 'reports':
+                $route = true;
+                include 'reports.routes.php';
+                break;
             default:
                 http_response_code(404);
                 include Theme::path_to_theme().'/404.php';

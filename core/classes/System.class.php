@@ -101,6 +101,12 @@ class System {
                 'link' => 'admin/settings'
             );
         }
+        if(has_permission('access_admin_reports', Session::get(Config::get('session/session_name'))) === true) {
+            $items[] = array(
+                'title' => '<i class="fa fa-book nav-icon"></i><span>'.t('Reports').'</span>',
+                'link' => 'admin/reports'
+            );
+        }
         $admin_menu = sidebar_traverse($items, 'cl-vnavigation');
         return $admin_menu;
     }
