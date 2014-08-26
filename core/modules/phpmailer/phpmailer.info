@@ -1,7 +1,6 @@
 name = PHPMailer
 description = PHP Framework for sending mail by using SMTP-servers that require authentication
-version = 5.2.7
-kernel = 2.x
-;cancontrol = 0
+version = 5.2.8
+kernel = 3.x
 category = E-mail
 config = admin/settings/system/email
