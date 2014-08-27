@@ -10,7 +10,7 @@ print print_messages();
     <?php
         print '<div class="block">'
             . '<div class="content">'
-            . '<p>'.'Reports are listed below'.'</p>'
+            . Report::overview()
             . '</div></div>';
     ?>
 </div>

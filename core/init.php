@@ -37,6 +37,14 @@ if(version_compare(phpversion(), '5.4.0', '>')) {
                     CORE_JS_PATH.'/bootstrap/bootstrap.min.js',
                     CORE_JS_PATH.'/modernizr/modernizr.min.js'
                 )
+            ),
+            'default_reports' => array(
+                'config',
+                'not-found-errors',
+                'access-denied-errors',
+                'sysguard',
+                'translation',
+                'status'
             )
         );
         //Include classes using autoload
