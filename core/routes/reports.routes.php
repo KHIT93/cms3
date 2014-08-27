@@ -5,7 +5,8 @@
  */
 if($get_url[1] == 'reports') {
     if(isset($get_url[2])) {
-        Report::generate($get_url[2]);
+        include INCLUDES_PATH.'/admin.inc.php';
+        print Report::generate($get_url[2]);
     }
     else {
         include INCLUDES_PATH.'/admin.inc.php';

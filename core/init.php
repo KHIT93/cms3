@@ -40,8 +40,8 @@ if(version_compare(phpversion(), '5.4.0', '>')) {
             ),
             'default_reports' => array(
                 'config',
-                'not-found-errors',
-                'access-denied-errors',
+                'not_found_errors',
+                'access_denied_errors',
                 'sysguard',
                 'translation',
                 'status'
