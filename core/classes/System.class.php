@@ -105,16 +105,7 @@ class System {
             $items[] = array(
                 'title' => '<i class="fa fa-book nav-icon"></i><span>'.t('Reports').'</span>',
                 'link' => 'admin/reports',
-                'children' => array(
-                    array(
-                        'title' => t('System log'),
-                        'link' => 'admin/reports/sysguard'
-                    ),
-                    array(
-                        'title' => t('Users'),
-                        'link' => 'admin/reports/users'
-                    ),
-                )
+                'children' => Report::overviewMenu(),
             );
         }
         $admin_menu = sidebar_traverse($items, 'cl-vnavigation');

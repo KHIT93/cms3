@@ -90,6 +90,10 @@ body.admin .navbar-nav .dropdown-menu {
 body.admin .profile_menu .dropdown-menu {
     margin: 1px -1px 0 0;
 }
+.table-heading {
+    font-weight: bold;
+    background-color: #CCC;
+}
 @media (min-width: 768px) {
     body.admin .navbar-nav > li > a {
         padding-top: 8px;

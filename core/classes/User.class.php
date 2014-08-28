@@ -165,6 +165,9 @@ class User {
     public function isLoggedIn() {
         return $this->_isLoggedIn;
     }
+    public static function translateUID($uid, $field = 'name') {
+        return ($uid != 0) ? DB::getInstance()->getField('users', $field, 'uid', $uid) : t('Anonymous user');
+    }
     public static function MakeRandPass($upper = 3, $lower = 3, $numeric = 3, $other = 2) {
         //we need these vars to create a password string
         $passOrder = Array();
