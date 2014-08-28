@@ -45,11 +45,11 @@ class Report {
             'link' => 'admin/reports/translation'
         );
         $output[] = array(
-            'title' => t('Common \'Page not found\' 404 erors'),
+            'title' => t('\'Page not found\' 404 erors'),
             'link' => 'admin/reports/not_found_errors'
         );
         $output[] = array(
-            'title' => t('Common \'Access denid\' 403 erors'),
+            'title' => t('\'Access denid\' 403 erors'),
             'link' => 'admin/reports/acces_denied_errors'
         );
         foreach(Module::activeModules() as $module) {
@@ -111,11 +111,13 @@ class Report {
         $output = '';
         $config = Config::get('site', true);
         $output .= '<div class="page-head">'
-                . '<h2>'.t('Site configuration report').'</h2>'
+                . '<h2>'.t('Configuration report').'</h2>'
                 . get_breadcrumb()
                 . '</div>'
                 . '<div class="cl-mcont">'
                 . '<div class="col-md-12">'
+                . '<div class="block">'
+                . '<div class="content">'
                 . '<p>'.t('The site configuration report is listed below containing both site specific configuration and information about the configuration of the server hosting your website.').'</p>'
                 . '<table class="table table-hover">'
                 . '<thead style="background-color: #CCC;">'
@@ -126,6 +128,7 @@ class Report {
                 . '</thead>'
                 . '<tbody>';
         foreach($config as $option => $value) {
+            $def = Definition::resolve($option);
             $output .= '<tr>'
                     . '<td>'.$option.'</td>'
                     . '<td>'.$value.'</td>'
@@ -133,6 +136,8 @@ class Report {
         }
         $output .= '</tbody>'
                 . '</table>'
+                . '</div>'
+                . '</div>'
                 . '</div>';
         return $output;
     }
