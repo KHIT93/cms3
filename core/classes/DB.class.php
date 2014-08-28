@@ -123,4 +123,8 @@ class DB {
     public function count() {
         return $this->_count;
     }
+    public function version() {
+        $version = '@@VERSION';
+        return $this->query("SELECT @@VERSION")->first()->{$version};
+    }
 }

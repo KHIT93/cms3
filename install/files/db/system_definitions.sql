@@ -1,0 +1,22 @@
+INSERT INTO `system_definitions`
+VALUES
+('site_name', 'Site name', NULL),
+('site_slogan', 'Site slogan', NULL),
+('site_theme', 'Site theme', NULL),
+('site_home', 'Site homepage', NULL),
+('site_language', 'Site language', NULL),
+('create_user', 'Create useraccounts', NULL),
+('mysql', 'MySQL', NULL),
+('sqlsrv', 'Microsoft SQL / SQL Azure', NULL),
+('cubrid', 'Cubrid', NULL),
+('sybase', 'Sybase', NULL),
+('dblib', 'FreeTDS', NULL),
+('mssql', 'Microsoft SQL', NULL),
+('firebird', 'Firebird', NULL),
+('ibm', 'IBM DB2', NULL),
+('informix', 'IBM Informix Dynamic Server', NULL),
+('oci', 'Oracle Call Interface', NULL),
+('odbc', 'ODBC v3 (IBM DB2, unixODBC and win32 ODBC)', NULL),
+('pgsql', 'PostgreSQL', NULL),
+('sqlite', 'SQLite', NULL),
+('4D', '4D', NULL);

@@ -126,14 +126,38 @@ class Report {
                 . '<th><strong>'.t('Value').'</strong></th>'
                 . '</tr>'
                 . '</thead>'
-                . '<tbody>';
+                . '<tbody>'
+                . '<tr>'
+                . '<td>CMS</td>'
+                . '<td>'.VERSION.'</td>'
+                . '</tr>';
         foreach($config as $option => $value) {
             $def = Definition::resolve($option);
             $output .= '<tr>'
-                    . '<td>'.$option.'</td>'
-                    . '<td>'.$value.'</td>'
+                    . '<td>'.t($def['name']).'</td>'
+                    . '<td>'.((hasValue($def['options'])) ? Definition::value($value, $def['options']) : $value).'</td>'
                     . '</tr>';
         }
+        $output .= '<tr>'
+                . '<td>'.t('Cron tasks').'</td>'
+                . '<td>'.t('Cron tasks were last executed @date', array('@date' => date("Y-m-d - H:i:s", Sysguard::get(array('module', '=', 'cron'))->timestamp))).'</td>'
+                . '<tr>'
+                . '<td>'.t('Webserver').'</td>'
+                . '<td>'.$_SERVER['SERVER_SOFTWARE'].'</td>'
+                . '</tr>';
+        $output .= '<tr>'
+                . '<td>'.t('PHP Version').'</td>'
+                . '<td>'.PHP_VERSION.'</td>'
+                . '</tr>'
+                . '<tr>'
+                . '<td>'.t('PHP memory limit').'</td>'
+                . '<td>'.ini_get('memory_limit').'</td>'
+                . '</tr>'
+                . '<tr>'
+                . '<td>'.t('Databaseserver').'</td>'
+                . '<td>'.Definition::resolve(Config::get('db/driver'))['name'].' '.DB::getInstance()->version().'</td>'
+                . '</tr>'
+                . '<tr>';
         $output .= '</tbody>'
                 . '</table>'
                 . '</div>'
@@ -238,6 +262,11 @@ class Report {
         return $output;
     }
     private static function sysguardEventActions($event_id) {
-        
+        if(DB::getInstance()->getField('sysguard', 'module', 'sid', $event_id) == 'page-not-found') {
+            return '<a href="" class="btn btn-rad btn-sm btn-primary">'.t('Add Redirection').'</a>';
+        }
+    }
+    public static function status() {
+        //Show status report
     }
 }
