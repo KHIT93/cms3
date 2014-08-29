@@ -4,10 +4,15 @@
  * @file Class for handling logging of backend activity for users with access and 404, 403 and 500 errors that are not triggered by server failure.
  */
 class Sysguard {
-    public static function get($filter = array()) {
+    public static function get($filter = array(), $first = false) {
         //Gets log entries
         if(count($filter)) {
-            $data = DB::getInstance()->get('sysguard', $filter)->results();
+            if($first == true) {
+                $data = DB::getInstance()->get('sysguard', $filter)->first();
+            }
+            else {
+                $data = DB::getInstance()->get('sysguard', $filter)->results();
+            }
             return $data;
         }
         else {

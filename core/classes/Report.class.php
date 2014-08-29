@@ -140,7 +140,7 @@ class Report {
         }
         $output .= '<tr>'
                 . '<td>'.t('Cron tasks').'</td>'
-                . '<td>'.t('Cron tasks were last executed @date', array('@date' => date("Y-m-d - H:i:s", Sysguard::get(array('module', '=', 'cron'))->timestamp))).'</td>'
+                . '<td>'.t('Cron tasks were last executed @date', array('@date' => date("Y-m-d - H:i:s", Sysguard::get(array('module', '=', 'cron'), true)->timestamp))).'</td>'
                 . '<tr>'
                 . '<td>'.t('Webserver').'</td>'
                 . '<td>'.$_SERVER['SERVER_SOFTWARE'].'</td>'
