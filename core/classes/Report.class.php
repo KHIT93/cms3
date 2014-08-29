@@ -50,7 +50,7 @@ class Report {
         );
         $output[] = array(
             'title' => t('\'Access denid\' 403 erors'),
-            'link' => 'admin/reports/acces_denied_errors'
+            'link' => 'admin/reports/access_denied_errors'
         );
         foreach(Module::activeModules() as $module) {
             if(Module::moduleImplements($module, 'report_overview_alter')) {
@@ -180,23 +180,23 @@ class Report {
     }
     private static function sysguardList() {
         $events = Sysguard::get();
-            $output = '<div class="page-head">'
-                    . '<h2>'.t('Recent log messages').'</h2>'
-                    . get_breadcrumb()
-                    . '</div>'
-                    . '<div class="cl-mcont">'
-                    . '<div class="col-md-12">'
-                    . '<p>'.t('The site configuration report is listed below containing both site specific configuration and information about the configuration of the server hosting your website.').'</p>'
-                    . '<table class="table table-hover">'
-                    . '<thead style="background-color: #CCC;">'
-                    . '<tr>'
-                    . '<th><strong>'.'Type'.'</strong></th>'
-                    . '<th><strong>'.'Date'.'</strong></th>'
-                    . '<th><strong>'.'Message'.'</strong></th>'
-                    . '<th><strong>'.'User'.'</strong></th>'
-                    . '</tr>'
-                    . '</thead>'
-                    . '<tbody>';
+        $output = '<div class="page-head">'
+                . '<h2>'.t('Recent log messages').'</h2>'
+                . get_breadcrumb()
+                . '</div>'
+                . '<div class="cl-mcont">'
+                . '<div class="col-md-12">'
+                . '<p>'.''.'</p>'
+                . '<table class="table table-hover">'
+                . '<thead style="background-color: #CCC;">'
+                . '<tr>'
+                . '<th><strong>'.'Type'.'</strong></th>'
+                . '<th><strong>'.'Date'.'</strong></th>'
+                . '<th><strong>'.'Message'.'</strong></th>'
+                . '<th><strong>'.'User'.'</strong></th>'
+                . '</tr>'
+                . '</thead>'
+                . '<tbody>';
             if(count($events)) {
                 foreach($events as $event) {
                     $output .= '<tr>'
@@ -263,10 +263,111 @@ class Report {
     }
     private static function sysguardEventActions($event_id) {
         if(DB::getInstance()->getField('sysguard', 'module', 'sid', $event_id) == 'page-not-found') {
-            return '<a href="" class="btn btn-rad btn-sm btn-primary">'.t('Add Redirection').'</a>';
+            return '<a href="/admin/settings/search/redirect/add" class="btn btn-rad btn-sm btn-primary">'.t('Add Redirection').'</a>';
         }
     }
     public static function status() {
         //Show status report
+    }
+    public static function translation() {
+        $db = DB::getInstance();
+        $total = $db->getAll('translation')->count();
+        $missing = $db->get('translation', array('translation', '=', ''))->count();
+        $output = '<div class="page-head">'
+                . '<h2>'.t('Translation overview').'</h2>'
+                . get_breadcrumb()
+                . '</div>'
+                . '<div class="cl-mcont">'
+                . '<div class="col-md-12">'
+                . '<div class="block">'
+                . '<div class="content">'
+                . '<table class="table table-hover">'
+                . '<thead class="table-heading">'
+                . '<tr>'
+                . '<th><strong>'.'Language'.'</strong></th>'
+                . '<th><strong>'.'Translations'.'</strong></th>'
+                . '<th><strong>'.'Actions'.'</strong></th>'
+                . '</tr>'
+                . '</thead>'
+                . '<tbody>'
+                . '<tr>'
+                . '<td>Danish</td>'
+                . '<td>'.$missing.' / '.$total.'('.number_format((100-(($missing/$total)*100)), 2, ',', '.').'%)'.'</td>'
+                . '<td><a href="/admin/settings/language/translate">Translate</a></td>'
+                . '</tr>';
+        
+        $output .= '</tbody>'
+            . '</table>'
+            . '</div>'
+            . '</div>'
+            . '</div>';
+        //$output = $missing.' / '.$total;
+        return $output;
+    }
+    public static function not_found_errors() {
+        $events = Sysguard::get(array('module', '=', 'page-not-found'));
+        $output = '<div class="page-head">'
+                . '<h2>'.t('\'Page not found\' errors').'</h2>'
+                . get_breadcrumb()
+                . '</div>'
+                . '<div class="cl-mcont">'
+                . '<div class="col-md-12">'
+                . '<div class="block">'
+                . '<div class="content">'
+                . '<table class="table table-hover">'
+                . '<thead class="table-heading">'
+                . '<tr>'
+                . '<th><strong>'.t('Date').'</strong></th>'
+                . '<th><strong>'.t('URL').'</strong></th>'
+                . '<th><strong>'.t('Actions').'</strong></th>'
+                . '</tr>'
+                . '</thead>'
+                . '<tbody>';
+        foreach($events as $event) {
+            $output .= '<tr>'
+                    . '<td>'.date("Y-m-d - H:i:s", $event->timestamp).'</td>'
+                    . '<td>'.$event->ref.'</td>'
+                    . '<td>'.self::sysguardEventActions($event->sid).'</td>'
+                    . '</tr>';
+        }
+        $output .= '</tbody>'
+            . '</table>'
+            . '</div>'
+            . '</div>'
+            . '</div>';
+        return $output;
+    }
+    public static function access_denied_errors() {
+        $events = Sysguard::get(array('module', '=', 'access-denied'));
+        $output = '<div class="page-head">'
+                . '<h2>'.t('\'Access Denied\' errors').'</h2>'
+                . get_breadcrumb()
+                . '</div>'
+                . '<div class="cl-mcont">'
+                . '<div class="col-md-12">'
+                . '<div class="block">'
+                . '<div class="content">'
+                . '<table class="table table-hover">'
+                . '<thead class="table-heading">'
+                . '<tr>'
+                . '<th><strong>'.t('Date').'</strong></th>'
+                . '<th><strong>'.t('URL').'</strong></th>'
+                . '<th><strong>'.t('Actions').'</strong></th>'
+                . '</tr>'
+                . '</thead>'
+                . '<tbody>';
+        foreach($events as $event) {
+            $output .= '<tr>'
+                    . '<td>'.date("Y-m-d - H:i:s", $event->timestamp).'</td>'
+                    . '<td>'.$event->ref.'</td>'
+                    . '<td>'.self::sysguardEventActions($event->sid).'</td>'
+                    . '</tr>';
+        }
+        $output .= '</tbody>'
+            . '</table>'
+            . '</div>'
+            . '</div>'
+            . '</div>';
+        return $output;
     }
 }
