@@ -19,7 +19,7 @@ if(isset($get_url[2])) {
                     break;
                     default :
                         http_response_code(404);
-                        include path_to_theme().'/404.php';
+                        Theme::errorPage(404);
                     break;
                 }
             }
@@ -49,6 +49,9 @@ if(isset($get_url[2])) {
                 switch($get_url[3]) {
                     case 'maintenance':
                         print Settings::developmentMaintenance();
+                    break;
+                    case 'db':
+                        print Settings::developmentDBManagement();
                     break;
                     default :
                         http_response_code(404);

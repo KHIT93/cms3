@@ -1,11 +1,19 @@
 <?php
 class File {
+    private $_name, $_path, $_folder, $_size, $_permissions, $_created, $_updated, $_handle;
     public function __construct($path, $type = 'a') {
         if(file_exists($path)) {
-            $this->handle = fopen($path, $type);
-            $this->path = $path;
+            $this->_handle = fopen($path, $type);
+            $this->_path = $path;
+            $this->_name = basename($path);
+            $this->_folder = dirname($path);
+            $this->_size = filesize($this->_path);
+            $this->_permissions = fileperms($this->_path);
+            $this->_created = filectime($this->_path);
+            $this->_updated = filemtime($this->_path);
         }
         else {
+            Sysguard::set('File not found', 'The requested file '.$path.' does not exist', 'file', $_SERVER['HTTP_REFERER']);
             addMessage('error', t('Not found').': '.$path.'<br/>'.t('The file does not exists'));
         }
     }
@@ -13,10 +21,50 @@ class File {
         
     }
     public function read() {
-        
+        return file($this->_path);
     }
     public function delete() {
         
+    }
+    public function name() {
+        return $this->_name;
+    }
+    public function path() {
+        return $this->_path;
+    }
+    public function folder() {
+        return $this->_folder;
+    }
+    public function size($unit = 'KB') {
+        switch ($unit) {
+            case 'B':
+                return $this->_size;
+            break;
+            case 'KB':
+                return number_format($this->_size/1024, 2, ',', '.');
+            break;
+            case 'MB':
+                return number_format(($this->_size/1024)/1024, 2, ',', '.');
+            break;
+            case 'GB':
+                return number_format((($this->_size/1024)/1024)/1024, 2, ',', '.');
+            break;
+            case 'TB':
+                return number_format(((($this->_size/1024)/1024)/1024)/1024, 2, ',', '.');
+            break;
+            default:
+                return $this->_size;
+            break;
+        }
+    }
+    public function permissions() {
+        return $this->_permissions;
+    }
+    public function created() {
+        return $this->_created;
+    }
+    public function updated() {
+        return $this->_updated;
     }
     public static function parse_info_file($filepath = NULL) {
         $info = array();
@@ -92,5 +140,18 @@ class File {
     }
     public static function isRegistryFile($filepath) {
         return (pathinfo($filepath, PATHINFO_EXTENSION) == 'info') ? true : false;
+    }
+    public static function getFilesInDir($directory) {
+        $dir = scandir($directory, SCANDIR_SORT_ASCENDING);
+        if(isset($dir[0])) {
+            unset ($dir[0]);
+        }
+        if(isset($dir[1])) {
+            unset ($dir[1]);
+        }
+        if(isset($dir[2]) && $dir[2] == '.DS_Store') {
+            unset ($dir[2]);
+        }
+        return $dir;
     }
 }

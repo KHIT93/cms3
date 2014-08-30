@@ -115,6 +115,13 @@ class Settings {
                 'link' => '/admin/settings/cron'
             );
         }
+        if(has_permission('access_admin_settings_development_db', Session::get(Config::get('session/session_name'))) === true) {
+            $settings['development'][] = array(
+                'title' => t('Database management'),
+                'description' => t('Perform backup and restore of the database'),
+                'link' => '/admin/settings/development/db'
+            );
+        }
         if(has_permission('access_admin_settings_search_redirect', Session::get(Config::get('session/session_name'))) === true) {
             $settings['search'][] = array(
                 'title' => t('URL Redirect'),
@@ -393,6 +400,60 @@ class Settings {
                 . '<button type="submit" name="setMaintenance" class="btn btn-rad btn-sm btn-primary"><span class="glyphicon glyphicon-floppy-saved"></span> '.  t('Save changes').'</button>'
                   .'</form>'
                 . '</div>';
+        return $output;
+    }
+    public static function developmentDBManagement() {
+        $db = DB::getInstance();
+        $files = File::getFilesInDir('uploads/backup/db');
+        $output = '<div class="page-head">'
+                . '<h2>'.t('Database management').'</h2>'
+                . get_breadcrumb()
+                . '</div>'
+                . '<div class="cl-mcont">'
+                . '<div class="col-md-12">'
+                . '<div class="block">'
+                . '<div class="content">'
+                . '<form><button type="submit" name="createDBBackup" class="btn btn-rad btn-sm btn-primary"><i class="fa fa-database"></i> Create new backup</button></form>'
+                . '<table class="table table-hover">'
+                . '<thead class="table-heading">'
+                . '<tr>'
+                . '<th><strong>'.t('Date').'</strong></th>'
+                . '<th><strong>'.t('Name').'</strong></th>'
+                . '<th><strong>'.t('Size').' (KB)</strong></th>'
+                . '<th><strong>'.t('Actions').'</strong></th>'
+                . '</tr>'
+                . '</thead>'
+                . '<tbody>';
+        if(count($files)) {
+            foreach ($files as $name) {
+                if(pathinfo('uploads/backup/db/'.$name, PATHINFO_EXTENSION) == 'sql' || pathinfo('uploads/backup/db/'.$name, PATHINFO_EXTENSION) == 'bak') {
+                    $file = new File('uploads/backup/db/'.$name);
+                    $output .= '<tr>'
+                            . '<td>'.date("Y-m-d - H:i:s", $file->created()).'</td>'
+                            . '<td>'.$file->name().'</td>'
+                            . '<td>'.$file->size().'</td>'
+                            . '<td>'
+                            . '<a href="/admin/settings/development/db/view/'.$file->name().'" class="btn btn-rad btn-sm btn-default"><i class="fa fa-archive"></i> View</a>'
+                            . '<a href="/admin/settings/development/db/get/'.$file->name().'" class="btn btn-rad btn-sm btn-success"><i class="fa fa-download"></i> Download</a>'
+                            . '<a href="/admin/settings/development/db/restore/'.$file->name().'" class="btn btn-rad btn-sm btn-info"><i class="fa fa-upload"></i> Restore</a>'
+                            . '<a href="/admin/settings/development/db/delete/'.$file->name().'" class="btn btn-rad btn-sm btn-danger"><i class="fa fa-times"></i> Delete</a>'
+                            . '</td>'
+                            . '</tr>';
+                }
+            }
+        }
+        else {
+            $output .= '<tr>'
+                    . '<td colspan="4"><i>'.t('There are currently no files available').'</i></td>'
+                    . '</tr>';
+        }
+        
+        
+        $output .= '</tbody>'
+            . '</table>'
+            . '</div>'
+            . '</div>'
+            . '</div>';
         return $output;
     }
     public static function search_meta() {
