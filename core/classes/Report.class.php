@@ -135,7 +135,7 @@ class Report {
             $def = Definition::resolve($option);
             $output .= '<tr>'
                     . '<td>'.t($def['name']).'</td>'
-                    . '<td>'.((hasValue($def['options'])) ? Definition::value($value, $def['options']) : $value).'</td>'
+                    . '<td>'.((isset($def['options']) && hasValue($def['options'])) ? Definition::value($value, $def['options']) : $value).'</td>'
                     . '</tr>';
         }
         $output .= '<tr>'
@@ -262,8 +262,12 @@ class Report {
         return $output;
     }
     private static function sysguardEventActions($event_id) {
-        if(DB::getInstance()->getField('sysguard', 'module', 'sid', $event_id) == 'page-not-found') {
-            return '<a href="/admin/settings/search/redirect/add" class="btn btn-rad btn-sm btn-primary">'.t('Add Redirection').'</a>';
+        $event = DB::getInstance()->get('sysguard', array('sid', '=', $event_id))->first();
+        if($event->module == '404') {
+            $path = explode('/', $event->ref);
+            unset($path[0]); unset($path[1]); unset($path[2]);
+            $redirect_path_source = implode('/', $path);
+            return '<a href="/admin/settings/search/redirect/add&source='.$redirect_path_source.'" class="btn btn-rad btn-sm btn-primary">'.t('Add Redirection').'</a>';
         }
     }
     public static function status() {
@@ -305,7 +309,7 @@ class Report {
         return $output;
     }
     public static function not_found_errors() {
-        $events = Sysguard::get(array('module', '=', 'page-not-found'));
+        $events = Sysguard::get(array('module', '=', '404'));
         $output = '<div class="page-head">'
                 . '<h2>'.t('\'Page not found\' errors').'</h2>'
                 . get_breadcrumb()
@@ -338,7 +342,7 @@ class Report {
         return $output;
     }
     public static function access_denied_errors() {
-        $events = Sysguard::get(array('module', '=', 'access-denied'));
+        $events = Sysguard::get(array('module', '=', '403'));
         $output = '<div class="page-head">'
                 . '<h2>'.t('\'Access Denied\' errors').'</h2>'
                 . get_breadcrumb()

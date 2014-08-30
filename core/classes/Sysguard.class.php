@@ -41,12 +41,12 @@ class Sysguard {
         //Clears the log and sets a new entry after clearing the log to notify others about who cleared the log
         $db = DB::getInstance();
         if(!$db->query("TRUNCATE `sysguard`")->error()) {
-            if(self::set('clear log', 'The sysguard log has been cleared', 'core', $_SERVER['HTTP_REFERER'], User::getInstance()->uid())) {
+            if(self::set('Log cleared by user', 'The sysguard log has been cleared', 'core', $_SERVER['HTTP_REFERER'], User::getInstance()->uid())) {
                 return true;
             }
         }
         else {
-            self::set('clear log', 'The sysguard log could not be cleared', 'core', $_SERVER['HTTP_REFERER'], User::getInstance()->uid());
+            self::set('Log cleared by user', 'The sysguard log could not be cleared', 'core', $_SERVER['HTTP_REFERER'], User::getInstance()->uid());
         }
         return false;
     }

@@ -24,4 +24,12 @@ class Definition {
         }
         return false;
     }
+    public static function resolveErrorCode($error_code) {
+        $codes = File::parse_info_file(INCLUDES_PATH.'/registry/httperrors.registry');
+        if(isset($codes[$error_code])) {
+            return $codes[$error_code];
+        }
+        return 'Unknown Error '.$error_code;
+        
+    }
 }

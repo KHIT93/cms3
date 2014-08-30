@@ -90,4 +90,7 @@ class File {
     public static function isInfoFile($filepath) {
         return (pathinfo($filepath, PATHINFO_EXTENSION) == 'info') ? true : false;
     }
+    public static function isRegistryFile($filepath) {
+        return (pathinfo($filepath, PATHINFO_EXTENSION) == 'info') ? true : false;
+    }
 }
