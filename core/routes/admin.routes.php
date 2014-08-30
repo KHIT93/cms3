@@ -16,7 +16,7 @@ if(isset($get_url[1])) {
             
             if($function(implode('/', $get_url)) != FALSE) {
                 $mod_route = true;
-                include INCLUDES_PATH.'/admin.inc.php';
+                include_once INCLUDES_PATH.'/admin.inc.php';
                 $function = $module['module'].'_route';
                 print $function(implode('/', $get_url));
             }
@@ -30,41 +30,44 @@ if(isset($get_url[1])) {
         switch ($get_url[1]) {
             case 'content':
                 $route = true;
-                include 'content.routes.php';
+                include_once 'content.routes.php';
                 break;
             case 'layout':
                 $route = true;
-                include 'layout.routes.php';
+                include_once 'layout.routes.php';
                 break;
             case 'modules':
                 $route = true;
-                include 'modules.routes.php';
+                include_once 'modules.routes.php';
                 break;
             case 'users':
                 $route = true;
-                include 'users.routes.php';
+                include_once 'users.routes.php';
                 break;
             case 'settings':
                 $route = true;
-                include 'settings.routes.php';
+                include_once 'settings.routes.php';
                 break;
             case 'help':
                 $route = true;
-                include 'help.routes.php';
+                include_once 'help.routes.php';
                 break;
             case 'reports':
                 $route = true;
-                include 'reports.routes.php';
+                include_once 'reports.routes.php';
                 break;
+            case 'editor':
+                include_once 'editor.routes.php';
+            break;
             default:
                 http_response_code(404);
-                include Theme::path_to_theme().'/404.php';
+                Theme::errorPage(404);
                 break;
         }
     }
 }
 else {
-    include INCLUDES_PATH.'/admin.inc.php';
-    include INCLUDES_PATH.'/templates/admin.php';
+    include_once INCLUDES_PATH.'/admin.inc.php';
+    include_once INCLUDES_PATH.'/templates/admin.php';
 }
 include_once Theme::path_to_theme().'/footer.tpl.php';

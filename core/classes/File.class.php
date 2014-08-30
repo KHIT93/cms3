@@ -141,17 +141,33 @@ class File {
     public static function isRegistryFile($filepath) {
         return (pathinfo($filepath, PATHINFO_EXTENSION) == 'info') ? true : false;
     }
-    public static function getFilesInDir($directory) {
+    public static function getFilesInDir($directory, $recursive = false) {
         $dir = scandir($directory, SCANDIR_SORT_ASCENDING);
+        $output = array();
+        $x = 0;
         if(isset($dir[0])) {
             unset ($dir[0]);
+            $x++;
         }
         if(isset($dir[1])) {
             unset ($dir[1]);
+            $x++;
         }
         if(isset($dir[2]) && $dir[2] == '.DS_Store') {
             unset ($dir[2]);
+            $x++;
         }
-        return $dir;
+        if($recursive == true) {
+            foreach($dir as $item) {
+                $output[$x]['name'] = $item;
+                //var_dump(is_dir($directory.'/'.$item));
+                if(is_dir($directory.'/'.$item)) {
+                    $output[$x]['children'] = self::getFilesInDir($directory.'/'.$item, true);
+                }
+                clearstatcache();
+                $x++;
+            }
+        }
+        return $output;
     }
 }
