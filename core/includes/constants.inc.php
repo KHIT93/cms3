@@ -39,6 +39,10 @@ define('CORE_FONT_PATH', ASSETS_PATH.'/fonts');
 
 define('CORE_IMG_PATH', ASSETS_PATH.'/images');
 
+define('BACKUP_DIR', 'uploads/backup');
+
+define('DB_BACKUP_DIR', BACKUP_DIR.'/db');
+
 define('DEFAULT_ADMIN_RID', 1);
 
 define('DEFAULT_WEBMASTER_RID', 2);
