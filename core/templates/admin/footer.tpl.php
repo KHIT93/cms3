@@ -26,8 +26,8 @@
             /*Codemirror*/
             var myCodeMirror = CodeMirror.fromTextArea(document.getElementById("code"), {
                 lineNumbers: true,
-                //theme: 'ambiance',
-                viewportMargin: 'Infinity',
+                theme: 'ambiance',
+                viewportMargin: 0,
                 mode:  "text/html",
                 lineWrapping: true
             });

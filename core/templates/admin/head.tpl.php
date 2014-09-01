@@ -29,14 +29,4 @@
         <script src="<?php print CORE_JS_PATH;?>/bootstrap/bootstrap.min.js"></script>
         <script src="<?php print CORE_JS_PATH;?>/modernizr/modernizr.min.js"></script>
         <link rel="shortcut icon" href="<?php print CORE_IMG_PATH;?>/favicon.png">
-        <style type="text/css">
-            .CodeMirror {
-                border: 1px solid #eee;
-                height: auto;
-            }
-            .CodeMirror-scroll {
-                overflow-y: hidden;
-                overflow-x: auto;
-            }
-        </style>
     </head>
