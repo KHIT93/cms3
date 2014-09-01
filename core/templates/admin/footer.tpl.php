@@ -14,12 +14,17 @@
         <script type="text/javascript" src="<?php print CORE_JS_PATH; ?>/behaviour/general.js"></script>
         <script type="text/javascript" src="<?php print CORE_JS_PATH; ?>/core.js"></script>
         <script type="text/javascript" src="<?php print CORE_JS_PATH; ?>/jquery.codemirror/lib/codemirror.js"></script>
+        <script type="text/javascript" src="<?php print CORE_JS_PATH; ?>/jquery.codemirror/addon/edit/matchbrackets.js"></script>
+        <script type="text/javascript" src="<?php print CORE_JS_PATH; ?>/jquery.codemirror/addon/edit/matchtags.js"></script>
         <script type="text/javascript" src="<?php print CORE_JS_PATH; ?>/jquery.codemirror/mode/xml/xml.js"></script>
         <script type="text/javascript" src="<?php print CORE_JS_PATH; ?>/jquery.codemirror/addon/fold/xml-fold.js"></script>
         <script type="text/javascript" src="<?php print CORE_JS_PATH; ?>/jquery.codemirror/mode/css/css.js"></script>
         <script type="text/javascript" src="<?php print CORE_JS_PATH; ?>/jquery.codemirror/mode/htmlmixed/htmlmixed.js"></script>
-        <script type="text/javascript" src="<?php print CORE_JS_PATH; ?>/jquery.codemirror/addon/edit/matchbrackets.js"></script>
-        <script type="text/javascript" src="<?php print CORE_JS_PATH; ?>/jquery.codemirror/addon/edit/matchtags.js"></script>
+        <script type="text/javascript" src="<?php print CORE_JS_PATH; ?>/jquery.codemirror/mode/javascript/javascript.js"></script>
+        <script type="text/javascript" src="<?php print CORE_JS_PATH; ?>/jquery.codemirror/mode/sql/sql.js"></script>
+        <script type="text/javascript" src="<?php print CORE_JS_PATH; ?>/jquery.codemirror/mode/php/php.js"></script>
+        <script type="text/javascript" src="<?php print CORE_JS_PATH; ?>/jquery.codemirror/mode/shell/shell.js"></script>
+        
         <script type="text/javascript" type="text/javascript">
             $(document).ready(function(){
                 //initialize the javascript
@@ -30,7 +35,8 @@
                 lineNumbers: true,
                 theme: 'ambiance',
                 viewportMargin: 0,
-                mode:  "text/html",
+                //mode:  "text/html",
+                mode : "<?php print $editor->mode(); ?>",
                 matchTags: {bothTags: true},
                 lineWrapping: true
             });

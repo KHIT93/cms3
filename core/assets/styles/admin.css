@@ -94,6 +94,26 @@ body.admin .profile_menu .dropdown-menu {
     font-weight: bold;
     background-color: #CCC;
 }
+.btn-sidebar {
+    border: 0px;
+    color: #555;
+    padding: 11px 15px 8px 11px;
+    width: 100%;
+    text-align: left;
+}
+.stacked-dropdown {
+    margin-bottom: 0;
+    list-style: none;
+}
+.stacked-dropdown li {
+    position: relative;
+    display: block;
+    padding: 12px 15px;
+}
+.stacked-dropdown li a {
+    border-radius: 0;
+    color: #555;
+}
 @media (min-width: 768px) {
     body.admin .navbar-nav > li > a {
         padding-top: 8px;

@@ -43,6 +43,19 @@ function sidebar_traverse($array, $class = NULL) {
     $str .= '</ul>';
     return $str;
 }
+function stacked_traverse($array, $active, $class = NULL) {
+    $str = '<ul class="'.$class.'">';
+    foreach($array as $item) {
+        if($active == $item['link']) {
+            $str .= '<li class="active"><a href="/'.$item['link'].'"'.(isset($item['children'])&&$toggle==true?' class="dropdown-toggle" data-toggle="dropdown"':'').'>'.$item['title'].'</a>'.(isset($item['children'])&&$item['children']?traverse($item['children'], 'dropdown-menu'):'').'</li>';
+        }
+        else {
+            $str .= '<li><a href="/'.$item['link'].'">'.$item['title'].'</a>'.(isset($item['children'])&&$item['children']?traverse($item['children'], 'dropdown stacked-dropdown'):'').'</li>';
+        }
+    }
+    $str .= '</ul>';
+    return $str;
+}
 function generateMenu($mid) {
     return Menu::getInstance($mid)->generateMenu();
 }

@@ -21,6 +21,8 @@ define('CORE_THEME_PATH', '/core/templates');
 
 define('THEME_PATH', '/templates');
 
+define('TEMPLATE_DIR', 'templates');
+
 define('INCLUDES_PATH', SITE_ROOT.'/core/includes');
 
 define('ERROR_FILE_PATH', INCLUDES_PATH.'/errors');

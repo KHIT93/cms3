@@ -141,7 +141,7 @@ class File {
     public static function isRegistryFile($filepath) {
         return (pathinfo($filepath, PATHINFO_EXTENSION) == 'info') ? true : false;
     }
-    public static function getFilesInDir($directory, $recursive = false) {
+    public static function getFilesInDir($directory, $recursive = false, $exclude = array()) {
         $dir = scandir($directory, SCANDIR_SORT_ASCENDING);
         $output = array();
         $x = 0;
@@ -159,13 +159,20 @@ class File {
         }
         if($recursive == true) {
             foreach($dir as $item) {
-                $output[$x]['name'] = $item;
-                //var_dump(is_dir($directory.'/'.$item));
-                if(is_dir($directory.'/'.$item)) {
-                    $output[$x]['children'] = self::getFilesInDir($directory.'/'.$item, true);
+                $fileExt = explode('.', $item);
+                $ext = $fileExt[count($fileExt)-1];
+                if(!in_array($ext, $exclude)) {
+                    $output[$x]['name'] = $item;
+                    if(is_dir($directory.'/'.$item)) {
+                        $output[$x]['children'] = self::getFilesInDir($directory.'/'.$item, true, $exclude);
+                        if(!count($output[$x]['children'])) {
+                            unset($output[$x]);
+                            $x--;
+                        }
+                    }
+                    clearstatcache();
+                    $x++;
                 }
-                clearstatcache();
-                $x++;
             }
         }
         return $output;

@@ -24,12 +24,29 @@ class Definition {
         }
         return false;
     }
+    public static function loadRegistry($path) {
+        return File::parse_info_file($path)['registry'];
+    }
     public static function resolveErrorCode($error_code) {
-        $codes = File::parse_info_file(INCLUDES_PATH.'/registry/httperrors.registry');
+        $codes = File::parse_info_file(INCLUDES_PATH.'/registry/httperrors.registry')['httperrors'];
         if(isset($codes[$error_code])) {
             return $codes[$error_code];
         }
         return 'Unknown Error '.$error_code;
         
+    }
+    public static function resolveFileType($type) {
+        $types = File::parse_info_file(INCLUDES_PATH.'/registry/filetypes.registry')['types'];
+        krumo($types);
+        if(isset($types[$type])) {
+            return $types[$type];
+        }
+        else {
+            $cutType = explode('.', $type)[1];
+            if(isset($types[$cutType])) {
+                return $types[$cutType];
+            }
+        }
+        return 'text';
     }
 }

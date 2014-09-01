@@ -1,0 +1,12 @@
+types[html] = text/html
+types[sql] = text/x-sql
+types[css] = text/css
+types[sass] = text/x-sass
+types[scss] = text/x-scss
+types[less] = text/x-less
+types[php] = application/x-httpd-php
+;types[tpl.php] = text/x-php
+types[tpl.php] = text/html
+types[js] = text/javascript
+types[coffee] = text/x-coffeescript
+types[sh] = text/x-sh

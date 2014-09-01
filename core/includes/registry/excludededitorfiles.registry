@@ -1,0 +1,12 @@
+registry[] = jpg
+registry[] = jpeg
+registry[] = png
+registry[] = gif
+registry[] = eot
+registry[] = svg
+registry[] = ttf
+registry[] = woff
+registry[] = gitignore
+;Excluded directory names
+registry[] = fonts
+registry[] = git

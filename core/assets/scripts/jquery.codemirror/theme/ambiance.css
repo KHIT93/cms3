@@ -46,7 +46,7 @@
   font-weight: bold;
   color: #E6E1DC;
   background-color: #3c3e43;
-  /*height: 225px;*/
+  height: auto;
 }
 
 .cm-s-ambiance .CodeMirror-gutters {

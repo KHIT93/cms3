@@ -1,0 +1,10 @@
+name = KHansen IT
+description = Custom responsive theme for KHansen IT
+version = 2.5
+kernel = 2.x
+screenshot = screenshot.png
+
+sections[header]         = 'Top Bar'
+sections[content]        = 'Content'
+sections[footer]         = 'Footer'
+styles[screen][] = css/style.css
