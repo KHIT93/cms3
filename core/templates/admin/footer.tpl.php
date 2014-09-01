@@ -15,9 +15,11 @@
         <script type="text/javascript" src="<?php print CORE_JS_PATH; ?>/core.js"></script>
         <script type="text/javascript" src="<?php print CORE_JS_PATH; ?>/jquery.codemirror/lib/codemirror.js"></script>
         <script type="text/javascript" src="<?php print CORE_JS_PATH; ?>/jquery.codemirror/mode/xml/xml.js"></script>
+        <script type="text/javascript" src="<?php print CORE_JS_PATH; ?>/jquery.codemirror/addon/fold/xml-fold.js"></script>
         <script type="text/javascript" src="<?php print CORE_JS_PATH; ?>/jquery.codemirror/mode/css/css.js"></script>
         <script type="text/javascript" src="<?php print CORE_JS_PATH; ?>/jquery.codemirror/mode/htmlmixed/htmlmixed.js"></script>
         <script type="text/javascript" src="<?php print CORE_JS_PATH; ?>/jquery.codemirror/addon/edit/matchbrackets.js"></script>
+        <script type="text/javascript" src="<?php print CORE_JS_PATH; ?>/jquery.codemirror/addon/edit/matchtags.js"></script>
         <script type="text/javascript" type="text/javascript">
             $(document).ready(function(){
                 //initialize the javascript
@@ -29,6 +31,7 @@
                 theme: 'ambiance',
                 viewportMargin: 0,
                 mode:  "text/html",
+                matchTags: {bothTags: true},
                 lineWrapping: true
             });
         </script>
