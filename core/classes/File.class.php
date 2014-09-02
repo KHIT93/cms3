@@ -1,30 +1,56 @@
 <?php
+/**
+ * @file
+ * Acts as an abstraction layer for the SplFileObject class and implements easy to use functionality that has been customized for use with core classes and functions as well as third party modules
+ */
 class File {
     private $_name, $_path, $_folder, $_size, $_permissions, $_created, $_updated, $_handle;
     public function __construct($path, $type = 'a') {
         if(file_exists($path)) {
-            $this->_handle = fopen($path, $type);
+            $this->_handle = new SplFileObject($path);
             $this->_path = $path;
-            $this->_name = basename($path);
-            $this->_folder = dirname($path);
-            $this->_size = filesize($this->_path);
-            $this->_permissions = fileperms($this->_path);
-            $this->_created = filectime($this->_path);
-            $this->_updated = filemtime($this->_path);
+            $this->_name = $this->_handle->getBasename();
+            $this->_folder = $this->_handle->getPath();
+            $this->_size = $this->_handle->getSize();
+            $this->_permissions = $this->_handle->getPerms();
+            $this->_created = $this->_handle->getCTime();
+            $this->_updated = $this->_handle->getMTime();
         }
         else {
             Sysguard::set('File not found', 'The requested file '.$path.' does not exist', 'file', $_SERVER['HTTP_REFERER']);
             addMessage('error', t('Not found').': '.$path.'<br/>'.t('The file does not exists'));
         }
     }
-    public function write() {
-        
+    public function write($string = NULL) {
+        $this->_handle->rewind();
+        if($string) {
+            try {
+                $this->_handle->fwrite($string);
+                return true;
+            }
+            catch(Exception $e) {
+                System::addMessage('error', t('There was an error writing to the file @filepath: @error', array('@filepath' => $this->_path, '@error' => $e->getMessage())), $e);
+                return false;
+            }
+        }
+        return false;
     }
     public function read() {
-        return file($this->_path);
+        $this->_handle->rewind();
+        return $this->_handle->fpassthru();
     }
     public function delete() {
         
+    }
+    public function rewind() {
+        $this->_handle->rewind();
+    }
+    public function spl($function = NULL) {
+        //Development function. Will only be available during core development to determine which functions from SplFileObject should be abstracted to core File class
+        if($function) {
+            return $this->_handle->$function();
+        }
+        return false;
     }
     public function name() {
         return $this->_name;

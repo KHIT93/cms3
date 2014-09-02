@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * Acts as a Database abstraction layer for PDO and implements easy to use functionality that has been customized for use with core classes and functions, as well as third party modules
+ */
 class DB {
     private static $_instance = null;
     private $_pdo, $_query, $_error = false, $_results, $_count = 0;

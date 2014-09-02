@@ -62,8 +62,7 @@ class Editor {
                 . '<div class="main-app">'
                 . '<div class="code-editor">'
                 . '<div class="console">'
-                . '<textarea name="code-editor" id="code" class="code">'.htmlentities($this->_loadFile()).'</textarea>'
-//                . '<textarea name="code-editor" id="code" class="code">'.htmlentities(file_get_contents('core/templates/core/page.tpl.php')).'</textarea>'
+                . '<textarea name="codeeditor" id="code" class="code">'.htmlentities($this->_loadFile()).'</textarea>'
                 . '</div>'
                 . '</div>'
                 . '</div>'
@@ -135,5 +134,26 @@ class Editor {
     }
     public function mode() {
         return $this->_mode;
+    }
+    public static function submit($type, $formdata) {
+        switch($type) {
+            case 'template':
+                self::templateSubmit($formdata);
+            break;
+            default :
+                System::addMessage('error', t('You have submitted a @type file, which is not allowed', array('@type' => $type)));
+            break;
+        }
+    }
+    public static function templateSubmit($formdata) {
+        //Submit changes to file in templates directory
+        $file = new File(TEMPLATE_DIR.'/'.$formdata['item'].'/'.$formdata['file'], 'w');
+        try {
+            $file->write($formdata['codeeditor']);
+            System::addMessage('success', t('The file @filepath has been saved', array('@filepah' => TEMPLATE_DIR.'/'.$formdata['item'].'/'.$formdata['file'])));
+        }
+        catch (Exception $e) {
+            System::addMessage('error', t('There was an error saving the file @filepath: @error', array('@error' => $e->getMessage(), '@filepath' => TEMPLATE_DIR.'/'.$formdata['item'].'/'.$formdata['file'])), $e);
+        }
     }
 }

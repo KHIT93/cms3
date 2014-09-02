@@ -274,3 +274,6 @@ function editTranslation_submit() {
         action_denied();
     }
 }
+function templateEditor_submit() {
+    Editor::submit('template', $_POST);
+}
