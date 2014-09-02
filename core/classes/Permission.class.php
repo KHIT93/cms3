@@ -163,7 +163,7 @@ class Permission {
             return t('You do not have permission to perform this action');
         }
         else {
-            addMessage('warning', t('You do not have permission to perform this action'));
+            System::addMessage('warning', t('You do not have permission to perform this action'));
         }
     }
 }

@@ -30,7 +30,7 @@ function action_denied($print = false) {
         return Permission::denied(true);
     }
     else {
-        Permission::action_denied();
+        Permission::denied();
     }
 }
 function openFile($path, $type = 'a') {
