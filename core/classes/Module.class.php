@@ -77,5 +77,74 @@ class Module {
         else {
             addMessage('error', t('No modules were loaded. Expected object or array.'));
         }
-   }
+    }
+    public static function enable($module, $core = false) {
+        $db = DB::getInstance();
+        $param = array(
+            'active' => 1
+        );
+        if($db->update('modules', array('module', $module), $param)) {
+            System::addMessage('success', t('The module <i>@module</i> has been enabled', array('@module' => $db->getField('modules', 'name', 'module', $module))));
+            return true;
+        }
+        else {
+            System::addMessage('error', t('There was an error while installing the module <i>@module</i>', array('@module' => $details['name'])));
+        }
+        return false;
+    }
+    public static function disable($module, $core = false) {
+        $db = DB::getInstance();
+        $param = array(
+            'active' => 0
+        );
+        if($db->update('modules', array('module', $module), $param)) {
+            System::addMessage('success', t('The module <i>@module</i> has been disabled', array('@module' => $db->getField('modules', 'name', 'module', $module))));
+            return true;
+        }
+        else {
+            System::addMessage('error', t('There was an error while installing the module <i>@module</i>', array('@module' => $details['name'])));
+        }
+        return false;
+    }
+    public static function install($module, $core = false) {
+        $db = DB::getInstance();
+        $mod_path = ($core == true) ? CORE_MODULE_PATH.'/'.$module : MODULE_PATH.'/'.$module;
+        $readin = $mod_path.'/'.$module.'.info';
+        $details = self::moduleDetails($readin);
+        $param = array(
+           'module' => $module,
+           'name' => $details['name'],
+           'file' => $details['file'],
+           'active' => 0,
+           'core' => (($core == true) ? 1 : 0)
+        );
+        if($db->insert('modules', $param)) {
+            if(file_exists('core/modules/'.$module.'/setup.'.$module.'.php')) {
+                include_once $mod_path.'/setup.'.$module.'.php';
+                call_user_func($module.'_install');
+            }
+            System::addMessage('success', t('The module <i>@module</i> has been installed', array('@module' => $details['name'])));
+            return true;
+        }
+        else {
+            System::addMessage('error', t('There was an error while installing the module <i>@module</i>', array('@module' => $details['name'])));
+        }
+        return false;
+    }
+    public static function unInstall($module, $core = false) {
+        $db = DB::getInstance();
+        $mod_path = ($core == true) ? CORE_MODULE_PATH.'/'.$module : MODULE_PATH.'/'.$module;
+        if($db->delete('modules', array('module', '=', $module))) {
+            if(file_exists('core/modules/'.$module.'/setup.'.$module.'.php')) {
+                include_once $mod_path.'/setup.'.$module.'.php';
+                call_user_func($module.'_uninstall');
+            }
+            System::addMessage('success', t('The module <i>@module</i> has been uninstalled', array('@module' => $module)));
+            return true;
+        }
+        else {
+            System::addMessage('error', t('There was an error while uninstalling the module <i>@module</i>', array('@module' => $module)));
+        }
+        return false;
+    }
 }

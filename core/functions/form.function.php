@@ -142,16 +142,32 @@ function editWidget_submit() {
     }
 }
 function enableModule_submit() {
-    
+    if(has_permission('access_admin_modules_enable', Session::get(Config::get('session/session_name')))) {
+        $core = ($formdata['inputModuleCore'] == 'core') ? true : false;
+        Module::enable($formdata['inputModule'], $core);
+        Redirect::to('/admin/modules');
+    }
 }
 function disableModule_submit() {
-    
+    if(has_permission('access_admin_modules_disable', Session::get(Config::get('session/session_name')))) {
+        $core = ($formdata['inputModuleCore'] == 'core') ? true : false;
+        Module::disable($formdata['inputModule'], $core);
+        Redirect::to('/admin/modules');
+    }
 }
 function installModule_submit() {
-    
+    if(has_permission('access_admin_modules_install', Session::get(Config::get('session/session_name')))) {
+        $core = ($formdata['inputModuleCore'] == 'core') ? true : false;
+        Module::install($formdata['inputModule'], $core);
+        Redirect::to('/admin/modules');
+    }
 }
 function uninstallModule_submit() {
-    
+    if(has_permission('access_admin_modules_uninstall', Session::get(Config::get('session/session_name')))) {
+        $core = ($formdata['inputModuleCore'] == 'core') ? true : false;
+        Module::unInstall($formdata['inputModule'], $core);
+        Redirect::to('/admin/modules');
+    }
 }
 function addUser_submit() {
     if(has_permission('access_admin_users_add', Session::get(Config::get('session/session_name')))) {
@@ -275,5 +291,11 @@ function editTranslation_submit() {
     }
 }
 function templateEditor_submit() {
-    Editor::submit('template', $_POST);
+    if(has_permission('access_admin_editor', Session::get(Config::get('session/session_name')))) {
+        Editor::submit('template', $_POST);
+        Redirect::to('/admin');
+    }
+    else {
+        action_denied();
+    }
 }
