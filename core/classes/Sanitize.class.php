@@ -37,4 +37,8 @@ class Sanitize {
         if ($check) $addr = '=?UTF-8?B?'.base64_encode($a[1]).'?= <'.$a[2].'>';
         return $addr;
     }
+    public static function checkPath($path) {
+        //Sanitizes the passed variable as if it was a path to a file or directory to prevent Path Traversal
+        return strtr($path, array('./' => '', '../' => ''));
+    }
 }
