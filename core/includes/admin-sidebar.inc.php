@@ -5,7 +5,7 @@
                         <div class="content">
                             <div class="side-user">
                                 <div class="avatar">
-                                    <img src="<?php print CORE_IMG_PATH; ?>/avatar-noimage_50.png">
+                                    <img src="<?php print CORE_IMG_PATH; ?>/avatar-noimage_50.png" alt="">
                                 </div>
                                 <div class="info">
                                     <a href="#"><?php print User::getInstance()->name(); ?></a>

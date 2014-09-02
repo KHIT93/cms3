@@ -37,7 +37,6 @@ class Definition {
     }
     public static function resolveFileType($type) {
         $types = File::parse_info_file(INCLUDES_PATH.'/registry/filetypes.registry')['types'];
-        krumo($types);
         if(isset($types[$type])) {
             return $types[$type];
         }

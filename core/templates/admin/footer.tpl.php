@@ -1,3 +1,4 @@
+                </div>
             </div>
         </div>
         <script type="text/javascript" src="<?php print CORE_JS_PATH; ?>/jquery.nanoscroller/jquery.nanoscroller.min.js"></script>
@@ -24,12 +25,12 @@
         <script type="text/javascript" src="<?php print CORE_JS_PATH; ?>/jquery.codemirror/mode/sql/sql.js"></script>
         <script type="text/javascript" src="<?php print CORE_JS_PATH; ?>/jquery.codemirror/mode/php/php.js"></script>
         <script type="text/javascript" src="<?php print CORE_JS_PATH; ?>/jquery.codemirror/mode/shell/shell.js"></script>
-        
-        <script type="text/javascript" type="text/javascript">
+        <script type="text/javascript">
             $(document).ready(function(){
                 //initialize the javascript
                 App.init();
             });
+            <?php if(isset($editor) && $editor instanceof Editor) : ?>
             /*Codemirror*/
             var myCodeMirror = CodeMirror.fromTextArea(document.getElementById("code"), {
                 lineNumbers: true,
@@ -40,6 +41,7 @@
                 matchTags: {bothTags: true},
                 lineWrapping: true
             });
+            <?php endif; ?>
         </script>
         <script type="text/javascript" src="<?php print CORE_JS_PATH; ?>/jquery.flot/jquery.flot.js"></script>
         <script type="text/javascript" src="<?php print CORE_JS_PATH; ?>/jquery.flot/jquery.flot.pie.js"></script>

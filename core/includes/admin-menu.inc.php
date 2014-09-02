@@ -11,7 +11,7 @@
             <ul class="nav navbar-nav navbar-right user-nav">
                 <li class="dropdown profile_menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <img src="<?php print CORE_IMG_PATH; ?>/avatar-noimage_24.png">
+                        <img src="<?php print CORE_IMG_PATH; ?>/avatar-noimage_24.png" alt="">
                         <span>Kenneth Hansen</span>
                         <b class="caret"></b>
                     </a>
