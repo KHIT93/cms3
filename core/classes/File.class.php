@@ -5,9 +5,9 @@
  */
 class File {
     private $_name, $_path, $_folder, $_size, $_permissions, $_created, $_updated, $_handle;
-    public function __construct($path, $type = 'a') {
+    public function __construct($path, $type = 'r') {
         if(file_exists($path)) {
-            $this->_handle = new SplFileObject($path);
+            $this->_handle = new SplFileObject($path, $type);
             $this->_path = $path;
             $this->_name = $this->_handle->getBasename();
             $this->_folder = $this->_handle->getPath();
@@ -22,7 +22,7 @@ class File {
         }
     }
     public function write($string = NULL) {
-        $this->_handle->rewind();
+        //$this->_handle->rewind();
         if($string) {
             try {
                 $this->_handle->fwrite($string);

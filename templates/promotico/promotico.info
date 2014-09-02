@@ -7,4 +7,9 @@ kernel = 3.x
 sections[header]         = 'Top Bar'
 sections[content]        = 'Content'
 sections[footer]         = 'Footer'
-;styles[screen][] = css/style.css
+;Stylesheets
+styles[all][]            = css/style.css
+styles[all][]            = css/colors.css
+;JavaScripts
+scripts[]                = js/jquery.easing.1.3.js
+scripts[]                = js/default.js

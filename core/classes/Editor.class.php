@@ -148,12 +148,11 @@ class Editor {
     public static function templateSubmit($formdata) {
         //Submit changes to file in templates directory
         $file = new File(TEMPLATE_DIR.'/'.$formdata['item'].'/'.$formdata['file'], 'w');
-        try {
-            $file->write($formdata['codeeditor']);
-            System::addMessage('success', t('The file @filepath has been saved', array('@filepah' => TEMPLATE_DIR.'/'.$formdata['item'].'/'.$formdata['file'])));
+        if($file->write($formdata['codeeditor'])) {
+            System::addMessage('success', t('The file @filepath has been saved', array('@filepath' => TEMPLATE_DIR.'/'.$formdata['item'].'/'.$formdata['file'])));
         }
-        catch (Exception $e) {
+        /*else {
             System::addMessage('error', t('There was an error saving the file @filepath: @error', array('@error' => $e->getMessage(), '@filepath' => TEMPLATE_DIR.'/'.$formdata['item'].'/'.$formdata['file'])), $e);
-        }
+        }*/
     }
 }
