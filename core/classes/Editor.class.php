@@ -20,8 +20,11 @@ class Editor {
     public function render() {
         //Renders the editor into HTML
         
+        //Add form start tag
+        $output = '<form name="file-editor" action="" method="POST" role="form">';
+        
         //Page-head
-        $output = '<div class="page-aside app codeditor">'
+        $output .= '<div class="page-aside app codeditor">'
                 . '<div class="content">'
                 . '<button class="navbar-toggle" data-target=".app-nav" data-toggle="collapse" type="button">'
                 . '<span class="fa fa-chevron-down"></span>'
@@ -46,7 +49,6 @@ class Editor {
                 . '<li><a href="#"><i class="fa fa-file"></i> myifno.info</a></li>'
                 . '</ul>'*/;
         $output .= $this->_menu();
-        
         $output .= '<p class="title">Actions</p>'
                 . '<ul class="nav nav-pills nav-stacked ">'
                 . '<li><button type="submit" class="btn btn-flat btn-default btn-sidebar">Save File</button></li>'
@@ -57,7 +59,6 @@ class Editor {
         
         //Code-editor
         $output .= '<div class="container-fluid code-cont" id="pcont">'
-                . '<form name="file-editor" action="" method="POST" role="form">'
                 . '<div class="main-app">'
                 . '<div class="code-editor">'
                 . '<div class="console">'
@@ -66,9 +67,21 @@ class Editor {
                 . '</div>'
                 . '</div>'
                 . '</div>'
-                . '</form>'
                 . '</div>';
         
+        //End form-tag
+        $output .= Render::prepareInput(array(
+                '#type' => 'hidden',
+                '#name' => 'item',
+                '#value' => $this->_item
+            ));
+        $output .= Render::prepareInput(array(
+                '#type' => 'hidden',
+                '#name' => 'file',
+                '#value' => $this->_file
+            ));
+        $output .= Render::prepareSystemElements($this->_render['editor']['form_id'])
+                . '</form>';
         return $output;
     }
     private function _templateEditor() {
@@ -81,7 +94,8 @@ class Editor {
         );
         $this->_render['editor'] = array(
             'file' => (($this->_file) ? $this->_file : ''),
-            'type' => 'unknown'
+            'type' => 'unknown',
+            'form_id' => 'templateEditor'
         );
         
         
