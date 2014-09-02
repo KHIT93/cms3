@@ -19,7 +19,7 @@ class Theme {
         }
     }
     public static function getThemeList() {
-        $dir = scandir('templates/', SCANDIR_SORT_ASCENDING);
+        $dir = scandir(TEMPLATE_DIR, SCANDIR_SORT_ASCENDING);
         unset ($dir[0]);
         unset ($dir[1]);
         if(isset($dir[2]) && $dir[2] == '.DS_Store') {
@@ -27,12 +27,12 @@ class Theme {
         }
         $output = array();
         foreach ($dir as $folder) {
-            $output[] = themeDetails($folder);
+            $output[] = Theme::themeDetails($folder);
         }
         return $output;
     }
     public static function themeDetails($themepath, $core = false) {
-        $readin = ($core == true) ? 'core/templates/'.$themepath.'/'.$themepath.'.info' : 'templates/'.$themepath.'/'.$themepath.'.info';
+        $readin = ($core == true) ? 'core/templates/'.$themepath.'/'.$themepath.'.info' : TEMPLATE_DIR.'/'.$themepath.'/'.$themepath.'.info';
         $output = File::parse_info_file($readin);
         $output['machine_name'] = $themepath;
         return $output;

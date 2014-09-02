@@ -37,7 +37,7 @@ function theme_header_alter(&$header, $theme, $core = false) {
     }
 }
 function themeDetails($themepath, $core = false) {
-    Theme::themeDetails($themepath, $core);
+    return Theme::themeDetails($themepath, $core);
 }
 function render(&$element) {
     return Theme::render($element);

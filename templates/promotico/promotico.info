@@ -2,7 +2,7 @@ name = Promotico
 description = Custom responsive theme
 version = 1.0
 kernel = 3.x
-;screenshot = screenshot.png
+screenshot = screenshot.png
 
 sections[header]         = 'Top Bar'
 sections[content]        = 'Content'

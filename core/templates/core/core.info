@@ -2,7 +2,7 @@ name = KHansen IT
 description = Custom responsive theme for KHansen IT
 version = VERSION
 kernel = 3.x
-screenshot = screenshot.png
+screenshot = screenshot.jpg
 
 sections[header]         = 'Top Bar'
 sections[content]        = 'Content'
