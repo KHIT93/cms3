@@ -109,21 +109,24 @@ class DB {
         $indexes = '';
         $x = 1;
         $operators = array('=', '>', '<', '>=', '<=', '<>');
+        $params = array();
         
-        foreach($where as $name => $value) {
-            $set .= "WHEN {$name} = ? THEN ?";
-            /*if($x < count($data)) {
-                $set .= ', ';
-            }*/
+        foreach($where as $value) {
+            $set .= "WHEN {$field} = ? THEN ?";
+            $indexes .= $value;
+            $params[] = $data[$value];
+            if($x < count($where)) {
+                $set .= ',';
+            }
             $x++;
         }
         
         $sql = "UPDATE {$table} "
         . "SET {$field} = CASE "
-        . "WHEN {$where[0]}={$where[1]} THEN {$data[0]}={$data[1]} "
+        . "{$set} "
         . "END "
-        . "WHERE {$where[0]} IN ($indexes)";
-        if(!$this->query($sql, $fields)->error()) {
+        . "WHERE {$field} IN ($indexes)";
+        if(!$this->query($sql, $params)->error()) {
             return true;
         }
         return false;

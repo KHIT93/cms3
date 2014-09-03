@@ -13,40 +13,36 @@ class Settings {
     }
     public static function updateSite($formdata) {
         $db = DB::getInstance();
-        
+        $where = array();
+        $data = array();
         $title = check_plain($formdata['title']);
         $slogan = check_plain($formdata['slogan']);
         $frontpage = check_plain($formdata['frontpage']);
         
         if($title != Config::get('site/site_name')) {
-            
+            $where[] = 'site_name';
+            $data['site_name'] = $title;
         }
         if($slogan != Config::get('site/site_slogan')) {
-            
+            $where[] = 'site_slogan';
+            $data['site_slogan'] = $slogan;
         }
-        if($frontpage != Config::get('site/site_home')) {
-            
+        if($frontpage == Config::get('site/site_home')) {
+            $where[] = 'site_home';
+            $data['site_home'] = $frontpage;
         }
-        try {
-            $db->beginTransaction();
-            if($formdata['title'] != $site_data['site_name']) {
-                $db->query("UPDATE `config` SET `config_value`={$title} WHERE `config_name`='site_name'");
-            }
-            if($formdata['slogan'] != $site_data['site_slogan']) {
-                $db->query("UPDATE `config` SET `config_value`={$slogan} WHERE `config_name`='site_slogan'");
-            }
-            if($formdata['frontpage'] != $site_data['site_front']) {
-                $db->query("UPDATE `config` SET `config_value`={$frontpage} WHERE `config_name`='site_front'");
-            }
-            $db->commit();
-            addMessage('success', t('Site information has been updated'));
+        if($title == Config::get('site/site_name') && $slogan == Config::get('site/site_slogan') && $frontpage == Config::get('site/site_home')) {
+            System::addMessage('info', t('Site information is already up-to-date'));
+            return true;
         }
-        catch(Exception $e) {
-            $db->rollback();
-            addMessage('error', t('There was an error while updating the site configuration'), $e);
-            //die($e->getMessage());
+        else if($db->bulkUpdate('config', 'contents', $where, $data)) {
+            System::addMessage('success', t('Site information has been updated'));
+            return true;
         }
-        $db = NULL;
+        else {
+            System::addMessage('error', t('There was an error while updating the site configuration'));
+        }
+        return false;
     }
     public static function enableWysiwyg($formdata) {
         $db = DB::getInstance();
