@@ -72,7 +72,7 @@ else if($get_url[1] == 'users') {
     <form name="enableUser" method="POST" action="">
         <input type="hidden" name="inputUserId" value="<?php print $get_url[2]; ?>">
         <input type="hidden" name="form-token" value="<?php print Token::generate(); ?>">
-        <input type="hidden" name="form_id" value="enableUser"
+        <input type="hidden" name="form_id" value="enableUser">
         <a href="/admin/users" class="btn btn-rad btn-sm btn-default"><?php print t('Cancel'); ?></a>
         <button type="submit" name="enableUser" class="btn btn-rad btn-sm btn-primary"><i class="fa fa-unlock"></i> <?php print t('Enable User'); ?></button>
     </form>
@@ -90,6 +90,7 @@ else if($get_url[1] == 'users') {
     <form name="disableUser" method="POST" action="">
         <input type="hidden" name="inputUserId" value="<?php print $get_url[2]; ?>">
         <input type="hidden" name="form-token" value="<?php print $csrf->get_token($token_id); ?>">
+        <input type="hidden" name="form_id" value="disableUser">
         <a href="/admin/modules" class="btn btn-rad btn-sm btn-default"><?php print t('Cancel'); ?></a>
         <button type="submit" name="disableUser" class="btn btn-rad btn-sm btn-primary"><i class="fa fa-lock"></i> <?php print t('Disable User'); ?></button>
     </form>

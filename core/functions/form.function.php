@@ -18,6 +18,9 @@ function user_login_submit() {
         System::addMessage('error', t('Login failed. Please check username and password'));
     }
 }
+function user_register_submit() {
+    
+}
 function addPage_submit() {
     if(has_permission('access_admin_content_add', Session::get(Config::get('session/session_name')))) {
         Page::create($_POST);
@@ -263,6 +266,12 @@ function deleteUser_submit() {
         action_denied();
     }
 }
+function enableUser_submit() {
+    
+}
+function disableUser_submit() {
+    
+}
 function addRole_submit() {
     if(has_permission('access_admin_users_roles_add', Session::get(Config::get('session/session_name')))) {
         Permission::add_role($_POST);
@@ -298,4 +307,25 @@ function templateEditor_submit() {
     else {
         action_denied();
     }
+}
+function editSite_submit() {
+    
+}
+function globalUser_submit() {
+    
+}
+function enableWysiwyg_submit() {
+    //May be removed later
+}
+function setDevMode_submit() {
+    
+}
+function setMaintenance_submit() {
+    
+}
+function runCron_submit() {
+    
+}
+function editCron_submit() {
+    
 }

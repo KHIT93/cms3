@@ -60,6 +60,7 @@
                                 </div>
                             </div>
                             <div class="foot">
+                                <input type="hidden" name="form_id" value="user_register">
                                 <input type="hidden" name="form-token" value="<?php print $csrf->get_token($token_id); ?>">
                                 <button class="btn btn-rad btn-primary" type="submit" name="log_in"><?php print t('Sign in'); ?> <span class="glyphicon glyphicon-share"></span></button>
                             </div>
