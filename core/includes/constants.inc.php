@@ -43,6 +43,18 @@ define('CORE_IMG_PATH', ASSETS_PATH.'/images');
 
 define('BACKUP_DIR', 'uploads/backup');
 
+define('CORE_INSTALLER_INCLUDES_PATH', 'install/includes');
+
+define('CORE_INSTALLER_ASSETS_PATH', 'install/assets');
+
+define('CORE_INSTALLER_CSS_PATH', CORE_INSTALLER_ASSETS_PATH.'/styles');
+
+define('CORE_INSTALLER_JS_PATH', CORE_INSTALLER_ASSETS_PATH.'/scripts');
+
+define('CORE_INSTALLER_FONTS_PATH', CORE_INSTALLER_ASSETS_PATH.'/fonts');
+
+define('CORE_INSTALLER_IMG_PATH', CORE_INSTALLER_ASSETS_PATH.'/images');
+
 define('DB_BACKUP_DIR', BACKUP_DIR.'/db');
 
 define('DEFAULT_ADMIN_RID', 1);

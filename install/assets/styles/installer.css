@@ -1,0 +1,114 @@
+body.installer {
+    background-color: #1275b2;
+    background-image: url('../images/noise-low.png'), -webkit-radial-gradient(hsl(203, 80%, 45%), hsl(203, 80%, 32%));
+    background-image: url('../images/noise-low.png'), -moz-radial-gradient(hsl(203, 80%, 45%), hsl(203, 80%, 32%));
+    background-image: url('../images/noise-low.png'), -o-radial-gradient(hsl(203, 80%, 45%), hsl(203, 80%, 32%));
+    background-image: url('../images/noise-low.png'), radial-gradient(hsl(203, 80%, 45%), hsl(203, 80%, 32%));
+    background-repeat: repeat;
+    background-position: left top, 50% 50%;
+    min-height: 100%;
+    vertical-align: middle;
+}
+/*.wizard-row .col-md-12 .wizard {
+    border: 10px solid #FFF;
+    border-radius: 5px;
+}*/
+.cl-mcont {
+    padding: 0;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    width: 75%;
+    max-width: 970px;
+    margin: 0 auto;
+}
+.fuelux .wizard .steps {
+    list-style: none outside none;
+    padding: 0;
+    margin: 0;
+    /*width: 25%;*/
+}
+.fuelux .wizard .steps li {
+    float: left;
+    margin: 0;
+    padding-left: 20px;
+    height: 46px;
+    line-height: 46px;
+    position: relative;
+    background: #ededed;
+    color: #999;
+    width: 100%;
+    font-size: 16px;
+    cursor: not-allowed;
+}
+.fuelux .wizard .steps li:first-child {
+    //border-radius: 4px 0 0 4px;
+}
+.fuelux .wizard .steps li.active {
+    background: #f1f6fc;
+    color: #3a87ad;
+    cursor: default;
+}
+.fuelux .wizard .steps li.active .badge {
+    background-color: #3a87ad;
+}
+.fuelux .wizard .steps li .badge {
+    margin-right: 8px;
+}
+.fuelux .wizard .steps li .chevron {
+    border: 24px solid transparent;
+    border-left: 14px solid #ededed;
+    border-right: 0;
+    display: block;
+    position: absolute;
+    right: -14px;
+    top: 0;
+    z-index: 1;
+}
+.fuelux .wizard>.steps li .chevron:before {
+    border: 24px solid transparent;
+    border-left: 14px solid #ededed;
+    border-right: 0;
+    content: "";
+    display: block;
+    position: absolute;
+    right: 1px;
+    top: -24px;
+}
+.fuelux .wizard .steps li.active .chevron {
+    border: 24px solid transparent;
+    border-left: 14px solid #f1f6fc;
+    border-right: 0;
+    display: block;
+    position: absolute;
+    right: -14px;
+    top: 0;
+    z-index: 1;
+}
+.fuelux .wizard .steps li.complete {
+    color: #fff;
+    background: #4D90FD;
+}
+.fuelux .wizard .steps li.complete:hover {
+    background: #4D90FD;
+}
+.fuelux .wizard .steps li.complete .chevron {
+    border-left-color: #4D90FD;
+}
+.fuelux .wizard .steps li.complete .chevron:before {
+    border-left: 14px solid #4D90FD;
+}
+.fuelux .wizard ul li.complete .chevron:before {
+    border-left: 14px solid #4D90FD;
+}
+.fuelux .navigation {
+    float: left;
+    width: 25%;
+}
+.fuelux .wizard .step-content {
+    width: 75%;
+}
+.fuelux .wizard>.actions {
+    bottom: 0;
+}
+.fuelux .wizard>.actions {
+    border-top: 1px solid #d4d4d4;
+}

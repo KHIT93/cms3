@@ -12,6 +12,9 @@ function format_string($string, array $args = array()) {
 function get_active_languages() {
     return DB::getInstance()->get('languages', array('active', '=', '1'), PDO::FETCH_ASSOC)->results();
 }
+function get_languages() {
+    return DB::getInstance()->getAll('languages', PDO::FETCH_ASSOC)->results();
+}
 function getTranslations($language) {
     $db = db_connect();
     $query = $db->prepare("SELECT * FROM `translation` WHERE `t_locale`=:field");

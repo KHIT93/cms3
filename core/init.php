@@ -8,12 +8,15 @@ require_once SITE_ROOT.'/core/includes/constants.inc.php';
 if(version_compare(phpversion(), '5.4.0', '>')) {
     session_start();
     if(!file_exists('core/config/config.info')) {
-        if(isset($_GET['q']) && $_GET['q'] != 'install') {
-            header('Location: install');
-        }
-        else if(!isset ($_GET['q'])) {
-            header('Location: install');
-        }
+        http_response_code(200);
+        header('Location: /install.php');
+        exit();
+//        if(isset($_GET['q']) && $_GET['q'] != 'install') {
+//            header('Location: install');
+//        }
+//        else if(!isset ($_GET['q'])) {
+//            header('Location: install');
+//        }
     }
     else {
         $GLOBALS['config'] = array(

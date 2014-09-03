@@ -139,7 +139,7 @@ class Bootstrapper {
         $header['rendered']['ua'] = '<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">'."\n";
         $header['rendered']['title'] = '<title>'.((currentPageIsFront()) ? $header['site_name'].' - '.$header['site_slogan'] : $header['page_title'].' - '.$header['site_name']).'</title>'."\n";
         $header['rendered']['description'] = (isset($header['meta_description'])) ? '<meta name="description" content="'.$header['meta_description'].'">'."\n" : '';
-        $header['rendered']['keywords'] = (isset($header['meta_keywords'])) ? '<meta name="description" content="'.$header['meta_keywords'].'">'."\n" : '';
+        $header['rendered']['keywords'] = (isset($header['meta_keywords'])) ? '<meta name="keywords" content="'.$header['meta_keywords'].'">'."\n" : '';
         $header['rendered']['robots'] = (isset($header['meta_robots'])) ? '<meta name="robots" content="'.$header['meta_robots'].'">'."\n" : '';
         $header['rendered']['generator'] = '<meta name="generator" content="ModernCMS">'."\n";
         $header['rendered']['viewport'] = '<meta name="viewport" content="width=device-width, initial-scale=1.0">';
