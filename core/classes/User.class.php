@@ -108,33 +108,29 @@ class User {
     }
     
     public function enable($user_id) {
-        $db = db_connect();
-        $query = $db->prepare("UPDATE `users` SET `active`=1 WHERE `uid`=:user_id");
-        $query->bindValue(':user_id', $user_id, PDO::PARAM_INT);
-        try {
-            $query->execute();
-            addMessage('success', t('the user').' "<i>'.getFieldFromDB('users', 'user_name', 'uid', $user_id).'</i>" '.t('has been enabled'));
+        $db = DB::getInstance();
+        if($db->update('users', array('uid', $user_id), array('active' => 1))) {
+            System::addMessage('success', t('The user <i>@user</i> has been enabled', array('@user' => $db->getField('users', 'name', 'uid', $user_id))));
+            return true;
         }
-        catch(Exception $e) {
-            addMessage('error', t('There was an error while enabling the user'), $e);
+        else {
+            System::addMessage('error', t('There was an error while enabling the user'));
         }
-        $db = NULL;
+        return false;
     }
-    public function disableUser($user_id) {
-        $db = db_connect();
-        $query = $db->prepare("UPDATE `users` SET `active`=0 WHERE `uid`=:user_id");
-        $query->bindValue(':user_id', $user_id, PDO::PARAM_INT);
-        try {
-            $query->execute();
-            addMessage('success', t('the user').' "<i>'.getFieldFromDB('users', 'user_name', 'uid', $user_id).'</i>" '.t('has been disabled'));
+    public function disable($user_id) {
+        $db = DB::getInstance();
+        if($db->update('users', array('uid', $user_id), array('active' => 1))) {
+            System::addMessage('success', t('The user <i>@user</i> has been disabled', array('@user' => $db->getField('users', 'name', 'uid', $user_id))));
+            return true;
         }
-        catch(Exception $e) {
-            addMessage('error', t('There was an error while disabling the user'), $e);
+        else {
+            System::addMessage('error', t('There was an error while disabling the user'));
         }
-        $db = NULL;
+        return false;
     }
     public function logout() {
-        $this->_db->delete('users_session', array('uid', '=', $this->uid()));
+        $this->_db->delete('session', array('uid', '=', $this->uid()));
         Session::delete($this->_sessionName);
         Cookie::delete($this->_cookieName);
     }

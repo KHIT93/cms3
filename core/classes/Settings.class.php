@@ -1,23 +1,32 @@
 <?php
 class Settings {
     public static function editGlobalUser($formdata) {
-        $db = db_connect();
-        $query = $db->prepare("UPDATE `config` SET `config_value`=:optionsUser WHERE `config_name`='create_user'");
-        $query->bindValue(':optionsUser', $formdata['optionsUser'], PDO::PARAM_INT);
-        try {
-            $query->execute();
+        $db = DB::getInstance();
+        if($db->update('config', array('property', 'create_user'), array('contents' => $formdata['optionsUser']))) {
+            System::addMessage('success', t('Changes have been saved'));
+            return true;
         }
-        catch (Exception $e) {
-            addMessage('error', t('There was an error while updating the site configuration'), $e);
+        else {
+            System::addMessage('error', t('There was an error while updating the site configuration'));
         }
-        $db = NULL;
+        return false;
     }
     public static function updateSite($formdata) {
-        $db = db_connect();
-        global $site_data;    
+        $db = DB::getInstance();
+        
         $title = check_plain($formdata['title']);
         $slogan = check_plain($formdata['slogan']);
         $frontpage = check_plain($formdata['frontpage']);
+        
+        if($title != Config::get('site/site_name')) {
+            
+        }
+        if($slogan != Config::get('site/site_slogan')) {
+            
+        }
+        if($frontpage != Config::get('site/site_home')) {
+            
+        }
         try {
             $db->beginTransaction();
             if($formdata['title'] != $site_data['site_name']) {
@@ -40,17 +49,57 @@ class Settings {
         $db = NULL;
     }
     public static function enableWysiwyg($formdata) {
-        $db = db_connect();
-        $query = $db->prepare("UPDATE `config` SET `config_value`=:wysiwyg WHERE `config_name`='enable_wysiwyg'");
-        $query->bindValue(':wysiwyg', $formdata['inputWysiwyg'], PDO::PARAM_INT);
-        try {
-            $query->execute();
-            addMessage('success', t('Changes have been saved'));
+        $db = DB::getInstance();
+        if($db->update('config', array('property', 'wysiwyg'), array('contents' => $formdata['inputWysiwyg']))) {
+            System::addMessage('success', t('Changes have been saved'));
+            return true;
         }
-        catch (Exception $e) {
-            addMessage('error', t('There was an error while updating the content configuration'), $e);
+        else {
+            System::addMessage('error', t('There was an error while updating the content configuration'));
         }
-        $db = NULL;
+        return false;
+    }
+    public static function setDevMode($formdata) {
+        $db = DB::getInstance();
+        if($db->update('config', array('property', 'devmode'), array('contents' => $formdata['inputDevMode']))) {
+            System::addMessage('success', t('Changes have been saved'));
+            return true;
+        }
+        else {
+            System::addMessage('error', t('There was an error while updating the settings'));
+        }
+        return false;
+    }
+    public static function setMaintenance($formdata) {
+        $db = DB::getInstance();
+        if($db->update('config', array('property', 'maintenance'), array('contents' => $formdata['inputMaintenance']))) {
+            System::addMessage('success', t('Changes have been saved'));
+            return true;
+        }
+        else {
+            System::addMessage('error', t('There was an error while updating the settings'));
+        }
+        return false;
+    }
+    public static function runCron() {
+        foreach(Module::activeModules() as $module) {
+            if(Module::moduleImplements($module, 'cron')) {
+                call_user_func($module.'_cron');
+            }
+        }
+        Sysguard::set('Cron executed', 'Cron has been succesfully executed', 'cron', '');
+        System::addMessage('info', t('Cron has been completed'));
+    }
+    public static function updateCron($formdata) {
+        $db = DB::getInstance();
+        if($db->update('config', array('property', 'cron'), array('contents' => $formdata['inputCronTime']))) {
+            System::addMessage('success', t('Settings were successfully updated'));
+            return true;
+        }
+        else {
+            System::addMessage('error', t('There was an error while updating the settings'));
+        }
+        return false;
     }
     public static function settingList() {
         //Get a list of all settings

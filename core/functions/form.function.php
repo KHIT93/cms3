@@ -257,7 +257,7 @@ function editUserPassword_submit() {
     
 }
 function deleteUser_submit() {
-    if(has_permission('access_admin_content_delete_own', Session::get(Config::get('session/session_name')))) {
+    if(has_permission('access_admin_users_delete', Session::get(Config::get('session/session_name')))) {
         $delete_user = User::getInstance();
         $delete_user->delete($_POST['inputId']);
         Redirect::to('/admin/users');
@@ -267,10 +267,24 @@ function deleteUser_submit() {
     }
 }
 function enableUser_submit() {
-    
+    if(has_permission('access_admin_users_enable', Session::get(Config::get('session/session_name')))) {
+        $enable_user = User::getInstance();
+        $enable_user->enable($_POST['inputId']);
+        Redirect::to('/admin/users');
+    }
+    else {
+        action_denied();
+    }
 }
 function disableUser_submit() {
-    
+    if(has_permission('access_admin_users_enable', Session::get(Config::get('session/session_name')))) {
+        $disable_user = User::getInstance();
+        $disable_user->disable($_POST['inputId']);
+        Redirect::to('/admin/users');
+    }
+    else {
+        action_denied();
+    }
 }
 function addRole_submit() {
     if(has_permission('access_admin_users_roles_add', Session::get(Config::get('session/session_name')))) {
@@ -309,23 +323,66 @@ function templateEditor_submit() {
     }
 }
 function editSite_submit() {
-    
+    if(has_permission('access_admin_settings_system', Session::get(Config::get('session/session_name')))) {
+        Settings::updateSite($_POST);
+        Redirect::to('/admin/settings/system');
+    }
+    else {
+        action_denied();
+    }
 }
 function globalUser_submit() {
-    
+    if(has_permission('access_admin_settings_system_users', Session::get(Config::get('session/session_name')))) {
+        Settings::editGlobalUser($_POST);
+        Redirect::to('/admin/settings/system/users');
+    }
+    else {
+        action_denied();
+    }
 }
 function enableWysiwyg_submit() {
-    //May be removed later
+    //May be removed later due to the usage of core module
+    if(has_permission('access_admin_settings_content_wysiwyg', Session::get(Config::get('session/session_name')))) {
+        Settings::enableWysiwyg($_POST);
+        Redirect::to('/admin/settings/content/wysiwyg');
+    }
+    else {
+        action_denied();
+    }
 }
 function setDevMode_submit() {
-    
+    if(has_permission('access_admin_settings_development', Session::get(Config::get('session/session_name')))) {
+        Settings::setDevMode($_POST);
+        Redirect::to('/admin/settings/development');
+    }
+    else {
+        action_denied();
+    }
 }
 function setMaintenance_submit() {
-    
+    if(has_permission('access_admin_editor', Session::get(Config::get('session/session_name')))) {
+        Editor::submit('template', $_POST);
+        Redirect::to('/admin/settings/development/maintenance');
+    }
+    else {
+        action_denied();
+    }
 }
 function runCron_submit() {
-    
+    if(has_permission('access_admin_settings_cron', Session::get(Config::get('session/session_name')))) {
+        Settings::runCron();
+        Redirect::to('/admin/settings/cron');
+    }
+    else {
+        action_denied();
+    }
 }
 function editCron_submit() {
-    
+    if(has_permission('access_admin_settings_cron', Session::get(Config::get('session/session_name')))) {
+        Settings::updateCron($_POST);
+        Redirect::to('/admin/settings/cron');
+    }
+    else {
+        action_denied();
+    }
 }

@@ -89,7 +89,7 @@ class DB {
     public function update($table, array $where, $fields = array()) {
         $set = '';
         $x = 1;
-        print count($fields);
+        $operators = array('=', '>', '<', '>=', '<=', '<>');
         foreach($fields as $name => $value) {
             $set .= "{$name} = ?";
             if($x < count($fields)) {
@@ -102,6 +102,32 @@ class DB {
             return true;
         }
         return false;
+    }
+    public function bulkUpdate($table, $field = NULL, $where = array(), $data = array()) {
+        //Update multiple rows in one query
+        $set = '';
+        $indexes = '';
+        $x = 1;
+        $operators = array('=', '>', '<', '>=', '<=', '<>');
+        
+        foreach($where as $name => $value) {
+            $set .= "WHEN {$name} = ? THEN ?";
+            /*if($x < count($data)) {
+                $set .= ', ';
+            }*/
+            $x++;
+        }
+        
+        $sql = "UPDATE {$table} "
+        . "SET {$field} = CASE "
+        . "WHEN {$where[0]}={$where[1]} THEN {$data[0]}={$data[1]} "
+        . "END "
+        . "WHERE {$where[0]} IN ($indexes)";
+        if(!$this->query($sql, $fields)->error()) {
+            return true;
+        }
+        return false;
+        
     }
     public function getField($table, $item, $field, $input, $pdoFetch = PDO::FETCH_OBJ) {
         //$this->action("SELECT {$item}", $table, array($field, '=', $input));
