@@ -65,23 +65,35 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="step-pane bg-info" data-step="3">
+                                <div class="step-pane" data-step="3">
                                     <div class="form-group no-padding">
                                         <div class="col-sm-12">
                                             <h3 class="hthin">Verify Requirements</h3>
                                             <table class="table table-hover">
                                                 <tbody>
                                                     <tr>
+                                                        <td>Webserver</td>
+                                                        <td><?php print $_SERVER['SERVER_SOFTWARE']; ?></td>
+                                                    </tr>
+                                                    <tr>
                                                         <td>PHP Version</td>
-                                                        <td><?php print PHP_VERSION; ?></td>
+                                                        <td class="<?php print (version_compare(phpversion(), '5.4.0', '>=')) ? 'bg-success': 'bg-danger'; ?>"><?php print PHP_VERSION; ?></td>
                                                     </tr>
                                                     <tr>
                                                         <td>PHP memory limit</td>
-                                                        <td><?php print ini_get('memory_limit'); ?></td>
+                                                        <td class="<?php print (ini_get('memory_limit') >= '128M') ? 'bg-success': 'bg-danger'; ?>"><?php print ini_get('memory_limit'); ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>PHP Database Extension</td>
+                                                        <td><?php print (extension_loaded('mysql')) ? 'Enabled': 'Disabled'; ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Filesystem</td>
+                                                        <td class="<?php print (is_writable('uploads')) ? 'bg-success': 'bg-danger'; ?>"><?php print (is_writable('uploads')) ? 'Usable filesystem is readable': 'Usable filesystem is not readable'; ?></td>
                                                     </tr>
                                                     <tr>
                                                         <td>Configuration file</td>
-                                                        <td>Configuration file cannot be written</td>
+                                                        <td class="<?php print (is_writable('core/config')) ? 'bg-success': 'bg-danger'; ?>"><?php print (is_writable('core/config')) ? 'Configuration file can be written': 'Configuration file cannot be written'; ?></td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -166,13 +178,23 @@
                                     <div class="form-group no-padding">
                                         <div class="col-sm-12">
                                             <h3 class="hthin">Installing</h3>
+                                            <!-- Execute site configuration using AJAX. After each function completes change the progressbar length -->
+                                            <div class="progress progress-striped active">
+                                                <div class="progress-bar progress-bar-info" style="width: 100%"></div>
+                                            </div>
+                                            <p>Installing <i>%COMPONENT%</i>...</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="step-pane bg-info" data-step="8">
                                     <div class="form-group no-padding">
                                         <div class="col-sm-12">
-                                            <h3 class="hthin">Finished</h3>
+                                            <div class="text-center">
+                                                <div class="i-circle success"><i class="fa fa-check"></i></div>
+                                                <h3 class="hthin">Congratulations!</h3>
+                                                <p>Your new site is now configured and ready for use.</p>
+                                                <p>If you need help to customize your site, you can check the <a href="/admin/help/getting-started">Help</a> section</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

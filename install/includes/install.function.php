@@ -9,8 +9,12 @@ function install_core() {
             .'<meta name="robots" content="noindex,nofollow">'."\n"
             .'<meta name="viewport" content="width=device-width, initial-scale=1.0">';
     $header_title = '<title>Installation</title>'."\n";
-    
+    $install = new Install(EXEC_BOOTSTRAPPER_INSTALL);
     require_once CORE_INSTALLER_INCLUDES_PATH.'/templates/head.tpl.php';
     require_once CORE_INSTALLER_INCLUDES_PATH.'/templates/page.tpl.php';
     require_once CORE_INSTALLER_INCLUDES_PATH.'/templates/footer.tpl.php';
+}
+function rt($string, $args = array()) {
+    //Translates strings using a registry file
+    return $string;
 }

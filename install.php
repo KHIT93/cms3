@@ -40,7 +40,7 @@ if(version_compare(phpversion(), '5.4.0', '>')) {
             )
         );
         require_once INCLUDES_PATH.'/autoload.inc.php';
-        //core_bootstrapper($init, EXEC_BOOTSTRAPPER_INSTALL);
+        include_once 'core/modules/krumo/class.krumo.php';
         install_core();
     }
 }
