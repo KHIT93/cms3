@@ -28,7 +28,7 @@
                                             <h3 class="hthin">Welcome</h3>
                                             <p>Thank your for choosing our application for your website.<br/>Please choose your language below to proceed</p>
                                             <form name="chooseLanguage" method="GET" action="">
-                                                <div class="form-group col-md-6">
+                                                <div class="form-group col-sm-8">
                                                     <select name="lang" class="select2">
                                                         <option value="en">English</option>
                                                         <option value="da">Danish</option>
@@ -77,7 +77,7 @@
                                                     </tr>
                                                     <tr>
                                                         <td>PHP memory limit</td>
-                                                        <td>ini_get('memory_limit')</td>
+                                                        <td><?php print ini_get('memory_limit'); ?></td>
                                                     </tr>
                                                     <tr>
                                                         <td>Configuration file</td>
@@ -92,6 +92,28 @@
                                     <div class="form-group no-padding">
                                         <div class="col-sm-12">
                                             <h3 class="hthin">Connect to the database</h3>
+                                            <form name="dbCredentials" method="GET" action="">
+                                                <div class="form-group col-sm-8">
+                                                    <label for="host">Database Host:</label>
+                                                    <input type="text" name="host" class="form-control" id="host" value="localhost">
+                                                </div>
+                                                <div class="form-group col-sm-8">
+                                                    <label for="username">Database Username:</label>
+                                                    <input type="text" name="username" class="form-control" id="username">
+                                                </div>
+                                                <div class="form-group col-sm-8">
+                                                    <label for="password">Database Password:</label>
+                                                    <input type="password" name="password" class="form-control" id="password">
+                                                </div>
+                                                <div class="form-group col-sm-8">
+                                                    <label for="db">Database:</label>
+                                                    <input type="text" name="db" class="form-control" id="db">
+                                                </div>
+                                                <div class="form-group col-sm-8">
+                                                    <label for="port">Database Port:</label>
+                                                    <input type="text" name="port" class="form-control" id="port" value="3306">
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -99,6 +121,11 @@
                                     <div class="form-group no-padding">
                                         <div class="col-sm-12">
                                             <h3 class="hthin">Configuring the database</h3>
+                                            <!-- Execute database configuration using AJAX -->
+                                            <div class="progress progress-striped active">
+                                                <div class="progress-bar progress-bar-info" style="width: 100%"></div>
+                                            </div>
+                                            <p>Installing <i>Database</i>...</p>
                                         </div>
                                     </div>
                                 </div>
@@ -106,6 +133,32 @@
                                     <div class="form-group no-padding">
                                         <div class="col-sm-12">
                                             <h3 class="hthin">Configure your site</h3>
+                                            <form name="siteInformation" method="GET" action="">
+                                                <div class="form-group col-sm-8">
+                                                    <label for="name">Site name:</label>
+                                                    <input type="text" name="name" class="form-control" id="name" value="<?php print $_SERVER['HTTP_HOST']; ?>">
+                                                </div>
+                                                <div class="form-group col-sm-8">
+                                                    <label for="slogan">Site slogan:</label>
+                                                    <input type="text" name="slogan" class="form-control" id="slogan">
+                                                </div>
+                                                <div class="form-group col-sm-8">
+                                                    <label for="adminUser">Administrator username:</label>
+                                                    <input type="text" name="adminUser" class="form-control" id="adminUser" value="admin">
+                                                </div>
+                                                <div class="form-group col-sm-8">
+                                                    <label for="adminName">Administrator name:</label>
+                                                    <input type="text" name="adminName" class="form-control" id="adminName" value="Administrator">
+                                                </div>
+                                                <div class="form-group col-sm-8">
+                                                    <label for="adminEmail">Administrator email:</label>
+                                                    <input type="text" name="adminEmail" class="form-control" id="adminEmail" placeholder="example@example.com">
+                                                </div>
+                                                <div class="form-group col-sm-8">
+                                                    <label for="adminPassword">Administrator password:</label>
+                                                    <input type="password" name="adminPassword" class="form-control" id="adminPassword">
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>

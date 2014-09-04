@@ -20,6 +20,9 @@ body.installer {
     max-width: 970px;
     margin: 0 auto;
 }
+.fuelux .wizard {
+    min-height: 450px;
+}
 .fuelux .wizard .steps {
     list-style: none outside none;
     padding: 0;
@@ -108,7 +111,7 @@ body.installer {
 }
 .fuelux .wizard>.actions {
     bottom: 0;
-}
-.fuelux .wizard>.actions {
-    border-top: 1px solid #d4d4d4;
-}
+    /*left: 0;*/
+    border: none;
+    background: none;
+} 
