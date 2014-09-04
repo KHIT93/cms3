@@ -9,10 +9,9 @@ body.installer {
     min-height: 100%;
     vertical-align: middle;
 }
-/*.wizard-row .col-md-12 .wizard {
-    border: 10px solid #FFF;
-    border-radius: 5px;
-}*/
+#cl-wrapper {
+    padding-bottom: 50px;
+}
 .cl-mcont {
     padding: 0;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
