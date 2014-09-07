@@ -40,7 +40,7 @@ class Render {
                             .((isset($element['#disabled']) && $element['#disabled'] == true) ? ' disabled': '')
                             .((isset($element['#required']) && $element['#required'] == true) ? ' required': '')
                             .((isset($element['#multiple']) && $element['#multiple'] == true) ? ' multiple': '')
-                            .((isset($element['#attr'])) ? self::prepareAttributes($element['#attr']) : '')
+                            .((isset($element['#attr'])) ? ' '.self::prepareAttributes($element['#attr']) : '')
                             .'>'."\n";
                     $output .= '<option value="'.((isset($element['#empty_value'])) ? $element['#empty_value']: 0).'">'.((isset($element['#empty_option'])) ? $element['#empty_option']: '- '.t('Select').' -').'</option>'
                             .self::prepareOptions($element['#options']);
@@ -202,7 +202,37 @@ class Render {
         }
         return $output;
     }*/
-    static function allowedElementTypes() {
+    public static function prepareWizardMenu($navigation, $step) {
+        $output = '<ul class="steps">';
+        foreach ($navigation as $key => $value) {
+            if($key == $step) {
+                $output .= '<li data-step="'.$key.'" class="active">'
+                         . '<span class="badge">'.$key.'</span>'
+                         . $value
+                         . '<span class="chevron"></span>'
+                         . '</li>';
+            }
+            else {
+                if($step > $key) {
+                    $output .= '<li data-step="'.$key.'" class="complete">'
+                            . '<span class="badge badge-success">'.$key.'</span>'
+                            . $value
+                            . '<span class="chevron"></span>'
+                            . '</li>';
+                }
+                else {
+                    $output .= '<li data-step="'.$key.'">'
+                            . '<span class="badge">'.$key.'</span>'
+                            . $value
+                            . '<span class="chevron"></span>'
+                            . '</li>';
+                }
+            }
+        }
+        $output .= '</ul>';
+        return $output;
+    }
+    public static function allowedElementTypes() {
         return $types = array(
                             'input' => array(
                                 'button',

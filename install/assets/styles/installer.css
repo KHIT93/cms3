@@ -113,4 +113,19 @@ body.installer {
     /*left: 0;*/
     border: none;
     background: none;
+}
+.fuelux .wizard .actions {
+    z-index: 1000;
+    position: absolute;
+    right: 0;
+    line-height: 46px;
+    float: right;
+    padding-left: 15px;
+    padding-right: 15px;
+    vertical-align: middle;
+    border-left: 1px solid #d4d4d4;
+    bottom: 0;
+    /*left: 0;*/
+    border: none;
+    background: none;
 } 

@@ -69,7 +69,6 @@ class Form {
             }
             else {
                 System::addMessage('error', t('Sorry, the form you have submitted is invalid'));
-                
             }
         }
     }

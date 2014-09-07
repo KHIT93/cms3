@@ -1,9 +1,8 @@
 ;Steps to complete during new site installation
-steps[][welcome] = Welcome
-steps[][license] = License
-steps[][requirements] = Requirements
-steps[][database] = Database
-steps[][config_db] = Configure Database
-steps[][site] = Configure site
-steps[][install] = Install
-steps[][finished] = Finished
+registry[1] = Welcome
+registry[2] = License
+registry[3] = Requirements
+registry[4] = Database
+registry[5] = Configure Database
+registry[6] = Configure site
+registry[7] = Install

@@ -6,7 +6,7 @@
 class File {
     private $_name, $_path, $_folder, $_size, $_permissions, $_created, $_updated, $_handle;
     public function __construct($path, $type = 'r') {
-        if(file_exists($path)) {
+        if($type = 'w') {
             $this->_handle = new SplFileObject($path, $type);
             $this->_path = $path;
             $this->_name = $this->_handle->getBasename();
@@ -17,8 +17,20 @@ class File {
             $this->_updated = $this->_handle->getMTime();
         }
         else {
-            Sysguard::set('File not found', 'The requested file '.$path.' does not exist', 'file', $_SERVER['HTTP_REFERER']);
-            addMessage('error', t('Not found').': '.$path.'<br/>'.t('The file does not exists'));
+            if(file_exists($path)) {
+                $this->_handle = new SplFileObject($path, $type);
+                $this->_path = $path;
+                $this->_name = $this->_handle->getBasename();
+                $this->_folder = $this->_handle->getPath();
+                $this->_size = $this->_handle->getSize();
+                $this->_permissions = $this->_handle->getPerms();
+                $this->_created = $this->_handle->getCTime();
+                $this->_updated = $this->_handle->getMTime();
+            }
+            else {
+                Sysguard::set('File not found', 'The requested file '.$path.' does not exist', 'file', $_SERVER['HTTP_REFERER']);
+                addMessage('error', t('Not found').': '.$path.'<br/>'.t('The file does not exists'));
+            }
         }
     }
     public function write($string = NULL) {

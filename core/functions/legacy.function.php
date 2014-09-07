@@ -17,10 +17,10 @@ function addMessage($type, $message, $error = NULL) {
     System::addMessage($type, $message, $error);
 }
 function print_messages() {
-    System::print_messages();
+    return System::print_messages();
 }
 function print_messages_simple() {
-    System::print_messages_simple();
+    return System::print_messages_simple();
 }
 function has_permission($permission, $uid) {
     return Permission::has_permission($permission, $uid);

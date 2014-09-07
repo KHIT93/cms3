@@ -44,6 +44,7 @@ class Theme {
         }
     }
     public static function errorPage($error_code, $message = '') {
+        krumo(debug_backtrace());
         Sysguard::set(Definition::resolveErrorCode($error_code), 'An error of the type '.$error_code.' occured.<br/>'.$message, $error_code, $_SERVER['HTTP_REFERER']);
         if(file_exists(self::path_to_theme().'/'.$error_code.'.error.php')) {
             include_once self::path_to_theme().'/'.$error_code.'.error.php';

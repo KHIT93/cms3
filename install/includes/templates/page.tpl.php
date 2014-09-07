@@ -17,10 +17,6 @@
                                     <li data-step="8"><span class="badge">8</span>Finished<span class="chevron"></span></li>
                                 </ul>
                             </div>
-                            <div class="actions">
-                                <button type="button" class="btn btn-rad btn-prev btn-default" disabled="disabled"> <span class="glyphicon glyphicon-arrow-left"></span>Prev</button>
-                                <button type="button" class="btn btn-rad btn-next btn-primary" data-last="Finish">Next<span class="glyphicon glyphicon-arrow-right"></span></button>
-                            </div>
                             <div class="step-content">
                                 <div class="step-pane active" data-step="1">
                                     <div class="form-group no-padding">
@@ -104,7 +100,7 @@
                                     <div class="form-group no-padding">
                                         <div class="col-sm-12">
                                             <h3 class="hthin">Connect to the database</h3>
-                                            <form name="dbCredentials" method="GET" action="">
+                                            <form name="dbCredentials" method="POST" action="">
                                                 <div class="form-group col-sm-8">
                                                     <label for="host">Database Host:</label>
                                                     <input type="text" name="host" class="form-control" id="host" value="localhost">
@@ -198,6 +194,10 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="actions">
+                                <button type="button" class="btn btn-rad btn-prev btn-default" disabled="disabled"> <span class="glyphicon glyphicon-arrow-left"></span>Prev</button>
+                                <button type="button" class="btn btn-rad btn-next btn-primary" data-last="Finish">Next<span class="glyphicon glyphicon-arrow-right"></span></button>
                             </div>
                         </div>
                     </div>

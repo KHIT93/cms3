@@ -16,6 +16,7 @@ class DB {
         }
     }
     public static function getInstance() {
+        krumo(debug_backtrace());
         if(!isset(self::$_instance)) {
             self::$_instance = new DB();
         }
