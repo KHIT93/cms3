@@ -182,7 +182,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="step-pane bg-info" data-step="8">
+                                <div class="step-pane" data-step="8">
                                     <div class="form-group no-padding">
                                         <div class="col-sm-12">
                                             <div class="text-center">

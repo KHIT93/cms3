@@ -98,8 +98,27 @@ function dbCredentials_submit($formdata) {
             . 'db[password] = '.$formdata['password']."\n"
             . 'db[name] = '.$formdata['db']."\n"
             . 'db[driver] = '.$formdata['driver'];
-    $file = new File('core/config/config.info', 'w');
-    $file->write($config);
+    Session::put('config', $config);
+    Session::put('db/host', (($formdata['host'] == 'localhost') ? '127.0.0.1': $formdata['host']).(($formdata['port'] == 3306) ? '': ':'.$formdata['port']));
+    Session::put('db/username', $formdata['username']);
+    Session::put('db/password', $formdata['password']);
+    Session::put('db/name', $formdata['db']);
+    Session::put('db/driver', $formdata['driver']);
     Redirect::to('install.php?step=5&lang='.Session::get('lang'));
     exit();
+}
+function siteInformation_validate() {
+    //Validates the site information entered
+    return true;
+}
+function siteInformation_submit() {
+    //Adds the information entered in the siteInformation form to the session and proceeds for ajax-based installation
+    Redirect::to('install.php?step=7&lang='.Session::get('lang'));
+}
+function configure_db() {
+    //Configures the database and adds default system data.
+    //Old data is deleted before adding the new db structure
+}
+function install_site() {
+    //Configures the site and installs core modules
 }

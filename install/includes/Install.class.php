@@ -68,7 +68,7 @@ class Install {
                 ),
                 'suffix' => array(
                     '#type' => 'markup',
-                    '#value' => '<p>'.rt('Please <a href="'.$_SERVER['REQUEST_URI'].'">verify again</a> after fixing the issues above').'</p>'
+                    '#value' => '<p>'.rt('Please <a href="'.$_SERVER['REQUEST_URI'].'">verify again</a> after fixing any issues above').'</p>'
                 )
             ),
             4 => array(
@@ -321,7 +321,38 @@ class Install {
                     )
                 )
             ),
-            5 => array(),
+            5 => array(
+                '#name' => 'configure_db',
+                '#method' => 'POST',
+                '#action' => '',
+                '#attr' => array(
+                    'role' => 'form'
+                ),
+                'elements' => array(
+                    array(
+                        '#type' => 'markup',
+                        '#value' => '<div class="progress progress-striped active">'
+                        . '<div class="progress-bar progress-bar-info" style="width: 100%"></div>'
+                        . '</div>'
+                        . '<p>'.rt('Installing <i>Database</i>').'...</p>'
+                    )
+                ),
+                'actions' => array(
+                    'previous' => array(
+                        '#type' => 'markup',
+                        '#value' => '<a href="/install.php?step='.($this->_current-1).'" class="btn btn-rad btn-prev btn-default" disabled> <span class="glyphicon glyphicon-arrow-left"></span> '.rt('Previous').'</a>'
+                    ),
+                    'submit' => array(
+                        '#type' => 'submit',
+                        '#attr' => array(
+                            'class' => 'btn btn-rad btn-next btn-primary',
+                            'disabled' => ''
+                        ),
+                        '#name' => 'configure_db',
+                        '#value' => rt('Next').' <span class="glyphicon glyphicon-arrow-right"></span>'
+                    )
+                )
+            ),
             6 => array(
                 '#name' => 'siteInformation',
                 '#method' => 'POST',
@@ -427,7 +458,39 @@ class Install {
                         '#value' => rt('Next').' <span class="glyphicon glyphicon-arrow-right"></span>'
                     )
                 )
-            )
+            ),
+            7 => array(
+                '#name' => 'install_site',
+                '#method' => 'POST',
+                '#action' => '',
+                '#attr' => array(
+                    'role' => 'form'
+                ),
+                'elements' => array(
+                    array(
+                        '#type' => 'markup',
+                        '#value' => '<div class="progress progress-striped active">'
+                        . '<div class="progress-bar progress-bar-info" style="width: 100%"></div>'
+                        . '</div>'
+                        . '<p>'.rt('Installing <i>@COMPONENT</i>').'...</p>'
+                    )
+                ),
+                'actions' => array(
+                    'previous' => array(
+                        '#type' => 'markup',
+                        '#value' => '<a href="/install.php?step='.($this->_current-1).'" class="btn btn-rad btn-prev btn-default" disabled> <span class="glyphicon glyphicon-arrow-left"></span> '.rt('Previous').'</a>'
+                    ),
+                    'submit' => array(
+                        '#type' => 'submit',
+                        '#attr' => array(
+                            'class' => 'btn btn-rad btn-next btn-primary',
+                            'disabled' => ''
+                        ),
+                        '#name' => 'install_site',
+                        '#value' => rt('Next').' <span class="glyphicon glyphicon-arrow-right"></span>'
+                    )
+                )
+            ),
         );
     }
     private function _updateWizard() {
@@ -530,7 +593,8 @@ class Install {
             $output .= '<div class="navigation">'
                     . Render::prepareWizardMenu($this->_wizard['steps'], count($this->_wizard['steps']))
                     . '</div>';
-            $output .= '<div class="step-pane bg-info" data-step="'.$step.'">'
+            $output .= '<div class="step-content">'
+                    . '<div class="step-pane active" data-step="'.$step.'">'
                     . '<div class="form-group no-padding">'
                     . '<div class="col-sm-12">'
                     . '<div class="text-center">'
@@ -538,6 +602,7 @@ class Install {
                     . '<h3 class="hthin">'.rt('Congratulations').'!</h3>'
                     . '<p>'.rt('Your new site is now configured and ready for use').'.</p>'
                     . '<p>'.rt('If you need help to customize your site, you can check the <a href="/admin/help/getting-started">Help</a> section').'</p>'
+                    . '</div>'
                     . '</div>'
                     . '</div>'
                     . '</div>'
@@ -550,13 +615,17 @@ class Install {
             $output .= '<div class="navigation">'
                     . Render::prepareWizardMenu($this->_wizard['steps'], count($this->_wizard['steps']))
                     . '</div>';
-            $output .= '<div class="step-pane bg-info" data-step="'.$step.'">'
+            
+            $output .= '<div class="step-content">'
+                    . '<div class="step-pane active" data-step="'.$step.'">'
                     . '<div class="form-group no-padding">'
                     . '<div class="col-sm-12">'
                     . '<div class="text-center">'
                     . '<div class="i-circle danger"><i class="fa fa-times"></i></div>'
                     . '<h3 class="hthin">'.rt('Installation failed').'!</h3>'
                     . '<p>'.rt('Something went wrong during the installation').'.</p>'
+                    . System::print_messages_simple()
+                    . '</div>'
                     . '</div>'
                     . '</div>'
                     . '</div>'
