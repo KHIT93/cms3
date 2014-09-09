@@ -44,9 +44,13 @@ if(Input::exists('post')) {
     //"percentage":"13",
     //"message":"Completed 5 of 40.",
     //"label":"Installed \u003Cem class=\u0022placeholder\u0022\u003EFilter\u003C\/em\u003E module."
+    //"next_url" : 'optional URL to use for redirection'
     //}
-    //$function = Input::get('form_id').'_ajax';
-    //$result = $function($_POST);
-    //return (String::isJSON($result)) ? $result: json_encode($result);
-    return json_encode(print_r($_POST));
+    $function = Input::get('form_id').'_ajax';
+    $result = $function($_POST);
+    print (String::isJSON($result)) ? $result: json_encode($result);
+    //return json_encode(print_r($_POST));
+}
+else {
+    print 'Nothing to see here!';
 }

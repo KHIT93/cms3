@@ -71,6 +71,14 @@ class String {
     }
     public static function isJSON($string) {
         $json = '/[^,:{}\\[\\]0-9.\\-+Eaeflnr-u \\n\\r\\t]/';
-        return ((preg_match($json, $string)) ? true: false);
+        if(is_array($string)) {
+            return false;
+        }
+        else if(is_object($string)) {
+            return false;
+        }
+        else {
+            return (preg_match($json, $string)) ? true: false;
+        }
     }
 }

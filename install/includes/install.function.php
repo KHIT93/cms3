@@ -120,13 +120,14 @@ function siteInformation_submit() {
     //Adds the information entered in the siteInformation form to the session and proceeds for ajax-based installation
     Redirect::to('install.php?step=7&lang='.Session::get('lang'));
 }
-function configure_db_ajax() {
-    if(configure_db()) {
+function configure_db_ajax($formdata = NULL) {
+    if(configure_db() == true) {
         $return = array(
             'status' => true,
             'percentage' => 100,
-            'message' => '',
-            'label' => rt('Configured the database')
+            'message' => rt('Completed'),
+            'label' => rt('Configured the database'),
+            'next_url' => 'install.php?step=6&lang='.$formdata['lang']
         );
         return $return;
     }
@@ -134,12 +135,22 @@ function configure_db_ajax() {
         'status' => false,
         'percentage' => 0,
         'message' => rt('Could not update the database due to an error'),
-        'label' => rt('An error occurred')
+        'label' => rt('An error occurred'),
+        'next_url' => 'install.php?step=error&lang='.$formdata['lang']
     );
 }
 function configure_db() {
     //Configures the database and adds default system data.
     //Old data is deleted before adding the new db structure
+    $db = DB::getInstance();
+    $file = new File(CORE_INSTALLER_FILES_PATH.'/db/init.sql', 'r');
+    if(!$db->query($file->read())->error()) {
+        return true;
+    }
+    return false;
+}
+function install_site_ajax($formdata = NULL) {
+    
 }
 function install_site() {
     //Configures the site and installs core modules

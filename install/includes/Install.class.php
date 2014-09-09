@@ -332,10 +332,18 @@ class Install {
                 'elements' => array(
                     array(
                         '#type' => 'markup',
-                        '#value' => '<div class="progress progress-striped active">'
+                        '#value' => '<p id="ajax-label">'.rt('Installing <i>Database</i>').'...</p>'
+                        . '<div class="progress progress-striped active">'
                         . '<div class="progress-bar progress-bar-info" style="width: 100%"></div>'
                         . '</div>'
-                        . '<p>'.rt('Installing <i>Database</i>').'...</p>'
+                        . '<p id="ajax-msg"></p>'
+                    ),
+                    array(
+                        '#type' => 'hidden',
+                        '#value' => Session::get('lang'),
+                        '#attr' => array(
+                            'id' => 'lang'
+                        )
                     )
                 ),
                 'actions' => array(
@@ -470,10 +478,18 @@ class Install {
                 'elements' => array(
                     array(
                         '#type' => 'markup',
-                        '#value' => '<div class="progress progress-striped active">'
+                        '#value' => '<p id="ajax-label">'.rt('Installing <i>@COMPONENT</i>').'</p>'
+                        . '<div class="progress progress-striped active">'
                         . '<div class="progress-bar progress-bar-info" style="width: 100%"></div>'
                         . '</div>'
-                        . '<p>'.rt('Installing <i>@COMPONENT</i>').'...</p>'
+                        . '<p id="ajax-msg">Completede X of Y</p>'
+                    ),
+                    array(
+                        '#type' => 'hidden',
+                        '#value' => Session::get('lang'),
+                        '#attr' => array(
+                            'id' => 'lang'
+                        )
                     )
                 ),
                 'actions' => array(

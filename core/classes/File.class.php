@@ -48,7 +48,7 @@ class File {
         return false;
     }
     public function read() {
-        $this->_handle->rewind();
+        //$this->_handle->rewind();
         return $this->_handle->fpassthru();
     }
     public function delete() {

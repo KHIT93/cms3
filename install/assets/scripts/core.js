@@ -12,10 +12,19 @@ $(document).ready(function(){
         //$.post('install/includes/ajax.install.php', {
         $.post('submit.php', {
             //JSON-object
-            form_id : $('input#form_id').val()
+            form_id : $('input#form_id').val(),
+            lang : $('input#lang').val()
             }, function(data){
             //$('.response').val(data);
-            console.log('AJAX completed'+data);
+            var returnJSON = JSON.parse(data);
+            console.log('AJAX completed: '+data);
+            $('p#ajax-label').html(returnJSON.label);
+            $('p#ajax-msg').html(returnJSON.message);
+            if(returnJSON.next_url) {
+                window.setTimeout(function () {
+                    location.href = returnJSON.next_url;
+                }, 1000)
+            }
         });
     }
     else {
