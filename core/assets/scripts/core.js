@@ -12,5 +12,17 @@
 //    radioClass: 'iradio_flat'
 //  });
 //});
+$(document).ready(function(){
+    $('form.ajax').on('submit', function() {
+        var values = $(this).serialize();
+        $.post('submit.php', {
+            //JSON-object
+            post_data : values
+            }, function(data){
+            $('.response').val(data);
+        });
+    });
+});
+
 $('.icheck').iCheck();
 $(".bs-switch").bootstrapSwitch();

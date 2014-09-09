@@ -1,16 +1,20 @@
+//Perform AJAX
+$(document).ready(function(){
+    var values = $(this).serialize();
+    $.post('install/includes/ajax.install.php', {
+        //JSON-object
+        post_data : values
+        }, function(data){
+        $('.response').val(data);
+    });
+});
+//status, percentage, message, label
 //
-//$(function() {
-//    $(".bs-switch").bootstrapSwitch();
-//    /*$('.bs-datetime').datetimepicker({
-//      language: 'en',
-//      pick12HourFormat: false
-//    });*/
-//  });
-//$(document).ready(function(){
-//  $('input').iCheck({
-//    checkboxClass: 'icheckbox_flat',
-//    radioClass: 'iradio_flat'
-//  });
-//});
-$('.icheck').iCheck();
-$(".bs-switch").bootstrapSwitch();
+//    $('.ajax_submit').click(function(){
+//        $.post('install/includes/ajax.install.php', {
+//            //JSON-object
+//            person_name : $('.input').val()
+//        }, function(data){
+//            $('.response').val(data);
+//        });
+//    });

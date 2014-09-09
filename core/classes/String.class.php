@@ -69,4 +69,8 @@ class String {
             System::addMessage('error', t('There was an error updating the string'));
         }
     }
+    public static function isJSON($string) {
+        $json = '/[^,:{}\\[\\]0-9.\\-+Eaeflnr-u \\n\\r\\t]/';
+        return ((preg_match($json, $string)) ? true: false);
+    }
 }

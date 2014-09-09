@@ -115,6 +115,23 @@ function siteInformation_submit() {
     //Adds the information entered in the siteInformation form to the session and proceeds for ajax-based installation
     Redirect::to('install.php?step=7&lang='.Session::get('lang'));
 }
+function configure_db_ajax() {
+    if(configure_db()) {
+        $return = array(
+            'status' => true,
+            'percentage' => 100,
+            'message' => '',
+            'label' => rt('Configured the database')
+        );
+        return $return;
+    }
+    return array(
+        'status' => false,
+        'percentage' => 0,
+        'message' => rt('Could not update the database due to an error'),
+        'label' => rt('An error occurred')
+    );
+}
 function configure_db() {
     //Configures the database and adds default system data.
     //Old data is deleted before adding the new db structure
