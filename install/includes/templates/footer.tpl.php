@@ -10,6 +10,7 @@
         <script type="text/javascript" src="<?php print CORE_JS_PATH; ?>/bootstrap.datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
         <script type="text/javascript" src="<?php print CORE_INSTALLER_JS_PATH; ?>/behaviour/general.js"></script>
         <script src="<?php print CORE_INSTALLER_JS_PATH; ?>/jquery.ui/jquery-ui.js" type="text/javascript"></script>
+        <script type="text/javascript" src="<?php print CORE_INSTALLER_JS_PATH; ?>/core.js"></script>
         <script type="text/javascript">
             $(document).ready(function(){
                 //initialize the javascript

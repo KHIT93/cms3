@@ -4,6 +4,9 @@
  */
 function install_core() {
     //Initializes the installation of core
+    if(!Session::exists('installer')) {
+        Session::put('installer', 'new');
+    }
     install_submit();
     $head = '<meta charset="'.((isset($header['charset'])) ? $header['charset']."\n" : 'utf-8').'">'."\n"
             .'<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">'."\n"
@@ -104,6 +107,8 @@ function dbCredentials_submit($formdata) {
     Session::put('db/password', $formdata['password']);
     Session::put('db/name', $formdata['db']);
     Session::put('db/driver', $formdata['driver']);
+    $file = new File('core/config/config.info', 'w');
+    $file->write($config);
     Redirect::to('install.php?step=5&lang='.Session::get('lang'));
     exit();
 }

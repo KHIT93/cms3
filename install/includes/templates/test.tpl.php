@@ -7,6 +7,7 @@
                         <?php
                         print $install->render();
                         ?>
+                        <div class="response"></div>
                     </div>
                 </div>
             </div>

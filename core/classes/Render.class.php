@@ -160,6 +160,9 @@ class Render {
         $output .= self::prepareInput(array(
             '#type' => 'hidden',
             '#name' => 'form_id',
+            '#attr' => array(
+                'id' => 'form_id'
+            ),
             '#value' => $form_id
         ));
         return $output;

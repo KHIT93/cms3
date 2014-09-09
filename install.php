@@ -2,8 +2,8 @@
 error_reporting(E_ALL);
 session_start();
 if(version_compare(phpversion(), '5.4.0', '>')) {
-    if(file_exists('core/config/config.info')) {
-        //Render information about existing installation
+    if(!isset($_SESSION['installer']) && file_exists('core/config/config.info')) {
+        print 'Your site is already installed<br/>';
     }
     else {
         define('SITE_ROOT', getcwd());

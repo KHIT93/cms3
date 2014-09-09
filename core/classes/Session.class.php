@@ -16,7 +16,7 @@ class Session {
         }
     }
     public static function get($name) {
-        return $_SESSION[$name];
+        return (isset($_SESSION[$name])) ? $_SESSION[$name]: false;
     }
     public static function flash($name, $string = '') {
         if(self::exists($name)) {

@@ -5,6 +5,7 @@ spl_autoload_register(function($class){
         require_once CORE_CLASSES_PATH.'/'.$class.'.class.php';
     }
 });
+require_once CORE_INSTALLER_INCLUDES_PATH.'/Install.class.php';
 //Include procedural functionality
 require_once CORE_FUNCTIONS_PATH.'/bootstrapper.function.php';
 require_once CORE_FUNCTIONS_PATH.'/db.function.php';
@@ -19,5 +20,4 @@ require_once CORE_FUNCTIONS_PATH.'/system.function.php';
 require_once CORE_FUNCTIONS_PATH.'/theme.function.php';
 require_once CORE_FUNCTIONS_PATH.'/user.function.php';
 require_once CORE_FUNCTIONS_PATH.'/validate.function.php';
-require_once CORE_INSTALLER_INCLUDES_PATH.'/Install.class.php';
 require_once CORE_INSTALLER_INCLUDES_PATH.'/install.function.php';

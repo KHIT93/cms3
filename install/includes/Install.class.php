@@ -326,7 +326,8 @@ class Install {
                 '#method' => 'POST',
                 '#action' => '',
                 '#attr' => array(
-                    'role' => 'form'
+                    'role' => 'form',
+                    'id' => 'ajax-autoloader'
                 ),
                 'elements' => array(
                     array(
