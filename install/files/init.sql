@@ -346,9 +346,7 @@ VALUES
 ('pgsql', 'PostgreSQL', NULL),
 ('sqlite', 'SQLite', NULL),
 ('4D', '4D', NULL);
-INSERT INTO `translation`
--- (`tid` `string`, `translation`, `language`)
-VALUES
+INSERT INTO `translation` (`tid` `string`, `translation`, `language`) VALUES
 (1, 'Please <a href="http://browsehappy.com/"> upgrade your browser</a> or', 'Opgradér venligst din <a href="http://browsehappy.com/">browser</a> eller', 'da'),
 (2, 'Warning', 'Advarsel', 'da'),
 (3, 'Dashboard', 'Dashboard', 'da'),

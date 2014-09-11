@@ -134,8 +134,8 @@ function configure_db_ajax($formdata = NULL) {
     return array(
         'status' => false,
         'percentage' => 0,
-        'message' => rt('Could not update the database due to an error'),
-        'label' => rt('An error occurred'),
+        'message' => rt('An error occurred'),
+        'label' => rt('Could not configure the database due to an error'),
         'next_url' => 'install.php?step=error&lang='.$formdata['lang']
     );
 }
@@ -143,15 +143,47 @@ function configure_db() {
     //Configures the database and adds default system data.
     //Old data is deleted before adding the new db structure
     $db = DB::getInstance();
-    $file = new File(CORE_INSTALLER_FILES_PATH.'/db/init.sql', 'r');
-    if(!$db->query($file->read())->error()) {
+    //$file = new File(CORE_INSTALLER_FILES_PATH.'/db/init.sql', 'r');
+    if(!$db->query(file_get_contents(CORE_INSTALLER_FILES_PATH.'/db/init.sql'))->error()) {
         return true;
     }
     return false;
 }
 function install_site_ajax($formdata = NULL) {
-    
+    if(install_site() == true) {
+        $return = array(
+            'status' => true,
+            'percentage' => 100,
+            'message' => rt('Completed'),
+            'label' => rt('Finished configuring the site and installing modules'),
+            'next_url' => 'install.php?step=8&lang='.$formdata['lang']
+        );
+        return $return;
+    }
+    return array(
+        'status' => false,
+        'percentage' => 0,
+        'message' => rt('An error occurred'),
+        'label' => rt('Something went wrong during the site installation'),
+        'next_url' => 'install.php?step=error&lang='.$formdata['lang']
+    );
 }
 function install_site() {
     //Configures the site and installs core modules
+    $site_config = array(
+        'name' => Sanitize::checkPlain($_POST['name']),
+        'slogan' => Sanitize::checkPlain($_POST['slogan']),
+        'lang' => Session::get('lang'),
+        'theme' => 'core',
+        'adminUser' => Sanitize::checkPlain($_POST['adminUser']),
+        'adminName' => Sanitize::chechPlain($_POST['adminName']),
+        'adminEmail' => Sanitize::checkPlain($_POST['adminEmail']),
+        'adminPassword' => Hash::makePassHash(Sanitize::checkPlain($_POST['adminPassword']))
+    );
+    $sql = "INSERT INTO `config` (`property`, `contents`) VALUES "
+            . "('?', '?'),"
+            . "('?', '?'),"
+            . "('?', '?'),"
+            . "('?', '?');";
+    
 }

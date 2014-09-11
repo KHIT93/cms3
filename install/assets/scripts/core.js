@@ -20,6 +20,10 @@ $(document).ready(function(){
             console.log('AJAX completed: '+data);
             $('p#ajax-label').html(returnJSON.label);
             $('p#ajax-msg').html(returnJSON.message);
+            if($('.progress.progress-striped.active').length && returnJSON.status === true) {
+                $('div.progress.progress-striped.active').removeClass('progress-striped active');
+                $('div.progress div.progress-bar.progress-bar-info').removeClass('progess-bar-info').addClass('progress-bar-success');
+            }
             if(returnJSON.next_url) {
                 window.setTimeout(function () {
                     location.href = returnJSON.next_url;
