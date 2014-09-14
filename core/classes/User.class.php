@@ -35,9 +35,11 @@ class User {
     public function create($fields = array()) {
         if(!$this->_db->insert('users', $fields)) {
             addMessage('error', t('The new user <i>@user</i> could not be created', array('@user' => $fields['username'])));
+            return false;
         }
         else {
             addMessage('success', t('The new user <i>@user</i> has been created', array('@user' => $fields['username'])));
+            return true;
         }
     }
     public function update($fields = array(), $id = null) {

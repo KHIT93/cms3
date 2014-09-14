@@ -170,6 +170,7 @@ function install_site_ajax($formdata = NULL) {
 }
 function install_site() {
     //Configures the site and installs core modules
+    $db = DB::getInstance();
     $site_config = array(
         'name' => Sanitize::checkPlain($_POST['name']),
         'slogan' => Sanitize::checkPlain($_POST['slogan']),
@@ -184,6 +185,29 @@ function install_site() {
             . "('?', '?'),"
             . "('?', '?'),"
             . "('?', '?'),"
-            . "('?', '?');";
-    
+            . "('?', '?'),";
+    if(!$db->query($sql, array('site_name', $site_config['name'], 'site_slogan', $site_config['slogan'], 'site_language', $site_config['lang'], 'site_theme', $site_config['theme']))->error()) {
+        //Create admin user
+        $fields = array(
+            'username' => $site_config['adminUser'],
+            'password' => $site_config['adminPassword'],
+            'role' => DEFAULT_ADMIN_RID,
+            'email' => $site_config['adminEmail'],
+            'name' => $site_config['adminName'],
+            'language' => Session::get('lang'),
+            'active' => 1
+        );
+        $new_user = new User();
+        if($new_user->create($fields)) {
+            return true;
+        }
+        else {
+            System::addMessage('error', rt('The site administrator could not be created. Please verify that your server meets the requirements for the application and that your database user has sufficient permissions ot make changes in the database'));
+        }
+    }
+    else {
+        //Return error
+        System::addMessage('error', rt('The website could not be configured. Please make sure that you have entered all the information correctly and that you have supplied a database username and password with sufficient permissions to make changes in the database'));
+    }
+    return false;
 }
