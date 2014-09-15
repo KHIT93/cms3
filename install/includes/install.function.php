@@ -188,26 +188,63 @@ function install_site() {
             . "('?', '?'),";
     if(!$db->query($sql, array('site_name', $site_config['name'], 'site_slogan', $site_config['slogan'], 'site_language', $site_config['lang'], 'site_theme', $site_config['theme']))->error()) {
         //Create admin user
-        $fields = array(
-            'username' => $site_config['adminUser'],
-            'password' => $site_config['adminPassword'],
-            'role' => DEFAULT_ADMIN_RID,
-            'email' => $site_config['adminEmail'],
-            'name' => $site_config['adminName'],
-            'language' => Session::get('lang'),
-            'active' => 1
-        );
-        $new_user = new User();
-        if($new_user->create($fields)) {
-            return true;
-        }
-        else {
-            System::addMessage('error', rt('The site administrator could not be created. Please verify that your server meets the requirements for the application and that your database user has sufficient permissions ot make changes in the database'));
-        }
+        
     }
     else {
         //Return error
         System::addMessage('error', rt('The website could not be configured. Please make sure that you have entered all the information correctly and that you have supplied a database username and password with sufficient permissions to make changes in the database'));
     }
     return false;
+}
+function install_core_config() {
+    //Install core site configuration
+}
+function install_content_types() {
+    //Install core content types
+}
+function install_fields() {
+    //Install fields for core content types
+}
+function install_field_values() {
+    //Install field values for fields in core content types
+}
+function install_languages() {
+    //Install languages that are available in core
+}
+function install_menus() {
+    //Install core sample menu and menu items
+}
+function install_pages() {
+    //Install sample home page with url_alias
+}
+function install_permissions() {
+    //Install core permissions
+}
+function install_roles() {
+    //Install core user roles
+}
+function install_definitions() {
+    //Install core system definitions
+}
+function install_translations() {
+    //Install core UI translations
+}
+function install_root_user() {
+    //Insert the sit administrator into the users table
+    $fields = array(
+        'username' => $site_config['adminUser'],
+        'password' => $site_config['adminPassword'],
+        'role' => DEFAULT_ADMIN_RID,
+        'email' => $site_config['adminEmail'],
+        'name' => $site_config['adminName'],
+        'language' => Session::get('lang'),
+        'active' => 1
+    );
+    $new_user = new User();
+    if($new_user->create($fields)) {
+        return true;
+    }
+    else {
+        System::addMessage('error', rt('The site administrator could not be created. Please verify that your server meets the requirements for the application and that your database user has sufficient permissions ot make changes in the database'));
+    }
 }
