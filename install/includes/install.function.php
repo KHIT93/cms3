@@ -170,16 +170,16 @@ function install_site_ajax($formdata = NULL) {
 }
 function install_site() {
     //Configures the site and installs core modules
+    
+}
+function install_core_config() {
+    //Install core site configuration
     $db = DB::getInstance();
     $site_config = array(
         'name' => Sanitize::checkPlain($_POST['name']),
         'slogan' => Sanitize::checkPlain($_POST['slogan']),
         'lang' => Session::get('lang'),
-        'theme' => 'core',
-        'adminUser' => Sanitize::checkPlain($_POST['adminUser']),
-        'adminName' => Sanitize::chechPlain($_POST['adminName']),
-        'adminEmail' => Sanitize::checkPlain($_POST['adminEmail']),
-        'adminPassword' => Hash::makePassHash(Sanitize::checkPlain($_POST['adminPassword']))
+        'theme' => 'core'
     );
     $sql = "INSERT INTO `config` (`property`, `contents`) VALUES "
             . "('?', '?'),"
@@ -187,8 +187,7 @@ function install_site() {
             . "('?', '?'),"
             . "('?', '?'),";
     if(!$db->query($sql, array('site_name', $site_config['name'], 'site_slogan', $site_config['slogan'], 'site_language', $site_config['lang'], 'site_theme', $site_config['theme']))->error()) {
-        //Create admin user
-        
+        return true;
     }
     else {
         //Return error
@@ -196,38 +195,115 @@ function install_site() {
     }
     return false;
 }
-function install_core_config() {
-    //Install core site configuration
-}
 function install_content_types() {
     //Install core content types
+    $db = DB::getInstance();
+    if(!$db->query(file_get_contents(CORE_INSTALLER_FILES_PATH.'/db/content_types.sql'))->error()) {
+        return true;
+    }
+    else {
+        System::addMessage('error', rt('An error occurred during the creation of the default content types'));
+    }
+    return false;
 }
 function install_fields() {
     //Install fields for core content types
+    $db = DB::getInstance();
+    if(!$db->query(file_get_contents(CORE_INSTALLER_FILES_PATH.'/db/fields.sql'))->error()) {
+        return true;
+    }
+    else {
+        System::addMessage('error', rt('An error occurred during the creation of the default content type fields'));
+    }
+    return false;
 }
 function install_field_values() {
     //Install field values for fields in core content types
+    $db = DB::getInstance();
+    if(!$db->query(file_get_contents(CORE_INSTALLER_FILES_PATH.'/db/field_values.sql'))->error()) {
+        return true;
+    }
+    else {
+        System::addMessage('error', rt('An error occurred during the creation of the default content type field values'));
+    }
+    return false;
 }
 function install_languages() {
     //Install languages that are available in core
+    $db = DB::getInstance();
+    if(!$db->query(file_get_contents(CORE_INSTALLER_FILES_PATH.'/db/languages.sql'))->error()) {
+        return true;
+    }
+    else {
+        System::addMessage('error', rt('An error occurred during the installation of the languages supported by core'));
+    }
+    return false;
 }
 function install_menus() {
     //Install core sample menu and menu items
+    $db = DB::getInstance();
+    if(!$db->query(file_get_contents(CORE_INSTALLER_FILES_PATH.'/db/menus.sql'))->error()) {
+        return true;
+    }
+    else {
+        System::addMessage('error', rt('An error occurred during the creation of the default frontend menu'));
+    }
+    return false;
 }
 function install_pages() {
     //Install sample home page with url_alias
+    $db = DB::getInstance();
+    if(!$db->query(file_get_contents(CORE_INSTALLER_FILES_PATH.'/db/pages.sql'))->error()) {
+        return true;
+    }
+    else {
+        System::addMessage('error', rt('An error occurred during the creation of a sample home page'));
+    }
+    return false;
 }
 function install_permissions() {
     //Install core permissions
+    $db = DB::getInstance();
+    if(!$db->query(file_get_contents(CORE_INSTALLER_FILES_PATH.'/db/permissions.sql'))->error()) {
+        return true;
+    }
+    else {
+        System::addMessage('error', rt('An error occurred during the creation of the default permissions'));
+    }
+    return false;
 }
 function install_roles() {
     //Install core user roles
+    $db = DB::getInstance();
+    if(!$db->query(file_get_contents(CORE_INSTALLER_FILES_PATH.'/db/roles.sql'))->error()) {
+        return true;
+    }
+    else {
+        System::addMessage('error', rt('An error occurred during the creation of the default user roles'));
+    }
+    return false;
 }
 function install_definitions() {
     //Install core system definitions
+    $db = DB::getInstance();
+    if(!$db->query(file_get_contents(CORE_INSTALLER_FILES_PATH.'/db/system_definitions.sql'))->error()) {
+        return true;
+    }
+    else {
+        System::addMessage('error', rt('An error occurred during the creation of the default system definitions'));
+    }
+    return false;
 }
 function install_translations() {
     //Install core UI translations
+    $db = DB::getInstance();
+    if(!$db->query(file_get_contents(CORE_INSTALLER_FILES_PATH.'/db/translation.sql'))->error()) {
+        return true;
+    }
+    else {
+        System::addMessage('error', rt('An error occurred during the installation of your chosen language'));
+    }
+    return false;
 }
 function install_root_user() {
     //Insert the sit administrator into the users table
