@@ -31,6 +31,8 @@ define('ASSETS_PATH', '/core/assets');
 
 define('CORE_CLASSES_PATH', SITE_ROOT.'/core/classes');
 
+define('CORE_EXCEPTIONS_PATH', CORE_CLASSES_PATH.'/exceptions');
+
 define('CORE_FUNCTIONS_PATH', SITE_ROOT.'/core/functions');
 
 define('CORE_CSS_PATH', ASSETS_PATH.'/styles');

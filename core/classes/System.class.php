@@ -235,4 +235,12 @@ class System {
         </div>
     </div>';
     }
+    public static function autoloadExceptions() {
+        //Loads all files in the core exceptions directory
+        $dir = File::getFolderContents(CORE_EXCEPTIONS_PATH);
+        foreach ($dir as $file) {
+            require_once CORE_EXCEPTIONS_PATH.'/'.$file.'.exception.php';
+        }
+        
+    }
 }

@@ -5,6 +5,7 @@ spl_autoload_register(function($class){
         require_once CORE_CLASSES_PATH.'/'.$class.'.class.php';
     }
 });
+System::autoloadExceptions();
 require_once CORE_INSTALLER_INCLUDES_PATH.'/Install.class.php';
 //Include procedural functionality
 require_once CORE_FUNCTIONS_PATH.'/bootstrapper.function.php';

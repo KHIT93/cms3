@@ -215,4 +215,19 @@ class File {
         }
         return $output;
     }
+    public static function getFolderContents($dir = NULL) {
+        if($dir) {
+            $dir = scandir($dir, SCANDIR_SORT_ASCENDING);
+            unset ($dir[0]);
+            unset ($dir[1]);
+            if(isset($dir[2]) && $dir[2] == '.DS_Store') {
+                unset ($dir[2]);
+            }
+            $output = array();
+            foreach ($dir as $folder) {
+                $output[] = $folder;
+            }
+            return $output;
+        }
+    }
 }
