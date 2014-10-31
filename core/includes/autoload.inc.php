@@ -1,11 +1,15 @@
 <?php
 //Include system classes using autoload
 spl_autoload_register(function($class){
-    if(file_exists(CORE_CLASSES_PATH.'/'.$class.'.class.php')) {
+    if(strpos($class, 'Exception')) {
+        if(file_exists(CORE_CLASSES_PATH.'/'.$class.'.class.php')) {
+            require_once CORE_CLASSES_PATH.'/exceptions'.$class.'.class.php';
+        }
+    }
+    else if(file_exists(CORE_CLASSES_PATH.'/'.$class.'.class.php')) {
         require_once CORE_CLASSES_PATH.'/'.$class.'.class.php';
     }
 });
-System::autoloadExceptions();
 require_once CORE_INSTALLER_INCLUDES_PATH.'/Install.class.php';
 //Include procedural functionality
 require_once CORE_FUNCTIONS_PATH.'/bootstrapper.function.php';

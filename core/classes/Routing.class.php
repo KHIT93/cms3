@@ -28,6 +28,9 @@ class Routing {
             header('Location: '.site_root());
             exit();
         }
+        else {
+            throw new PageNotFoundException(t('No content was found at @url', array('@url' => $url)));
+        }
     }
     public static function backend($url) {
         if($url[0] == 'login') {
@@ -66,6 +69,9 @@ class Routing {
             log_out();
             Redirect::to('/home');
             exit();
+        }
+        else {
+            throw new PageNotFoundException(t('No content was found at @url', array('@url' => $url)));
         }
     }
     public static function moduleRoute($module) {

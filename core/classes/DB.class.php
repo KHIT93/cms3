@@ -12,7 +12,8 @@ class DB {
             $this->_pdo = new PDO(Config::get('db/driver').':host='.Config::get('db/host').';dbname='.Config::get('db/name').';charset=utf8', Config::get('db/username'), Config::get('db/password'));
         }
         catch (PDOException $e) {
-            die($e->getMessage());
+            //die($e->getMessage());
+            throw new DBConnException($e->getMessage());
         }
     }
     public static function getInstance() {

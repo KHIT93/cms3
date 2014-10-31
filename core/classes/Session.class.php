@@ -16,7 +16,12 @@ class Session {
         }
     }
     public static function get($name) {
-        return (isset($_SESSION[$name])) ? $_SESSION[$name]: false;
+        if(self::exists($name)) {
+            return $_SESSION[$name];
+        }
+        else {
+            throw new CookieNotSetException(t('The requested session cookie <i>@cookie</i> is not set', array('@cookie' => $name)));
+        }
     }
     public static function flash($name, $string = '') {
         if(self::exists($name)) {
@@ -26,7 +31,6 @@ class Session {
         }
         else {
             self::put($name, $string);
-            
         }
     }
     

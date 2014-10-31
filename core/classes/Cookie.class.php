@@ -8,7 +8,13 @@ class Cookie {
         return (isset($_COOKIE[$name])) ? true: false;
     }
     public static function get($name) {
-        return $_COOKIE[$name];
+        if(self::exists($name)) {
+            return $_COOKIE[$name];
+        }
+        else {
+            throw new CookieNotSetException("Invalid cookie name requested");
+        }
+        return false;
     }
     public static function put($name, $value, $expiry) {
         if(setcookie($name, $value, time()+$expiry)) {

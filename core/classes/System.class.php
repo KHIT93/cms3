@@ -193,7 +193,12 @@ class System {
         }*/
     }
     public static function getForm($form) {
-        return $GLOBALS['forms'][$form];
+        if(isset($GLOBALS['forms'][$form])) {
+            return $GLOBALS['forms'][$form];
+        }
+        else {
+            throw new NonExistingFormException();
+        }
     }
     public static function mail($to, $subject='', $message='', $from='', $cc='', $bcc='') {
         $from = escapeAddr($from);
@@ -234,13 +239,5 @@ class System {
             <div class="admin-toolbox-bottom"></div>
         </div>
     </div>';
-    }
-    public static function autoloadExceptions() {
-        //Loads all files in the core exceptions directory
-        $dir = File::getFolderContents(CORE_EXCEPTIONS_PATH);
-        foreach ($dir as $file) {
-            require_once CORE_EXCEPTIONS_PATH.'/'.$file.'.exception.php';
-        }
-        
     }
 }
