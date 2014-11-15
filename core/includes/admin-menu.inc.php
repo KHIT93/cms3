@@ -16,8 +16,8 @@
                         <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="#">My Account</a></li>
-                        <li><a href="#">Change password</a></li>
+                        <li><a href="<?php print '/admin/users/'.User::getInstance()->uid().'/edit'; ?>">My Account</a></li>
+                        <li><a href="<?php print '/admin/users/'.User::getInstance()->uid().'/edit/password'; ?>">Change password</a></li>
                         <li class="divider"></li>
                         <li><a href="/logout">Sign Out</a></li>
                     </ul>

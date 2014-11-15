@@ -144,7 +144,7 @@ if(isset($get_url)) {
         <h2><?php print t('Edit user <i>@user</i>', array('@user' => $editUser->name())); ?></h2>
     </div>
     <?php print '<div class="container">'.print_messages().'</div>'; ?>
-    <div class="container-fluid">
+    <div class="cl-mcont">
     <form method="POST" name="editUser" action="" role="form">
         <div class="modal-body row">
             <div class="form-group form300">
@@ -161,11 +161,11 @@ if(isset($get_url)) {
             </div>
             <div class="form-group">
                 <?php
-                foreach (Permissions::get_roles() as $role) {
+                foreach (Permission::get_roles() as $role) {
                     print '<div class"radio">'
                             . '<label>'
-                                . '<input type="radio" name="user_group" id="optionsUsergroup'.$role['rid'].'" value="'.$role['rid'].'"'.(($role['rid'] == $editUser->role()) ? 'checked' : '').' >'
-                                . ' '.ucfirst(t($role['name']))
+                                . '<input type="radio" name="user_group" id="optionsUsergroup'.$role->rid.'" value="'.$role->rid.'"'.(($role->rid == $editUser->role()) ? 'checked' : '').' >'
+                                . ' '.ucfirst(t($role->name))
                             . '</label>'
                         . '</div>';
                 }

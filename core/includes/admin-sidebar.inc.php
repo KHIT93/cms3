@@ -8,7 +8,7 @@
                                     <img src="<?php print CORE_IMG_PATH; ?>/avatar-noimage_50.png" alt="">
                                 </div>
                                 <div class="info">
-                                    <a href="#"><?php print User::getInstance()->name(); ?></a>
+                                    <a href="<?php print '/admin/users/'.User::getInstance()->uid().'/edit'; ?>"><?php print User::getInstance()->name(); ?></a>
                                     <span>Administrator</span>
                                 </div>
                             </div>
