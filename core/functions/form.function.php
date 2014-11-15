@@ -53,7 +53,7 @@ function editPage_submit() {
 function deletePage_submit() {
     if(User::getInstance()->uid() == DB::getInstance()->getField('pages', 'author', 'pid', $_POST['pid'])) {
         if(has_permission('access_admin_content_delete_own', Session::get(Config::get('session/session_name')))) {
-            Page::delete($_POST['inputId']);
+            Page::delete($_POST['pid']);
             Redirect::to('/admin/content');
         }
         else {
@@ -62,7 +62,7 @@ function deletePage_submit() {
     }
     else {
         if(has_permission('access_admin_content_delete_all', Session::get(Config::get('session/session_name')))) {
-            Page::delete($_POST['inputId']);
+            Page::delete($_POST['pid']);
             Redirect::to('/admin/content');
         }
         else {

@@ -141,16 +141,16 @@ class System {
         //Outputs the different messages
         if(Session::exists('messages')) {
             $output = array();
-            if($_SESSION['messages']['info']) {
+            if(isset($_SESSION['messages']['info'])) {
                 $output[] = '<div class="alert alert-info alert-box alert-dismissable fade in"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><p><span class="glyphicon glyphicon-info-sign"></span> '.implode('</p><p><span class="glyphicon glyphicon-info-sign"></span> ', $_SESSION['messages']['info']).'</p></div>';
             }
-            if($_SESSION['messages']['success']) {
+            if(isset($_SESSION['messages']['success'])) {
                 $output[] = '<div class="alert alert-success alert-box alert-dismissable fade in"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><p><span class="glyphicon glyphicon-saved"></span> '.implode('</p><p><span class="glyphicon glyphicon-saved"></span> ', $_SESSION['messages']['success']).'</p></div>';
             }
-            if($_SESSION['messages']['warning']) {
+            if(isset($_SESSION['messages']['warning'])) {
                 $output[] = '<div class="alert alert-warning alert-box alert-dismissable fade in"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><h4>'.t('Warning').'!</h4><p><span class="glyphicon glyphicon-warning-sign"></span> '.implode('</p><p><span class="glyphicon glyphicon-warning-sign"></span> ', $_SESSION['messages']['warning']).'</p></div>';
             }
-            if($_SESSION['messages']['error']) {
+            if(isset($_SESSION['messages']['error'])) {
                 $output[] = '<div class="alert alert-danger alert-box alert-dismissable fade in"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><h4>'.t('Error').'!</h4><p><span class="glyphicon glyphicon-remove"></span> '.implode('</p><p><span class="glyphicon glyphicon-remove"></span> ', $_SESSION['messages']['error']).'</p></div>';
             }
             unset($_SESSION['messages']);
@@ -162,16 +162,16 @@ class System {
         //Outputs the different messages
         if(Session::exists('messages')) {
             $output = array();
-            if($_SESSION['messages']['info']) {
+            if(isset($_SESSION['messages']['info'])) {
                 $output[] = '<div class="alert alert-info alert-box fade in"><p><span class="glyphicon glyphicon-info-sign"></span> '.implode('</p><p><span class="glyphicon glyphicon-info-sign"></span> ', $_SESSION['messages']['info']).'</p></div>';
             }
-            if($_SESSION['messages']['success']) {
+            if(isset($_SESSION['messages']['success'])) {
                 $output[] = '<div class="alert alert-success alert-box fade in"><p><span class="glyphicon glyphicon-saved"></span> '.implode('</p><p><span class="glyphicon glyphicon-saved"></span> ', $_SESSION['messages']['success']).'</p></div>';
             }
-            if($_SESSION['messages']['warning']) {
+            if(isset($_SESSION['messages']['warning'])) {
                 $output[] = '<div class="alert alert-warning alert-box fade in"><p><span class="glyphicon glyphicon-warning-sign"></span> '.implode('</p><p><span class="glyphicon glyphicon-warning-sign"></span> ', $_SESSION['messages']['warning']).'</p></div>';
             }
-            if($_SESSION['messages']['error']) {
+            if(isset($_SESSION['messages']['error'])) {
                 $output[] = '<div class="alert alert-danger alert-box fade in"><p><span class="glyphicon glyphicon-remove"></span> '.implode('</p><p><span class="glyphicon glyphicon-remove"></span> ', $_SESSION['messages']['error']).'</p></div>';
             }
             unset($_SESSION['messages']);

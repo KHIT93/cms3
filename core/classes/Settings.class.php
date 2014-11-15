@@ -243,7 +243,6 @@ class Settings {
         return $data;
     }
     public static function system() {
-        $editSite = Config::get('site');
         $get_url = splitURL();
         if(isset($get_url[3])) {
             if($get_url[3] == 'users') {
@@ -269,17 +268,17 @@ class Settings {
                     . '<form name="editSite" method="POST" action="" role="form">'
                     . '<div id="siteName" class="form-group form600">'
                     . '<label for="inputTitle">'.t('Site name').'</label>'
-                    . '<input type="text" class="form-control form300" name="title" value="'.$editSite['site_name'].'">'
+                    . '<input type="text" class="form-control form300" name="title" value="'.Config::get('site/site_name').'">'
                     . '<p class="help-block">'.t('Enter the website name. This is often a human readable name or the domain').'</p>'
                     . '</div>'
                     . '<div id="siteSlogan" class="form-group form600">'
                     . '<label for="inputSlogan">'.t('Site slogan').'</label>'
-                    . '<input type="text" class="form-control form300" name="slogan" value="'.$editSite['site_slogan'].'">'
+                    . '<input type="text" class="form-control form300" name="slogan" value="'.Config::get('site/site_slogan').'">'
                     . '<p class="help-block">'.t('If your site has a slogan this will be entered here. Please note that the slogan will only be displayed in the browser title if the active theme is printing it on the page').'</p>'
                     . '</div>'
                     . '<div id="siteFrontpage" class="form-group form-inline">'
                     . '<label for="inputFrontpage">'.t('Site frontpage').'</label>'
-                    . '<p>'.System::siteURL().'/<input type="text" class="form-control form300" name="frontpage" value="'.$editSite['site_front'].'"></p>'
+                    . '<p>'.System::siteURL().'/<input type="text" class="form-control form300" name="frontpage" value="'.Config::get('site/site_home').'"></p>'
                     . '<p class="help-block">'.t('Enter the relative path for the page that you want to use').'</p>'
                     . '</div>'
                     . '<input type="hidden" name="form-token" value="'.Token::generate().'">'

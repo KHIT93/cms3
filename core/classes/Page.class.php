@@ -63,7 +63,7 @@ class Page {
         $fields = array(
             'title' => $formdata['title'],
             'content' => $formdata['body'],
-            'author' => User::getInstance()->name(),
+            'author' => User::getInstance()->uid(),
             'status' => $formdata['published'],
             'access' => '{"any" : "true"}',
             'keywords' => $formdata['keywords'],
@@ -100,6 +100,7 @@ class Page {
     }
     public static function update($formdata) {
         $db = DB::getInstance();
+        krumo($formdata);
         $pid = array('pid', $formdata['pid']);
         $fields = array(
             'title' => $formdata['title'],
@@ -112,10 +113,10 @@ class Page {
             'last_updated' => date("Y-m-d")
         );
         if($db->update('pages', $pid, $fields)) {
-            $alias = (hasValue($formdata['alias']) && $formdata['alias'] == $db->getField('url_alias', 'alias', 'source', 'pages/'.$pid)) ? $formdata['alias'] : generateURL($fields['title']);
-            if(hasValue($alias) && DB::getInstance('url_alias', 'alias', 'source', 'pages/'.$pid) != $alias) {
+            $alias = (hasValue($formdata['alias']) && $formdata['alias'] == $db->getField('url_alias', 'alias', 'source', 'pages/'.$pid[1])) ? $formdata['alias'] : generateURL($fields['title']);
+            if(hasValue($alias) && DB::getInstance('url_alias', 'alias', 'source', 'pages/'.$pid[1]) != $alias) {
                 //Update url alias
-                if(!$db->update('url_alias', array('source' => 'pages/'.$pid, 'alias' => $alias))) {
+                if(!$db->update('url_alias', array('aid', $db->getField('url_alias', 'aid', 'source', 'pages/'.$pid[1])), array('source' => 'pages/'.$pid[1], 'alias' => $alias))) {
                     System::addMessage('error', t('There was an error while creating the URL Alias for <i>@title</i>', array('@title' => $fields['title'])));
                 }
             }
@@ -123,12 +124,17 @@ class Page {
                 if($formdata['enable_item'] == 'enabled') {
                     $menudata = array(
                         'mlid' => $db->getField('menu_links', 'mlid', 'link', $alias),
-                        'mid' => $formdata['inputMenu'],
+                        'mid' => $formdata['menu'],
                         'title' => $formdata['title'],
                         'link' => $alias,
                         'parent' => 0
                     );
-                    Menu::updateMenuItem($menudata);
+                    if(hasValue($menudata['mlid'])) {
+                        Menu::updateMenuItem($menudata);
+                    }
+                    else {
+                        Menu::addMenuItem($menudata);
+                    }
                 }
             }
             else {
@@ -142,7 +148,7 @@ class Page {
         }
         return false;
     }
-    public function delete($page_id) {
+    public static function delete($page_id) {
         $db = DB::getInstance();
         $name = $db->getField('pages', 'title', 'pid', $page_id);
         $pid = (int)$page_id;
@@ -153,8 +159,13 @@ class Page {
             if(isset($count) && $count > 0) {
                 deleteMenuItem($item_id);
             }
-            if($db->delete('pages', array('pid', '=', $pid))) {
-                System::addMessage('error', t('The page <i>@page</i> has been deleted', array('@page', $name)));
+            if($db->delete('pages', array('pid', '=', $pid))->error()) {
+                System::addMessage('error', t('The page <i>@page</i> has not been deleted', array('@page', $name)));
+            }
+            else {
+                if(!$db->delete('url_alias', array('source', '=', 'pages/'.$pid))->error()) {
+                    System::addMessage('success', t('The page <i>@page</i> has been deleted'));
+                }
             }
         }
         else {

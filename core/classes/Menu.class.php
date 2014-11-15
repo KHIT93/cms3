@@ -40,11 +40,11 @@ class Menu {
         return traverse($root, 'nav navbar-nav');
     }
     public function getMenuItems($menu_id) {
-        $data = DB::getInstance()->get('menu_items', array('mid', '=', $menu_id));
+        $data = DB::getInstance()->get('menu_links', array('mid', '=', $menu_id));
         return (!$data->error()) ? $data->results() : false;
     }
     public static function getMenuLinkData($item_id) {
-        $data = DB::getInstance()->get('menu_items', array('mlid', '=', $item_id));
+        $data = DB::getInstance()->get('menu_links', array('mlid', '=', $item_id));
         return (!$data->error()) ? $data->first() : false;
     }
     public static function delete($menu_id) {
@@ -88,10 +88,10 @@ class Menu {
             'title' => $formdata['title'],
             'link' => $formdata['link'],
             'parent' => $formdata['parent'],
-            'position' => $formdata['position'],
-            'show' => $formdata['show']
+            'position' => ($formdata['position']) ? $formdata['position'] : 0,
+            'show' => ($formdata['show']) ? $formdata['show'] : 1
         );
-        $id = $formdata['mlid'];
+        $id = array('mlid', $formdata['mlid']);
         if(!DB::getInstance()->update('users', $id, $fields)) {
             System::addMessage('error', t('There was an error while updating the menu item <i>@menu_item</i> in the menu <i>@menu</i>', array('@menu' => $db->getField('menus', 'name', 'mid', $fields['mid']), '@menu_item' => $title)));
         }

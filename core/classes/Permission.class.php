@@ -93,7 +93,7 @@ class Permission {
                     '#value' => $role->rid,
                     '#checked' => (in_array($role->rid, explode(';', $permission->rid))) ? true : false
                 );
-                $output .= '<td style="text-align: center;"><input type="'.$element['#type'].'" class="icheck" name="'.$element['#name'].'" value="'.$element['#value'].'"'.(($element['#checked'] === true) ? ' checked' : '').'/></td>';
+                $output .= '<td style="text-align: center;"><input type="'.$element['#type'].'" name="'.$element['#name'].'" value="'.$element['#value'].'"'.(($element['#checked'] === true) ? ' checked' : '').'/></td>';
             }
             $output .= '</tr>';
         }

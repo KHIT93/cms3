@@ -77,19 +77,19 @@
                                     <label for="inputMetaDesc"><?php print t('Meta Description'); ?></label>
                                     <textarea name="description" class="form-control"></textarea>
                                     <label for="inputMeta">
-                                        <input type="checkbox" name="robots[]" class="icheck" value="index" checked>
+                                        <input type="checkbox" name="robots[]" class="" value="index" checked>
                                         <?php print t('Index'); ?>
                                     </label>
                                     <label for="inputMeta">
-                                        <input type="checkbox" name="robots[]" class="icheck" value="follow" checked>
+                                        <input type="checkbox" name="robots[]" class="" value="follow" checked>
                                         <?php print t('Follow'); ?>
                                     </label>
                                     <label for="inputMeta">
-                                        <input type="checkbox" name="robots[]" class="icheck" value="noindex">
+                                        <input type="checkbox" name="robots[]" class="" value="noindex">
                                         <?php print t('No Index'); ?>
                                     </label>
                                     <label for="inputMeta">
-                                        <input type="checkbox" name="robots[]" class="icheck" value="nofollow">
+                                        <input type="checkbox" name="robots[]" class="" value="nofollow">
                                         <?php print t('No Follow'); ?>
                                     </label>
                                 </div>
@@ -103,7 +103,7 @@
                             <div class="tab-pane fade" id="menuItem">
                                 <div class="form-group form300">
                                     <label for="inputMenuItem">
-                                        <input type="checkbox" name="enable_item"  class="icheck" value="enabled">
+                                        <input type="checkbox" name="enable_item"  class="" value="enabled">
                                         <?php print t('Add Menu Item'); ?>
                                     </label>
                                     <select class="select2" name="inputMenu">
@@ -117,13 +117,13 @@
                                 <div class="form-group">
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="published" id="optionsPublished1" class="icheck" value="0">
+                                            <input type="radio" name="published" id="optionsPublished1" class="" value="0">
                                             <?php print t('Unpublished'); ?>
                                         </label>
                                     </div>
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="published" id="optionsPublished2" class="icheck" value="1" checked>
+                                            <input type="radio" name="published" id="optionsPublished2" class="" value="1" checked>
                                             <?php print t('Published'); ?>
                                         </label>
                                     </div>

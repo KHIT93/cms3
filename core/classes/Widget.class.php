@@ -56,10 +56,9 @@ class Widget {
     static function renderWidgetList($section, $theme, &$all_widgets) {
         $output = '';
         $items = self::getAllWidgets();
-        
         $count = DB::getInstance()->countItems('widgets', '*', 'section', $section);
         if($count > 0) {
-            for ($i = 0; $i < count($items) + 1; $i++) {
+            for ($i = 0; $i < count($items); $i++) {
                 if($items[$i]->section == $section) {
                     $output .= '<tr>'
                                 . '<td style="padding-left: 2em;">'.$items[$i]->title.'</td>'

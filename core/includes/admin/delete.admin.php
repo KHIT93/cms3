@@ -13,7 +13,7 @@ if(isset($get_url)) {
 </div>
 <div class="modal-footer">
     <form name="deleteContent" method="POST" action="">
-        <input type="hidden" name="page_id" value="<?php print $get_url[2]; ?>">
+        <input type="hidden" name="pid" value="<?php print $get_url[2]; ?>">
         <input type="hidden" name="form-token" value="<?php print Token::generate(); ?>">
         <input type="hidden" name="form_id" value="deletePage">
         <a href="/admin/content" class="btn btn-rad btn-sm btn-default"><?php print t('Cancel'); ?></a>
@@ -31,7 +31,6 @@ if(isset($get_url)) {
 </div>
 <div class="modal-footer">
     <form name="deleteUser" method="POST" action="">
-        <input type="hidden" name="user_id" value="<?php print $get_url[2]; ?>">
         <input type="hidden" name="form-token" value="<?php print Token::generate(); ?>">
         <input type="hidden" name="form_id" value="deleteUser">
         <a href="/admin/users" class="btn btn-rad btn-sm btn-default"><?php print t('Cancel'); ?></a>
