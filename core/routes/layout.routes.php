@@ -8,6 +8,7 @@ if(has_permission('access_admin_layout', Session::get(Config::get('session/sessi
         if(isset($get_url[2])) {
             if($get_url[2] == 'content-types') {
                 if(has_permission('access_admin_layout_content_types', Session::get(Config::get('session/session_name')))) {
+                    include_once INCLUDES_PATH.'/admin.inc.php';
                     ContentType::route();
                 }
                 else {

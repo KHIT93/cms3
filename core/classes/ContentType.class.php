@@ -33,6 +33,6 @@ class ContentType {
         }
     }
     public static function route() {
-        
+        print 'Content type administration';
     }
 }

@@ -69,6 +69,10 @@ class System {
                 'link' => 'admin/layout',
                 'children' => array(
                     array(
+                        'title' => t('Content types'),
+                        'link' => 'admin/layout/content-types'
+                    ),
+                    array(
                         'title' => t('Menus'),
                         'link' => 'admin/layout/menus'
                     ),
@@ -79,7 +83,7 @@ class System {
                     array(
                         'title' => t('Widgets'),
                         'link' => 'admin/layout/widgets'
-                    )
+                    ),
                 )
             );
         }
