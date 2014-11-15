@@ -4,6 +4,7 @@
  * Primary file handling all requests
  */
 error_reporting(E_ALL);
+ini_set('display_errors', 'on');
 define('SITE_ROOT', getcwd());
 $init = array();
 include_once 'core/modules/krumo/class.krumo.php';

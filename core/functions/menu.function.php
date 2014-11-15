@@ -5,7 +5,7 @@
  */
 function traverse($array, $class = NULL, $toggle = false) {
     $get_url = splitURL();
-    if(empty($get_url[1]) OR !isset($get_url[1])) {
+    if(!isset($get_url[1])) {
         $active = $get_url[0];
     }
     else {
@@ -25,7 +25,7 @@ function traverse($array, $class = NULL, $toggle = false) {
 }
 function sidebar_traverse($array, $class = NULL) {
     $get_url = splitURL();
-    if(empty($get_url[1]) OR !isset($get_url[1])) {
+    if(!isset($get_url[1])) {
         $active = $get_url[0];
     }
     else {

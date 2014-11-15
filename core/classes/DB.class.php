@@ -155,7 +155,7 @@ class DB {
     }
     public function getField($table, $item, $field, $input, $pdoFetch = PDO::FETCH_OBJ) {
         //$this->action("SELECT {$item}", $table, array($field, '=', $input));
-        if(is_object($this->action("SELECT {$item}", $table, array($field, '=', $input))) && !empty($this->results())) {
+        if(is_object($this->action("SELECT {$item}", $table, array($field, '=', $input))) && $this->results()) {
             return $this->first()->{$item};
         
         } else {

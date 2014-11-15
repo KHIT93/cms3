@@ -10,7 +10,7 @@ class String {
                 $translate = $query->results();
                 $translation = (isset($translate[0])) ? $translate[0] : NULL;
                 if(isset($translation->string)) {
-                    if(!isset($translation->translation) || empty($translation->translation) || $translation->translation == '' || $lang == 'en') {
+                    if(!isset($translation->translation) || !$translation->translation || $translation->translation == '' || $lang == 'en') {
                         $output = $string;
                     }
                     else {

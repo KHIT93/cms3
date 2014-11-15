@@ -13,10 +13,10 @@ class Validate {
         foreach($items as $item => $rules) {
             foreach($rules as $rule => $rule_value) {
                 $value = trim($source[$item]);
-                if($rule === 'required' && empty($value)) {
+                if($rule === 'required' && !$value) {
                     $this->addError(t("@item is required", array('@item' => $item)));
                 }
-                else if(!empty($value)){
+                else if($value){
                     switch ($rule) {
                         case 'min':
                             if(strlen($value) < $rule_value) {
@@ -47,7 +47,7 @@ class Validate {
                 }
             }
         }
-        if(empty($this->_errors)) {
+        if(!$this->_errors) {
             $this->_passed = true;
         }
         return $this;

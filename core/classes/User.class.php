@@ -106,7 +106,7 @@ class User {
         return false;
     }
     public function exists() {
-        return (!empty($this->_data)) ? true : false;
+        return (count($this->_data)) ? true : false;
     }
     
     public function enable($user_id) {

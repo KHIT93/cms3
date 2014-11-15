@@ -1,6 +1,6 @@
 <?php
 function hasValue($string = NULL) {
-    return (!empty($string) || $string != '' || $string != NULL || $string != false) ? true : false;
+    return ($string || $string != '' || $string != NULL || $string != false) ? true : false;
 }
 function generateURL($string) {
     $title = 'Titlen skal være rigtig';

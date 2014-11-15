@@ -42,7 +42,7 @@ class Widget {
         else {
             //get sections from custom theme
             $themedetails = Theme::themeDetails($theme);
-            if(!isset($themedetails['sections']) || empty($themedetails['sections']) || $themedetails['sections'] == '') {
+            if(!isset($themedetails['sections']) || !$themedetails['sections'] || $themedetails['sections'] == '') {
                 //Use default sections
                 $output = Theme::themeDetails('core', true)['sections'];
             }

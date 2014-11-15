@@ -6,7 +6,16 @@
 if(has_permission('access_admin_layout', Session::get(Config::get('session/session_name')))) {
     if($get_url[1] == 'layout') {
         if(isset($get_url[2])) {
-            if($get_url[2] == 'menus') {
+            if($get_url[2] == 'content-types') {
+                if(has_permission('access_admin_layout_content_types', Session::get(Config::get('session/session_name')))) {
+                    ContentType::route();
+                }
+                else {
+                    include_once INCLUDES_PATH.'/admin.inc.php';
+                    action_denied(true);
+                }
+            }
+            else if($get_url[2] == 'menus') {
                 if(has_permission('access_admin_layout_menus', Session::get(Config::get('session/session_name')))) {
                     if(isset($get_url[3])) {
                         if($get_url[4] == 'links') {

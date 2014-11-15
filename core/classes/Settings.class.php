@@ -697,7 +697,7 @@ class Settings {
         $db = DB::getInstance();
         $get_url = splitURL();
         $translation = $db->query("SELECT * FROM `translation` WHERE `language`=? AND `tid`=?", array($get_url[4], $get_url[5]), PDO::FETCH_ASSOC)->first();
-        $translation['translation'] = ((isset($translation['translation']) && !empty($translation['translation'])) OR (isset($translation['translation']) && $translation['translation'] != '')) ? $translation['translation'] : NULL;
+        $translation['translation'] = ((isset($translation['translation']) && $translation['translation']) OR (isset($translation['translation']) && $translation['translation'] != '')) ? $translation['translation'] : NULL;
         //$output = krumo($translation);
         $output = '<div class="page-head">'
                 . '<h2>'.t('Translation').'</h2>'
