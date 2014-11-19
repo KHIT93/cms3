@@ -3,7 +3,7 @@
 spl_autoload_register(function($class){
     if(strpos($class, 'Exception')) {
         if(file_exists(CORE_CLASSES_PATH.'/'.$class.'.class.php')) {
-            require_once CORE_CLASSES_PATH.'/exceptions'.$class.'.class.php';
+            require_once CORE_CLASSES_PATH.'/exceptions/'.$class.'.class.php';
         }
     }
     else if(file_exists(CORE_CLASSES_PATH.'/'.$class.'.class.php')) {
