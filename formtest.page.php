@@ -171,6 +171,7 @@ $form = array(
             '#attr' => array(
                 'class' => 'form-wrapper'
             ),
+            '#auto_open' => true,
             '#children' => array(
                 /*'textfield' => */array(
                     '#type' => 'text',

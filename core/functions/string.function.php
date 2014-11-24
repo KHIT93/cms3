@@ -17,3 +17,25 @@ function output_languages_as_select($languages) {
     }
     return false;
 }
+function output_as_select($items, $key, $value_key) {
+    if(is_object($items)) {
+        $output = array();
+        foreach ($items as $item) {
+            $output[$item->{$key}] = $item->{$value_key};
+        }
+        return $output;
+    }
+    else if(count($items)) {
+        $output = array();
+        foreach ($items as $item) {
+            if(is_object($item)) {
+                $output[$item->{$key}] = $item->{$value_key};
+            }
+            else {
+                $output[$item[$key]] = $item[$value_key];
+            }
+        }
+        return $output;
+    }
+    return false;
+}

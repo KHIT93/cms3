@@ -48,6 +48,7 @@ class Render {
                 }
                 else {
                     $keys = array_keys($element['#options']);
+                    $output .= ((isset($element['#label'])) ? self::prepareLabel('<strong>'.$element['#label'].'</strong>', NULL, false, true) : '');
                     for ($i = 0; $i < count($element['#options']); $i++) {
                         $output .= '<div class="'.$element['#type'].'">'."\n"
                             .'<label>'."\n"
@@ -58,7 +59,7 @@ class Render {
                             .((isset($element['#disabled']) && $element['#disabled'] == true) ? ' disabled': '')
                             .((isset($element['#required']) && $element['#required'] == true) ? ' required': '')
                             .'>'."\n"
-                            .((isset($element['#label'])) ? self::prepareLabel($element['#label'], NULL, false, true) : '')
+                            .((isset($element['#options'][$keys[$i]])) ? self::prepareLabel($element['#options'][$keys[$i]], NULL, false, true) : '')
                             . '</div>'."\n";
                     }
                 }
@@ -186,8 +187,8 @@ class Render {
         if(count($tab)) {
             if(isset($tab['#children'])) {
                 $tab['#attr']['id'] = (isset($tab['#attr']['id'])) ? $tab['#attr']['id'].' '.$tab['#name'] : $tab['#name'];
-                $output['nav'] .= '<li><a href="#'.$tab['#name'].'" data-toggle="tab">'.((isset($tab['#title'])) ? $tab['#title'] : $tab['#name']).'</a></li>'."\n";
-                $output['content'] .= '<div class="tab-pane fade in" '.self::prepareAttributes($tab['#attr']).'>'."\n";
+                $output['nav'] .= '<li'.((isset($tab['#auto_open'])) ? ' class="active"' : '').'><a href="#'.$tab['#name'].'" data-toggle="tab">'.((isset($tab['#title'])) ? $tab['#title'] : $tab['#name']).'</a></li>'."\n";
+                $output['content'] .= '<div class="tab-pane fade in'.((isset($tab['#auto_open'])) ? ' active' : '').'" '.self::prepareAttributes($tab['#attr']).'>'."\n";
                 foreach ($tab['#children'] as $child) {
                     $output['content'] .= self::prepareElement($child)."\n";
                 }

@@ -8,7 +8,121 @@ $GLOBALS['forms'] = array(
     'editPage' => array(),
     'addMenuItem' => array(),
     'editMenuItem' => array(),
-    'addWidget' => array(),
+    'addWidget' => array(
+        '#name' => 'addWidget',
+        '#method' => 'POST',
+        '#action' => '',
+        '#attr' => array(
+            'role' => 'form'
+        ),
+        'elements' => array(
+            array(
+                '#type' => 'text',
+                '#name' => 'title',
+                '#label' => t('Title'),
+                '#attr' => array(
+                    'class' => 'form-control'
+                ),
+                '#size' => 60,
+                '#value' => Input::get('title'),
+                '#maxlength' => 255,
+                '#required' => true,
+                '#description' => t('Enter a title for your widget. This will be displayed as the widget name in the administration and will not be shown to visitors of the website'),
+            ),
+            array(
+                '#type' => 'textarea',
+                '#name' => 'content',
+                '#cols' => 60,
+                '#rows' => 5,
+                '#attr' => array(
+                    'class' => 'form-control'
+                ),
+                '#required' => false,
+                '#description' => t('Enter the contents of your widget. This will be displayed to visitors of the website'),
+                '#label' => t('Content')
+            ),
+            array(
+                '#type' => 'select',
+                '#name' => 'section',
+                '#attr' => array(
+                    'class' => 'select2'
+                ),
+                '#empty_option' => t('Inactive'),
+                '#description' => t('Choose a section for where this widget should be displayed on the website'),
+                '#options' => Widget::getSections(Theme::getTheme()),
+                '#label' => t('Section')
+            )
+        ),
+        'tabs' => array(
+            array(
+                '#type' => 'tab',
+                '#name' => 'widgetPages',
+                '#title' => t('Pages'),
+                '#alignment' => 'top',
+                '#auto_open' => true,
+                '#children' => array(
+                    array(
+                        '#type' => 'markup',
+                        '#value' => '<p><strong>'.t('Show widget on specific pages').'</strong></p>'
+                    ),
+                    array(
+                        '#type' => 'radio',
+                        '#name' => 'show',
+                        '#default_value' => 0,
+                        '#options' => array(
+                            0 => t('All pages except the ones listed'),
+                            1 => t('Only the listed pages')
+                        ),
+                        '#required' => false
+                    ),
+                    array(
+                        '#type' => 'textarea',
+                        '#name' => 'pages',
+                        '#cols' => 60,
+                        '#rows' => 5,
+                        '#attr' => array(
+                            'class' => 'form-control'
+                        ),
+                        '#required' => false
+                    ),
+                )
+            ),
+            array(
+                '#type' => 'tab',
+                '#name' => 'widgetRoles',
+                '#title' => t('Roles'),
+                '#alignment' => 'top',
+                '#attr' => array(
+                    'class' => 'form-wrapper'
+                ),
+                '#children' => array(
+                    array(
+                        '#type' => 'markup',
+                        '#value' => '<p>'.t('This widget will only be shown to the following roles. If no roles are selected it will be shown to all roles').'</p>'
+                    ),
+                    array(
+                        '#type' => 'checkbox',
+                        '#name' => 'roles',
+                        '#options' => output_as_select(Permission::get_roles(), 'rid', 'name')
+                    )
+                )
+            )
+        ),
+        'actions' => array(
+            'submit' => array(
+                '#type' => 'submit',
+                '#attr' => array(
+                    'class' => 'btn btn-rad btn-primary btn-sm'
+                ),
+                '#name' => 'addWidget',
+                '#value' => t('Save widget')
+            ),
+            'cancel' => array(
+                '#type' => 'markup',
+                '#value' => '<a href="/admin/layout/widgets" class="btn btn-rad btn-default btn-sm">'.t('Cancel').'</a>'
+            )
+        )
+    ),
     'editWidget' => array(),
     'addUser' => array(),
     'editUser' => array(),
