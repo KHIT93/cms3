@@ -83,7 +83,7 @@ class Page {
                     System::addMessage('error', t('There was an error while creating the URL Alias for <i>@title</i>', array('@title' => $fields['title'])));
                 }
             }
-            if(isset($formdata['enable_item'])) {
+            if($formdata['menu'] != 'disabled' || is_numeric($formdata['menu'])) {
                 $menudata = array(
                     'mid' => $formdata['inputMenu'],
                     'title' => $formdata['title'],
@@ -100,7 +100,6 @@ class Page {
     }
     public static function update($formdata) {
         $db = DB::getInstance();
-        krumo($formdata);
         $pid = array('pid', $formdata['pid']);
         $fields = array(
             'title' => $formdata['title'],
@@ -121,7 +120,7 @@ class Page {
                 }
             }
             if(isset($formdata['enable_item'])) {
-                if($formdata['enable_item'] == 'enabled') {
+                if($formdata['menu'] != 'disabled' || is_numeric($formdata['menu'])) {
                     $menudata = array(
                         'mlid' => $db->getField('menu_links', 'mlid', 'link', $alias),
                         'mid' => $formdata['menu'],

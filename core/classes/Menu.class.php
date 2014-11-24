@@ -78,8 +78,11 @@ class Menu {
             'position' => 0,
             'show' => 1
         );
-        if(!DB::getInstance()->insert('menu_items', $data)) {
+        if(!DB::getInstance()->insert('menu_links', $data)) {
             System::addMessage('error', t('There was an error while creating the new menu item <i>@menu_item</i> in the menu <i>@menu</i>', array('@menu' => $db->getField('menus', 'name', 'mid', $mid), '@menu_item' => $title)));
+        }
+        else {
+            System::addMessage('success', t('The menu item <i>@menu_item</i> was successfully created', array('@menu_item' => $data['title'])));
         }
     }
     public static function updateMenuItem($formdata) {
@@ -92,8 +95,11 @@ class Menu {
             'show' => ($formdata['show']) ? $formdata['show'] : 1
         );
         $id = array('mlid', $formdata['mlid']);
-        if(!DB::getInstance()->update('users', $id, $fields)) {
-            System::addMessage('error', t('There was an error while updating the menu item <i>@menu_item</i> in the menu <i>@menu</i>', array('@menu' => $db->getField('menus', 'name', 'mid', $fields['mid']), '@menu_item' => $title)));
+        if(!DB::getInstance()->update('menu_links', $id, $fields)) {
+            System::addMessage('error', t('There was an error while updating the menu item <i>@menu_item</i> in the menu <i>@menu</i>', array('@menu' => $db->getField('menus', 'name', 'mid', $fields['mid']), '@menu_item' => $fields['title'])));
+        }
+        else {
+            System::addMessage('success', t('The menu item <i>@menu_item</i> was successfully updated', array('@menu_item' => $fields['title'])));
         }
     }
     public static function deleteMenuItem($item_id) {
