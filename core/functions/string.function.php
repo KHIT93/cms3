@@ -17,11 +17,11 @@ function output_languages_as_select($languages) {
     }
     return false;
 }
-function output_as_select($items, $key, $value_key) {
+function output_as_select($items, $key, $value_key, $translateable = false) {
     if(is_object($items)) {
         $output = array();
         foreach ($items as $item) {
-            $output[$item->{$key}] = $item->{$value_key};
+            $output[$item->{$key}] = (($translateable === true) ? t($item->{$value_key}): $item->{$value_key});
         }
         return $output;
     }
@@ -29,10 +29,10 @@ function output_as_select($items, $key, $value_key) {
         $output = array();
         foreach ($items as $item) {
             if(is_object($item)) {
-                $output[$item->{$key}] = $item->{$value_key};
+                $output[$item->{$key}] = (($translateable === true) ? t($item->{$value_key}): $item->{$value_key});
             }
             else {
-                $output[$item[$key]] = $item[$value_key];
+                $output[$item[$key]] = (($translateable === true) ? t($item[$value_key]): $item[$value_key]);
             }
         }
         return $output;

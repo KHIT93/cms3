@@ -103,7 +103,7 @@ $GLOBALS['forms'] = array(
                     array(
                         '#type' => 'checkbox',
                         '#name' => 'roles',
-                        '#options' => output_as_select(Permission::get_roles(), 'rid', 'name')
+                        '#options' => output_as_select(Permission::get_roles(), 'rid', 'name', true)
                     )
                 )
             )
